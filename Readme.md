@@ -1,5 +1,11 @@
 # Projecto de Referência de SpringBoot
 
+## Grupo
+
+Daniela Camarinha fc58199
+Gonçalo Pinto fc58178
+José Brás fc55449 
+
 ## O que fazer
 
 Este projecto serve para verificar que todas as dependências necessárias ao projecto estão a funcionar.
