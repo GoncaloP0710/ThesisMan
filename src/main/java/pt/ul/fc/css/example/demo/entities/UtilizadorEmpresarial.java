@@ -5,10 +5,15 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class UtilizadorEmpresarial {
     
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    int id;
     String empresa;
     @ElementCollection
     @Column(name = "temas_propostos")
