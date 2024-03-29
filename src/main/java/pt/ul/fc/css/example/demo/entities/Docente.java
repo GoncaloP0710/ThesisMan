@@ -2,6 +2,7 @@ package pt.ul.fc.css.example.demo.entities;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 
 import jakarta.persistence.Column;
@@ -15,18 +16,18 @@ import jakarta.persistence.Id;
 public class Docente {
     
     @Id @Column(name = "num_faculdade") @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    int numFaculdade;
-    String departamento;
+    private Integer numFaculdade;
+    private String departamento;
     @ElementCollection
     @Column(name = "temas_propostos")
-    List<Tema> temasPropostos;
+    private List<Tema> temasPropostos;
 
     public Docente(String departamento, List<Tema> temas) {
         this.departamento = departamento;
         temasPropostos = temas;
     }
     
-    public int getNumFaculdade() {
+    public Integer getNumFaculdade() {
         return numFaculdade;
     } 
 
@@ -36,5 +37,30 @@ public class Docente {
 
     public List<Tema> getTemasPropostos() {
         return temasPropostos;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (obj == null || obj.getClass() != this.getClass())
+            return false;
+        var that = (Docente) obj;
+        return Objects.equals(this.numFaculdade, that.numFaculdade) &&
+                Objects.equals(this.departamento, that.departamento) &&
+                Objects.equals(this.temasPropostos, that.temasPropostos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numFaculdade, departamento, temasPropostos);
+    }
+
+    @Override
+    public String toString() {
+        return "Docente[" +
+                "num docente=" + numFaculdade + ", " +
+                "departamento=" + departamento + ", " +
+                "temas propostos=" + temasPropostos + ']';
     }
 }
