@@ -14,6 +14,11 @@ public class UtilizadorEmpresarial {
     @Column(name = "temas_propostos")
     List<Tema> temasPropostos;
 
+    public UtilizadorEmpresarial(String empresa, List<Tema> temas) {
+        this.empresa = empresa;
+        temasPropostos = temas;
+    }
+
     public getEmpresa() {
         return empresa;
     }

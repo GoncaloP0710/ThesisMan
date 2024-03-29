@@ -2,6 +2,7 @@ package pt.ul.fc.css.example.demo.entities;
 
 import java.time.LocalDate;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,12 @@ public class Aluno {
     double average;
     @ManyToOne
     Candidatura candidatura;
+
+    public Aluno(@NonNull int n_aluno, double average, Candidatura candidatura) {
+        this.n_aluno = n_aluno;
+        this.average = average;
+        this.candidatura = candidatura;
+    }
 
     public int getNumAluno() {
         return n_aluno;

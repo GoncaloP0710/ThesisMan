@@ -3,6 +3,7 @@ package pt.ul.fc.css.example.demo.entities;
 import java.time.LocalDate;
 import java.util.List;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -19,6 +20,12 @@ public class Docente {
     @ElementCollection
     @Column(name = "temas_propostos")
     List<Tema> temasPropostos;
+
+    public Docente(int num_faculdade, String departamento, List<Tema> temas) {
+        numFaculdade = num_faculdade;
+        this.departamento = departamento;
+        temasPropostos = temas;
+    }
     
     public int getNumFaculdade() {
         return numFaculdade;
