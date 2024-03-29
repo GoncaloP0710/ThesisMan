@@ -9,12 +9,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "Aluno")
 public class Aluno {
     
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer n_aluno;
+    @NonNull
     private Double average;
     @ManyToOne
     private Candidatura candidatura;

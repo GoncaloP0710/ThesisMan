@@ -4,19 +4,23 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "DOCENTE")
 public class Docente {
     
     @Id @Column(name = "num_faculdade") @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer numFaculdade;
+    @NonNull
     private String departamento;
     @ElementCollection
     @Column(name = "temas_propostos")
