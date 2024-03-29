@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 public class Docente {
     
     @Id @Column(name = "num_faculdade") @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @OneToMany(mappedBy = "orientadorInterno")
     private Integer numFaculdade;
     @NonNull
     private String departamento;

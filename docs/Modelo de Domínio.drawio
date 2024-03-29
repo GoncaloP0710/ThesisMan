@@ -1659,7 +1659,7 @@
                 <mxCell id="Kk3uG4N34x6R7yPNbHfb-49" value="Projeto" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeWidth=1;fontSize=9;" parent="sopl8miluSWa-EN0stIk-1" vertex="1">
                     <mxGeometry x="1541.5" y="719" width="160" height="82" as="geometry"/>
                 </mxCell>
-                <mxCell id="Kk3uG4N34x6R7yPNbHfb-50" value="- orientadoInterno: Docente" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;strokeWidth=1;fontSize=9;" parent="Kk3uG4N34x6R7yPNbHfb-49" vertex="1">
+                <mxCell id="Kk3uG4N34x6R7yPNbHfb-50" value="- orientadorInterno: Docente" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;strokeWidth=1;fontSize=9;" parent="Kk3uG4N34x6R7yPNbHfb-49" vertex="1">
                     <mxGeometry y="26" width="160" height="22" as="geometry"/>
                 </mxCell>
                 <mxCell id="Kk3uG4N34x6R7yPNbHfb-51" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=9;" parent="Kk3uG4N34x6R7yPNbHfb-49" vertex="1">
