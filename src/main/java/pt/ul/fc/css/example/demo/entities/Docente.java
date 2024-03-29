@@ -21,8 +21,7 @@ public class Docente {
     @Column(name = "temas_propostos")
     List<Tema> temasPropostos;
 
-    public Docente(int num_faculdade, String departamento, List<Tema> temas) {
-        numFaculdade = num_faculdade;
+    public Docente(String departamento, List<Tema> temas) {
         this.departamento = departamento;
         temasPropostos = temas;
     }

@@ -18,8 +18,7 @@ public class Aluno {
     @ManyToOne
     Candidatura candidatura;
 
-    public Aluno(@NonNull int n_aluno, double average, Candidatura candidatura) {
-        this.n_aluno = n_aluno;
+    public Aluno(double average, Candidatura candidatura) {
         this.average = average;
         this.candidatura = candidatura;
     }
