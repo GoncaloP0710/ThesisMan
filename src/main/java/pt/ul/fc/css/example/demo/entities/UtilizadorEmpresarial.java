@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "UTILIZADOR_EMPRESARIAL")
+@Table(name = "Utilizador_Empresarial")
 public class UtilizadorEmpresarial {
     
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
