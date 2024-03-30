@@ -1,7 +1,6 @@
 package pt.ul.fc.css.example.demo.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,7 +12,6 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "defesa")
 public final class Defesa{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

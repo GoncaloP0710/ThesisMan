@@ -1,21 +1,12 @@
 package pt.ul.fc.css.example.demo.entities;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-
 import io.micrometer.common.lang.NonNull;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tema")
 public class Tema {
     
     @Id
@@ -40,6 +31,10 @@ public class Tema {
         this.descricao = descricao;
         this.remuneracaoMensal = remuneracaoMensal;
         this.submissor = submissor;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitulo() {

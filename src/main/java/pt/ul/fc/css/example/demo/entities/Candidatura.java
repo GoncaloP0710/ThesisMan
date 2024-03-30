@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,7 +13,6 @@ import java.util.Objects;
 import org.springframework.lang.NonNull;
 
 @Entity
-@Table(name = "candidatura")
 public class Candidatura {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
