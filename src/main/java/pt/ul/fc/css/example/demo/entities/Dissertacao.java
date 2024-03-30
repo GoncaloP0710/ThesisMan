@@ -1,11 +1,17 @@
 package pt.ul.fc.css.example.demo.entities;
+import java.util.List;
+import jakarta.persistence.Entity;
 
 /**
  * Representa uma Dissertacao
  */
-public abstract class Dissertacao extends Tese {
+@Entity
+public class Dissertacao extends Tese {
 
-    public Dissertacao(Defesa defesaProposta, Defesa defesaFinal) {
-		super(defesaProposta,defesaFinal);
+    public Dissertacao(List<Defesa> defesas) {
+		super(defesas);
+	}
+	public Dissertacao() {
+		super();
 	}
 }

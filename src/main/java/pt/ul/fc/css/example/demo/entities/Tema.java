@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Tema {
@@ -23,10 +25,12 @@ public class Tema {
     private float remuneracaoMensal;
 
     @NonNull
-    private Utilizador submissor;
+    @ManyToOne
+    @JoinColumn(name="docente_id", nullable = false)
+    private Docente submissor;
 
 
-    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, Utilizador submissor) {
+    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Docente submissor) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.remuneracaoMensal = remuneracaoMensal;
@@ -49,7 +53,7 @@ public class Tema {
         return remuneracaoMensal;
     }
 
-    public Utilizador getSubmissor() {
+    public Docente getSubmissor() {
         return submissor;
     }
 

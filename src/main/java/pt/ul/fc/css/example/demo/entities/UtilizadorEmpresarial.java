@@ -4,27 +4,41 @@ import java.util.List;
 import java.util.Objects;
 
 import io.micrometer.common.lang.NonNull;
-import jakarta.persistence.Column;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 
 @Entity
-public class UtilizadorEmpresarial {
+public class UtilizadorEmpresarial extends Utilizador{
     
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
     @NonNull
     private String empresa;
+
     @ElementCollection
-    @Column(name = "temas_propostos")
+    @CollectionTable(
+        name="temas_propostos",
+        joinColumns=@JoinColumn(name="docente_id")
+    )
     private List<Tema> temasPropostos;
 
-    public UtilizadorEmpresarial(String empresa, List<Tema> temas) {
+    public UtilizadorEmpresarial(String empresa, List<Tema> temas, String name, String contact) {
+        super(name, contact);
         this.empresa = empresa;
         temasPropostos = temas;
+    }
+
+    protected UtilizadorEmpresarial() {
+        super();
+        this.empresa = "";
+        this.temasPropostos = null;
     }
 
     public Integer getId() {

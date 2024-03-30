@@ -4,8 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import org.springframework.lang.NonNull;
 
 import java.util.Date;
@@ -33,7 +33,8 @@ public final class Defesa{
     float nota;
 
     @NonNull
-    @OneToOne(mappedBy = "defesa")
+    @ManyToOne
+    @JoinColumn(name="tese_id")
     private Tese tese;
 
     
@@ -46,6 +47,15 @@ public final class Defesa{
         this.duracao = duracao;
         this.nota = nota;
         this.sala = sala;
+    }
+
+    protected Defesa() {
+        this.isFinal = false;
+        this.isPresencial = false;
+        this.date = new Date();
+        this.duracao = 0;
+        this.nota = 0;
+        this.sala = "";
     }
 
     public int getId() {

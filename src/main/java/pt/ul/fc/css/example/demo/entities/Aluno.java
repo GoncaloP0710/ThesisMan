@@ -8,13 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+
 
 @Entity
-@Table(name = "Aluno")
-public class Aluno {
+public class Aluno extends Utilizador{
     
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer n_aluno;
 
     @NonNull
@@ -24,9 +24,16 @@ public class Aluno {
     private Candidatura candidatura;
 
     
-    public Aluno(double average, Candidatura candidatura) {
+    public Aluno(double average, Candidatura candidatura,String name, String contact) {
+        super(name, contact);
         this.average = average;
         this.candidatura = candidatura;
+    }
+
+    protected Aluno() {
+        super();
+        this.average = 0.0;
+        this.candidatura = null;
     }
 
     public Integer getNumAluno() {
@@ -49,13 +56,13 @@ public class Aluno {
             return false;
         var that = (Aluno) obj;
         return Objects.equals(this.n_aluno, that.n_aluno) &&
-                Objects.equals(this.average, that.average) &&
-                Objects.equals(this.candidatura, that.candidatura);
+                Objects.equals(this.average, that.average);// &&
+                //Objects.equals(this.candidatura, that.candidatura);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(n_aluno, average, candidatura);
+        return Objects.hash(n_aluno, average);
     }
 
     @Override
@@ -63,7 +70,7 @@ public class Aluno {
         return "Aluno[" +
                 "n_aluno=" + n_aluno + ", " +
                 "average=" + average + ", " +
-                "candidatura=" + candidatura + ']';
+                 ']';
     }
 
 }

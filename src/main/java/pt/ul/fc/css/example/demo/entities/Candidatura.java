@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,6 +17,7 @@ import org.springframework.lang.NonNull;
 
 @Entity
 public class Candidatura {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -24,8 +28,13 @@ public class Candidatura {
     @NonNull
     private EstadoCandidatura estado;
 
+    @NonNull
+    @OneToOne
     private Tese tese;
 
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name="tema_id")
     private Tema tema;
 
     public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado, Tese tese, Tema tema) {
@@ -33,6 +42,13 @@ public class Candidatura {
         this.estado = estado;
         this.tese = tese;
         this.tema = tema;
+    }
+
+    protected Candidatura() {
+        this.dataCandidatura = new Date();
+        this.estado = EstadoCandidatura.EMPROCESSAMENTO;
+        this.tese = null;
+        this.tema = null;
     }
 
     public int getId() {

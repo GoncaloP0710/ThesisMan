@@ -1,34 +1,49 @@
 package pt.ul.fc.css.example.demo.entities;
-
 import java.util.List;
 import java.util.Objects;
-
 import io.micrometer.common.lang.NonNull;
-import jakarta.persistence.Column;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Docente {
+public class Docente extends Utilizador{
     
-    @Id @Column(name = "num_faculdade") @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @OneToMany(mappedBy = "orientadorInterno")
+    @Id 
+    //@Column(name = "num_faculdade") 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@OneToMany(mappedBy = "orientadorInterno")
     private Integer numDocente;
 
     @NonNull
     private String departamento;
 
     @ElementCollection
-    @Column(name = "temas_propostos")
+    @CollectionTable(
+        name="temas_propostos",
+        joinColumns=@JoinColumn(name="docente_id")
+    )
     private List<Tema> temasPropostos;
 
-    public Docente(String departamento, List<Tema> temas) {
+    @OneToMany(mappedBy="docente")
+    private List<Projeto> projeto;
+
+    public Docente(String departamento, List<Tema> temas, String name, String contact) {
+        super(name, contact);
         this.departamento = departamento;
         temasPropostos = temas;
+    }
+
+    protected Docente() {
+        super();
+        this.departamento = "";
+        this.temasPropostos = null;
     }
     
     public Integer getNumFaculdade() {
