@@ -21,5 +21,5 @@ public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
     List<Aluno> findByPositiveAverage();
 
     @Query("SELECT a FROM Aluno a WHERE a.candidatura = q ")
-    List<Aluno> findByCandidaturaID(@Param("q") Candidatura q);
+    List<Aluno> findByCandidatura(@Param("q") Candidatura q);
 }
