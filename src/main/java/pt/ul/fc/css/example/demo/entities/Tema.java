@@ -1,6 +1,5 @@
 package pt.ul.fc.css.example.demo.entities;
 
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
