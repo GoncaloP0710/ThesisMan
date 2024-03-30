@@ -35,4 +35,9 @@ public class TemaController {
         return saved.getId();
     }
 
+    @RequestMapping(value = "/index")
+    public ModelAndView home() {
+        return new ModelAndView("index");
+    }
+
 }

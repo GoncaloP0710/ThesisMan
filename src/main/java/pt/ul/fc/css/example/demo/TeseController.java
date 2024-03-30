@@ -1,6 +1,5 @@
 package pt.ul.fc.css.example.demo;
 
-import java.util.List;
 
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,7 @@ public class TeseController {
     }
 
     @PutMapping("/tese")
-    public Long putTese(@NonNull @RequestBody Tese tese) {
+    public Integer putTese(@NonNull @RequestBody Tese tese) {
         Tese saved = teseRepository.save(tese);
         return saved.getId();
     }
