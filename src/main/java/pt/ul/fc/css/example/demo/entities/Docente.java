@@ -1,6 +1,5 @@
 package pt.ul.fc.css.example.demo.entities;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,14 +14,16 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "DOCENTE")
+@Table(name = "docente")
 public class Docente {
     
     @Id @Column(name = "num_faculdade") @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @OneToMany(mappedBy = "orientadorInterno")
-    private Integer numFaculdade;
+    private Integer numDocente;
+
     @NonNull
     private String departamento;
+
     @ElementCollection
     @Column(name = "temas_propostos")
     private List<Tema> temasPropostos;
@@ -33,15 +34,15 @@ public class Docente {
     }
     
     public Integer getNumFaculdade() {
-        return numFaculdade;
+        return this.numDocente;
     } 
 
     public String getDepartamento() {
-        return departamento;
+        return this.departamento;
     }
 
     public List<Tema> getTemasPropostos() {
-        return temasPropostos;
+        return this.temasPropostos;
     }
 
     @Override
@@ -51,20 +52,20 @@ public class Docente {
         if (obj == null || obj.getClass() != this.getClass())
             return false;
         var that = (Docente) obj;
-        return Objects.equals(this.numFaculdade, that.numFaculdade) &&
+        return Objects.equals(this.numDocente, that.numDocente) &&
                 Objects.equals(this.departamento, that.departamento) &&
                 Objects.equals(this.temasPropostos, that.temasPropostos);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numFaculdade, departamento, temasPropostos);
+        return Objects.hash(numDocente, departamento, temasPropostos);
     }
 
     @Override
     public String toString() {
         return "Docente[" +
-                "num docente=" + numFaculdade + ", " +
+                "num docente=" + numDocente + ", " +
                 "departamento=" + departamento + ", " +
                 "temas propostos=" + temasPropostos + ']';
     }

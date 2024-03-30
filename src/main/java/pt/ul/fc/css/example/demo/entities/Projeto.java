@@ -1,8 +1,9 @@
-package pt.ul.fc.css.example.demo.entities.Tese_entities;
+package pt.ul.fc.css.example.demo.entities;
 
-import pt.ul.fc.css.example.demo.entities.Tese_entities.Tese;
-import pt.ul.fc.css.example.demo.entities.Defesa;
 import java.util.Objects;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Representa uma Projeto
@@ -27,7 +28,7 @@ public abstract class Projeto extends Tese {
             return true;
         if (obj == null || obj.getClass() != this.getClass())
             return false;
-        var that = (Tese) obj;
+        var that = (Projeto) obj;
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.defesaProposta, that.defesaProposta) &&
                 Objects.equals(this.defesaFinal, that.defesaFinal) && 
@@ -43,8 +44,8 @@ public abstract class Projeto extends Tese {
     public String toString() {
         return "Tese[" +
                 "id=" + this.id + ", " +
-                "defesaProposta=" + this.defesaProposta.toString + ", " +
-                "defesaFinal=" + this.defesaFinal.toString + ", " +
-                "orientadorInterno=" + this.orientadorInterno.toString + ']';
+                "Id da defesa proposta=" + this.defesaProposta.getId() + ", " +
+                "Id da defesa final=" + this.defesaFinal.getId() + ", " +
+                "orientadorInterno=" + this.orientadorInterno.toString() + ']';
     }
 }

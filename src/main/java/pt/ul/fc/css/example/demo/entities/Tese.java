@@ -1,33 +1,37 @@
-package pt.ul.fc.css.example.demo.entities.Tese_entities;
+package pt.ul.fc.css.example.demo.entities;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import org.springframework.lang.NonNull;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 
 import java.util.Objects;
-import pt.ul.fc.css.example.demo.entities.Defesa;
 
 /**
  * Representa uma tese
  */
 @Entity
-@Table(name="TESE")
+@Table(name="tese")
 public abstract class Tese {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
-    private Integer id;
+    protected Integer id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "defesa_proposta", referencedColumnName = "id")
-    private Defesa defesaProposta;
+    protected Defesa defesaProposta;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "defesa_final", referencedColumnName = "id")
-    private Defesa defesaFinal;
+    protected Defesa defesaFinal;
 
     public Tese(Defesa defesaProposta, Defesa defesaFinal) {
         this.defesaProposta = defesaProposta;
@@ -67,7 +71,7 @@ public abstract class Tese {
     public String toString() {
         return "Tese[" +
                 "id=" + this.id + ", " +
-                "defesaProposta=" + this.defesaProposta.toString + ", " +
-                "defesaFinal=" + this.defesaFinal.toString + ']';
+                "Id da defesaProposta=" + (this.defesaProposta == null ? "not defined": this.defesaProposta.getId())  + ", " +
+                "Id da defesaFinal=" + (this.defesaFinal == null ? "not defined": this.defesaFinal.getId()) + ']';
     }
 }

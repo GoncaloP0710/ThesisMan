@@ -1,6 +1,4 @@
-package pt.ul.fc.css.example.demo.entities.Tese_entities;
-
-import pt.ul.fc.css.example.demo.entities.Tese_entities.Tese;
+package pt.ul.fc.css.example.demo.entities;
 
 /**
  * Representa uma Dissertacao

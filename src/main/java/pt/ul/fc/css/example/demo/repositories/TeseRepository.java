@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import pt.ul.fc.css.example.demo.entities.Tese_entities.Tese;
+import pt.ul.fc.css.example.demo.entities.Tese;
 
 public interface TeseRepository extends JpaRepository<Tese, Integer> {
 

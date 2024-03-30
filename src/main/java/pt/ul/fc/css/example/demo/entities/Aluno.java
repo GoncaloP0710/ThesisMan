@@ -1,6 +1,5 @@
 package pt.ul.fc.css.example.demo.entities;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 import io.micrometer.common.lang.NonNull;
@@ -17,11 +16,14 @@ public class Aluno {
     
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer n_aluno;
+
     @NonNull
     private Double average;
+
     @ManyToOne
     private Candidatura candidatura;
 
+    
     public Aluno(double average, Candidatura candidatura) {
         this.average = average;
         this.candidatura = candidatura;

@@ -84,9 +84,9 @@ public class Candidatura {
         return "Candidatura[" +
                 "id=" + id + ", " +
                 "data de candidatura =" + strDate + ", " +
-                "Estado de candidatura =" + estado.toString() + ", " +
+                "Estado de candidatura =" + estado.name() + ", " +
                 "Id da Tese associada=" + tese.getId() + ", " +
-                "Tema associado =" + tema.getTitle() + ", ";
+                "Tema associado =" + tema.getTitulo() + ", ";
     }
 
 }
