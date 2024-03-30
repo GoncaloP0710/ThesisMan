@@ -9,5 +9,5 @@ import org.springframework.data.repository.query.Param;
 import pt.ul.fc.css.example.demo.entities.Tese;
 
 public interface TeseRepository extends JpaRepository<Tese, Integer> {
-
+    
 }

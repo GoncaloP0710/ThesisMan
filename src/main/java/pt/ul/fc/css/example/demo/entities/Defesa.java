@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "defesa")
 public final class Defesa{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
