@@ -1,5 +1,4 @@
 package pt.ul.fc.css.example.demo.entities;
-import java.util.List;
 import jakarta.persistence.Entity;
 
 /**
@@ -8,9 +7,10 @@ import jakarta.persistence.Entity;
 @Entity
 public class Dissertacao extends Tese {
 
-    public Dissertacao(List<Defesa> defesas) {
-		super(defesas);
+	public Dissertacao(Candidatura candidatura) {
+		super(candidatura);
 	}
+
 	public Dissertacao() {
 		super();
 	}

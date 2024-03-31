@@ -10,7 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.InheritanceType;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -25,65 +28,61 @@ public abstract class Tese {
     @Column(name = "id")
     protected Integer id;
 
-    @OneToOne(cascade= CascadeType.ALL)
+    @OneToOne(cascade= CascadeType.MERGE)
     @JoinColumn(name = "candidatura_id", referencedColumnName = "id")
     private Candidatura candidatura;
 
     @OneToMany(mappedBy="tese")
     protected List<Defesa> defesas;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "defesa_proposta", referencedColumnName = "id")
-    // protected Defesa defesa;
-
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "defesa_final", referencedColumnName = "id")
-    // protected Defesa defesaFinal;
-
-    public Tese(List<Defesa> defesas) {
-        // this.defesaProposta = defesaProposta;
-        // this.defesaFinal = defesaFinal;
-        this.defesas = defesas;
+    public Tese(Candidatura candidatura) {
+        this.candidatura = candidatura;
+        this.defesas = new ArrayList<Defesa>();
     }
 
     public Tese() {
-        this.defesas = null;
+        this.candidatura = null;
+        this.defesas = new ArrayList<Defesa>();
     }
 
     public Integer getId() {
         return id;
     }
 
-    public List<Defesa> getDefesaProposta() {
+    public List<Defesa> getDefesas() {
         return this.defesas;
     }
 
-    // public Defesa getDefesaFinal() {
-    //     return defesaFinal;
-    // }
+    public Candidatura getCandidatura() {
+        return (this.candidatura == null) ? null: this.candidatura;
+    }
 
-    // @Override
-    // public boolean equals(Object obj) {
-    //     if (obj == this)
-    //         return true;
-    //     if (obj == null || obj.getClass() != this.getClass())
-    //         return false;
-    //     var that = (Tese) obj;
-    //     return Objects.equals(this.id, that.id) &&
-    //             Objects.equals(this.defesaProposta, that.defesaProposta) &&
-    //             Objects.equals(this.defesaFinal, that.defesaFinal);
-    // }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (obj == null || obj.getClass() != this.getClass())
+            return false;
+        var that = (Tese) obj;
+        return Objects.equals(this.id, that.id) &&
+                Objects.equals(this.candidatura, that.candidatura) &&
+                Objects.equals(this.defesas, that.defesas);
+    }
 
-    // @Override
-    // public int hashCode() {
-    //     return Objects.hash(id, defesaProposta, defesaFinal);
-    // }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, candidatura, defesas);
+    }
 
-    // @Override
-    // public String toString() {
-    //     return "Tese[" +
-    //             "id=" + this.id + ", " +
-    //             "Id da defesaProposta=" + (this.defesaProposta == null ? "not defined": this.defesaProposta.getId())  + ", " +
-    //             "Id da defesaFinal=" + (this.defesaFinal == null ? "not defined": this.defesaFinal.getId()) + ']';
-    // }
+    @Override
+    public String toString() {
+        StringBuilder defesasIds = new StringBuilder();
+        for(Defesa defesa: defesas){
+            defesasIds.append(defesa.getId()).append(", ");
+        }
+        return "Tese[" +
+                "id=" + this.id + ", " +
+                "Id da candidatura=" + candidatura.getId() + ", " +
+                "Id das defesas=" + defesasIds.toString() + ']';
+    }
 }

@@ -23,39 +23,35 @@ public final class Defesa{
     @NonNull
     Boolean isPresencial;
 
-    @NonNull
     Date date;
 
     @NonNull
     Integer duracao;
 
-    @NonNull
     float nota;
 
-    @NonNull
     @ManyToOne
     @JoinColumn(name="tese_id")
     private Tese tese;
 
-    
     String sala;
 
-    public Defesa(@NonNull boolean isFinal, @NonNull boolean isPresencial, @NonNull Date date, @NonNull int duracao, @NonNull float nota, String sala) {
+    public Defesa(@NonNull boolean isFinal, @NonNull boolean isPresencial) {
         this.isFinal = isFinal;
         this.isPresencial = isPresencial;
-        this.date = date;
-        this.duracao = duracao;
-        this.nota = nota;
-        this.sala = sala;
+        this.date = null;
+        this.duracao = (isFinal) ? 90: 60;
+        this.nota = -1;
+        this.sala = null;
     }
 
     protected Defesa() {
         this.isFinal = false;
         this.isPresencial = false;
-        this.date = new Date();
-        this.duracao = 0;
-        this.nota = 0;
-        this.sala = "";
+        this.date = null;
+        this.duracao = 60;
+        this.nota = -1;
+        this.sala = null;
     }
 
     public int getId() {
@@ -85,6 +81,20 @@ public final class Defesa{
     public String getSala() {
         return sala;
     }
+
+    public void setTese(Tese tese) {
+        this.tese = tese;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setSala(String sala){
+        this.sala = sala;
+    }
+
+    
 
     @Override
     public boolean equals(Object obj) {

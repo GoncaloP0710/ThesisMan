@@ -4,19 +4,12 @@ import java.util.Objects;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 
 @Entity
 public class Aluno extends Utilizador{
     
-    @Id 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer n_aluno;
-
     @NonNull
     private Double average;
 
@@ -24,10 +17,10 @@ public class Aluno extends Utilizador{
     private Candidatura candidatura;
 
     
-    public Aluno(double average, Candidatura candidatura,String name, String contact) {
+    public Aluno(double average, String name, String contact) {
         super(name, contact);
         this.average = average;
-        this.candidatura = candidatura;
+        this.candidatura = null;
     }
 
     protected Aluno() {
@@ -37,7 +30,7 @@ public class Aluno extends Utilizador{
     }
 
     public Integer getNumAluno() {
-        return n_aluno;
+        return super.getId();
     }
 
     public Double getAverage() {
@@ -45,7 +38,11 @@ public class Aluno extends Utilizador{
     }
 
     public Candidatura getCandidatura() {
-        return candidatura;
+        return (candidatura != null) ? this.candidatura : null;
+    }
+
+    public void setCandidatura(Candidatura candidatura) {
+        this.candidatura = candidatura;
     }
 
     @Override
@@ -55,22 +52,21 @@ public class Aluno extends Utilizador{
         if (obj == null || obj.getClass() != this.getClass())
             return false;
         var that = (Aluno) obj;
-        return Objects.equals(this.n_aluno, that.n_aluno) &&
-                Objects.equals(this.average, that.average);// &&
-                //Objects.equals(this.candidatura, that.candidatura);
+        return Objects.equals(super.getId(), that.getId()) &&
+                Objects.equals(this.average, that.average) &&
+                Objects.equals(this.candidatura, that.candidatura);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(n_aluno, average);
+        return Objects.hash(super.getId(), average);
     }
 
     @Override
     public String toString() {
         return "Aluno[" +
-                "n_aluno=" + n_aluno + ", " +
-                "average=" + average + ", " +
-                 ']';
+                "n_aluno=" + super.getId() + ", " +
+                "average=" + average + ", " +']';
     }
 
 }

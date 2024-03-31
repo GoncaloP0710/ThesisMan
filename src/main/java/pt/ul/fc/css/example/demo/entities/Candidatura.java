@@ -28,20 +28,18 @@ public class Candidatura {
     @NonNull
     private EstadoCandidatura estado;
 
-    @NonNull
     @OneToOne
     private Tese tese;
 
-    @NonNull
     @ManyToOne
     @JoinColumn(name="tema_id")
     private Tema tema;
 
-    public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado, Tese tese, Tema tema) {
+    public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado) {
         this.dataCandidatura = dataCandidatura;
         this.estado = estado;
-        this.tese = tese;
-        this.tema = tema;
+        this.tese = null;
+        this.tema = null;
     }
 
     protected Candidatura() {
@@ -69,6 +67,14 @@ public class Candidatura {
 
     public Tema getTema() {
         return tema;
+    }
+
+    public void setTese(Tese tese) {
+        this.tese = tese;
+    }
+
+    public void setTema(Tema tema) {
+        this.tema = tema;
     }
 
     
