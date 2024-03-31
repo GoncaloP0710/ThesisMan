@@ -5,6 +5,7 @@ import java.util.Objects;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 
 @Entity
@@ -16,17 +17,22 @@ public class Aluno extends Utilizador{
     @ManyToOne
     private Candidatura candidatura;
 
+    @ManyToOne
+    @JoinColumn(name="mestrado_id", nullable = false)
+    private Mestrado mestrado;
     
-    public Aluno(double average, String name, String contact) {
+    public Aluno(double average, String name, String contact, Mestrado mestrado) {
         super(name, contact);
         this.average = average;
         this.candidatura = null;
+        this.mestrado = mestrado;
     }
 
     protected Aluno() {
         super();
         this.average = 0.0;
         this.candidatura = null;
+        this.mestrado = new Mestrado();
     }
 
     public Integer getNumAluno() {
@@ -43,6 +49,10 @@ public class Aluno extends Utilizador{
 
     public void setCandidatura(Candidatura candidatura) {
         this.candidatura = candidatura;
+    }
+
+    public Mestrado getMestrado() {
+        return this.mestrado;
     }
 
     @Override

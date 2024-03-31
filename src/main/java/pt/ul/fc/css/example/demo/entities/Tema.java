@@ -1,14 +1,18 @@
 package pt.ul.fc.css.example.demo.entities;
 
 import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Tema {
@@ -25,16 +29,21 @@ public class Tema {
     @NonNull
     private float remuneracaoMensal;
 
+    @ElementCollection
+    private List<Mestrado> mestradosCompativeis;
+
+    @NonNull
     @ManyToOne
     @JoinColumn(name="userId", nullable = false)
     private Utilizador submissor;
 
 
-    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Docente submissor) {
+    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Docente submissor, List<Mestrado> mestradosCompativeis){
         this.titulo = titulo;
         this.descricao = descricao;
         this.remuneracaoMensal = remuneracaoMensal;
         this.submissor = submissor;
+        this.mestradosCompativeis = mestradosCompativeis;
     }
 
     public Tema() {
@@ -42,6 +51,7 @@ public class Tema {
         this.descricao = "";
         this.remuneracaoMensal = 0;
         this.submissor = null;
+        this.mestradosCompativeis = null;
     }
 
     public String getTitulo() {
@@ -58,6 +68,10 @@ public class Tema {
 
     public Utilizador getSubmissor() {
         return submissor;
+    }
+
+    public List<Mestrado> getMestrados() {
+        return this.mestradosCompativeis;
     }
 
     @Override

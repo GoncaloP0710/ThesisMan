@@ -1,5 +1,6 @@
 package pt.ul.fc.css.example.demo.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +37,10 @@ public final class Defesa{
 
     String sala;
 
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="juri_id")
+    private Juri juri;
+
     public Defesa(@NonNull boolean isFinal, @NonNull boolean isPresencial) {
         this.isFinal = isFinal;
         this.isPresencial = isPresencial;
@@ -43,15 +48,17 @@ public final class Defesa{
         this.duracao = (isFinal) ? 90: 60;
         this.nota = -1;
         this.sala = null;
+        juri = new Juri();
     }
 
-    protected Defesa() {
+    public Defesa() {
         this.isFinal = false;
         this.isPresencial = false;
         this.date = null;
         this.duracao = 60;
         this.nota = -1;
         this.sala = null;
+        juri = new Juri();
     }
 
     public int getId() {
@@ -82,6 +89,10 @@ public final class Defesa{
         return sala;
     }
 
+    public Juri getJuri() {
+        return juri;
+    }
+
     public void setTese(Tese tese) {
         this.tese = tese;
     }
@@ -92,6 +103,10 @@ public final class Defesa{
 
     public void setSala(String sala){
         this.sala = sala;
+    }
+
+    public void setJuri(Juri juri) {
+        this.juri = juri;
     }
 
     

@@ -1,6 +1,5 @@
 
 package pt.ul.fc.css.example.demo;
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -10,19 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import pt.ul.fc.css.example.demo.entities.Aluno;
-import pt.ul.fc.css.example.demo.entities.Candidatura;
-import pt.ul.fc.css.example.demo.entities.Docente;
-import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
-import pt.ul.fc.css.example.demo.entities.Projeto;
-import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
-import pt.ul.fc.css.example.demo.entities.Tema;
-import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
-import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
-import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
-import pt.ul.fc.css.example.demo.repositories.TemaRepository;
-import pt.ul.fc.css.example.demo.repositories.TeseRepository;
-import pt.ul.fc.css.example.demo.repositories.UtilizadorEmpresarialRepository;
+import pt.ul.fc.css.example.demo.entities.*;
+import pt.ul.fc.css.example.demo.repositories.*;
 
 
 
@@ -40,16 +28,27 @@ public class ThesisManApplication {
                                     UtilizadorEmpresarialRepository repository3,
                                     TemaRepository repository4,
                                     TeseRepository repository5,
-                                    CandidaturaRepository repository6){
+                                    CandidaturaRepository repository6,
+                                    MestradoRepository repository7,
+                                    JuriRepository repository8,
+                                    DefesaRepository repository9){
         return (args) -> {
+
+            //------------------------Criar mestrados----------------------------------------------//
+            Mestrado mestrado1 = new Mestrado("MEI");
+            Mestrado mestrado2 = new Mestrado("Yappin");
+
+            
+            repository7.save(mestrado1);
+            repository7.save(mestrado2);
 
 
             //------------------------Criar alunos----------------------------------------------//
-            Aluno aluno1 = new Aluno(12.2, "João", "12341");
-            Aluno aluno2 = new Aluno(16.5, "Maria", "12342");
-            Aluno aluno3 = new Aluno(14.3, "Manuel", "12343");
-            Aluno aluno4 = new Aluno(10.0, "Ana", "12344");
-            Aluno aluno5 = new Aluno(9.5, "Rita", "12345");
+            Aluno aluno1 = new Aluno(12.2, "João", "12341", mestrado2);
+            Aluno aluno2 = new Aluno(16.5, "Maria", "12342", mestrado1);
+            Aluno aluno3 = new Aluno(14.3, "Manuel", "12343", mestrado1);
+            Aluno aluno4 = new Aluno(10.0, "Ana", "12344", mestrado2);
+            Aluno aluno5 = new Aluno(9.5, "Rita", "12345", mestrado2);
 
             repository.save(aluno1);
             repository.save(aluno2);
@@ -83,8 +82,8 @@ public class ThesisManApplication {
             
             
             //----------------------------Criar e Submeter Temas---------------------------------------------//
-            Tema tema1 = new Tema("Femboy Hooters", "Femboys", 750.0f, docente1);
-            Tema tema2 = new Tema("Brawl Stars Art of war", "yaping", 69.0f, docente4);
+            Tema tema1 = new Tema("Femboy Hooters", "Femboys", 750.0f, docente1, null);
+            Tema tema2 = new Tema("Brawl Stars Art of war", "yaping", 69.0f, docente4, null);
 
             repository4.save(tema1);
             repository4.save(tema2);
@@ -92,27 +91,39 @@ public class ThesisManApplication {
             
 
            //----------------------------Criar Candidaturas---------------------------------------------//
-           //@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado
-           Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO);
+           Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.APROVADO);
+           Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO);
            candidatura1.setTema(tema1);
            repository6.save(candidatura1);
-           aluno1.setCandidatura(candidatura1);
-           repository6.save(candidatura1);
-           repository.save(aluno1);
-           
-           repository6.save(candidatura1);
+           candidatura2.setTema(tema2);
+           repository6.save(candidatura2);
+
+
 
            //----------------------------Criar Teses---------------------------------------------//
-            Projeto projeto1 = new Projeto(candidatura1);
-            candidatura1.setTese(projeto1);
+            Tese tese1 = new Dissertacao(candidatura1);
+            Tese tese2 = new Projeto(candidatura2);
+            repository5.save(tese1);
+            repository5.save(tese2);
 
-            repository5.save(projeto1);
-            repository6.save(candidatura1);
 
-            projeto1.setOrientadorInterno(docente1);
-            repository5.save(projeto1);
-            repository2.save(docente1);
-            repository6.save(candidatura1);
+            //----------------------------Criar Defesas---------------------------------------------//
+            Defesa defesa1 = new Defesa(false, false);
+            Defesa defesa2 = new Defesa(false, true);
+            repository9.save(defesa1);
+            repository9.save(defesa2);
+
+
+
+            //----------------------------Criar Juris---------------------------------------------//
+            Juri juri1 = new Juri(docente3, docente4);
+            repository8.save(juri1);
+            defesa1.setJuri(juri1);
+            repository9.save(defesa1);
+            repository8.save(juri1);
+            // defesa2.setJuri(juri2);
+            // repository9.save(defesa2);
+            // repository8.save(juri2); 
 
 
             // ----------------------------------------------------------------------------------//

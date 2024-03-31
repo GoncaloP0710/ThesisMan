@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ public class Candidatura {
     private Date dataCandidatura;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private EstadoCandidatura estado;
 
     @OneToOne
@@ -70,11 +73,19 @@ public class Candidatura {
     }
 
     public void setTese(Tese tese) {
-        this.tese = tese;
+        if(estado == EstadoCandidatura.APROVADO){
+            this.tese = tese;
+        }else{
+            System.out.println("Não é possível associar uma tese a uma candidatura que não foi aprovada.");
+        }
     }
 
     public void setTema(Tema tema) {
-        this.tema = tema;
+        if(estado == EstadoCandidatura.APROVADO){
+            System.out.println("Não é possível associar um tema a uma candidatura que já foi processada.");
+        }else{
+            this.tema = tema;
+        }
     }
 
     
