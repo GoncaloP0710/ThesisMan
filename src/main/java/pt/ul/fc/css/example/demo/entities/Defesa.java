@@ -48,7 +48,7 @@ public final class Defesa{
         this.duracao = (isFinal) ? 90: 60;
         this.nota = -1;
         this.sala = null;
-        juri = new Juri();
+        juri = null;
     }
 
     public Defesa() {
@@ -58,7 +58,7 @@ public final class Defesa{
         this.duracao = 60;
         this.nota = -1;
         this.sala = null;
-        juri = new Juri();
+        juri = null;
     }
 
     public int getId() {
@@ -109,8 +109,11 @@ public final class Defesa{
         this.juri = juri;
     }
 
-    
+    public void setNota(float nota) {
+        this.nota = nota;
+    }
 
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == this) 

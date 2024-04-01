@@ -35,7 +35,7 @@ public class ThesisManApplication {
         return (args) -> {
 
             //------------------------Criar mestrados----------------------------------------------//
-            Mestrado mestrado1 = new Mestrado("MEI");
+            Mestrado mestrado1 = new Mestrado("MEIC-A");
             Mestrado mestrado2 = new Mestrado("Yappin");
 
             
@@ -69,6 +69,10 @@ public class ThesisManApplication {
             repository2.save(docente3);
             repository2.save(docente4);
 
+            mestrado1.setCoordenador(docente1);
+            mestrado2.setCoordenador(docente3);
+            repository7.save(mestrado1);
+            repository7.save(mestrado2);
     
             //-------------------------Criar Utilizadores Empresariais--------------------------//
             UtilizadorEmpresarial utilizadorEmpresarial1 = new UtilizadorEmpresarial("PainConjunta", "João", "969 833 441");
@@ -82,17 +86,27 @@ public class ThesisManApplication {
             
             
             //----------------------------Criar e Submeter Temas---------------------------------------------//
-            Tema tema1 = new Tema("Femboy Hooters", "Femboys", 750.0f, docente1, null);
-            Tema tema2 = new Tema("Brawl Stars Art of war", "yaping", 69.0f, docente4, null);
+            Tema tema1 = new Tema("Femboy Hooters", "Femboys", 750.0f, docente1);
+            Tema tema2 = new Tema("Brawl Stars Art of war", "yaping", 69.0f, docente4);
 
             repository4.save(tema1);
             repository4.save(tema2);
 
-            
+            tema1.addMestradosCompativeis(mestrado2);
+            //repository4.save(tema1);
+            repository7.save(mestrado2);
+
+            tema2.addMestradosCompativeis(mestrado2);
+            repository4.save(tema2);
+            repository7.save(mestrado2);
+
+            tema1.addMestradosCompativeis(mestrado1);
+            repository4.save(tema1); // !
+            repository7.save(mestrado1);
 
            //----------------------------Criar Candidaturas---------------------------------------------//
-           Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.APROVADO);
-           Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO);
+           Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1);
+           Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2);
            candidatura1.setTema(tema1);
            repository6.save(candidatura1);
            candidatura2.setTema(tema2);
@@ -101,11 +115,13 @@ public class ThesisManApplication {
 
 
            //----------------------------Criar Teses---------------------------------------------//
-            Tese tese1 = new Dissertacao(candidatura1);
-            Tese tese2 = new Projeto(candidatura2);
+            Dissertacao tese1 = new Dissertacao(candidatura1);
+            Projeto tese2 = new Projeto(candidatura2);
             repository5.save(tese1);
             repository5.save(tese2);
 
+            tese2.setOrientadorInterno(docente1);
+            repository5.save(tese2);
 
             //----------------------------Criar Defesas---------------------------------------------//
             Defesa defesa1 = new Defesa(false, false);
@@ -113,20 +129,31 @@ public class ThesisManApplication {
             repository9.save(defesa1);
             repository9.save(defesa2);
 
+            defesa1.setTese(tese1);
+            repository9.save(defesa1);
+            defesa2.setTese(tese2);
+            repository9.save(defesa2);
 
+            defesa1.setDate(new Date());
+            repository9.save(defesa1);
+            defesa2.setDate(new Date());
+            repository9.save(defesa2);
+
+            defesa1.setSala("1.2.24");
+            repository9.save(defesa1);
+            defesa2.setSala("1.3.30");
+            repository9.save(defesa2);
 
             //----------------------------Criar Juris---------------------------------------------//
             Juri juri1 = new Juri(docente3, docente4);
-            repository8.save(juri1);
             defesa1.setJuri(juri1);
-            repository9.save(defesa1);
             repository8.save(juri1);
-            // defesa2.setJuri(juri2);
-            // repository9.save(defesa2);
-            // repository8.save(juri2); 
+            repository9.save(defesa1);
 
+            
 
             // ----------------------------------------------------------------------------------//
+
             //fectch aluno
             log.info("Alunos encontrados com findAll():");
             log.info("-------------------------------");

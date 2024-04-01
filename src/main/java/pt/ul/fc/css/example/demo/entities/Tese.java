@@ -1,6 +1,7 @@
 package pt.ul.fc.css.example.demo.entities;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.DiscriminatorType;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ import java.util.Objects;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Tese {
 
     @Id
@@ -32,7 +36,7 @@ public abstract class Tese {
     @JoinColumn(name = "candidatura_id", referencedColumnName = "id")
     private Candidatura candidatura;
 
-    @OneToMany(mappedBy="tese")
+    @OneToMany(mappedBy="tese", cascade = CascadeType.ALL)
     protected List<Defesa> defesas;
 
     public Tese(Candidatura candidatura) {

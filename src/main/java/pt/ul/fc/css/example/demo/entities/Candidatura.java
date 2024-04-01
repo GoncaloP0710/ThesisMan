@@ -31,18 +31,24 @@ public class Candidatura {
     @Enumerated(EnumType.STRING)
     private EstadoCandidatura estado;
 
-    @OneToOne
+    @OneToOne(mappedBy = "candidatura")
     private Tese tese;
 
     @ManyToOne
     @JoinColumn(name="tema_id")
     private Tema tema;
 
-    public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado) {
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
+    private Aluno aluno;
+
+    public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado, @NonNull Aluno aluno) {
         this.dataCandidatura = dataCandidatura;
         this.estado = estado;
         this.tese = null;
         this.tema = null;
+        this.aluno = aluno;
     }
 
     protected Candidatura() {
@@ -50,6 +56,7 @@ public class Candidatura {
         this.estado = EstadoCandidatura.EMPROCESSAMENTO;
         this.tese = null;
         this.tema = null;
+        this.aluno = new Aluno();
     }
 
     public int getId() {
@@ -100,12 +107,13 @@ public class Candidatura {
                 Objects.equals(this.dataCandidatura, that.dataCandidatura) &&
                 Objects.equals(this.estado, that.estado) &&
                 Objects.equals(this.tese, that.tese) &&
+                Objects.equals(this.aluno, that.aluno) &&
                 Objects.equals(this.tema, that.tema);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dataCandidatura);
+        return Objects.hash(id, dataCandidatura, aluno, estado, tese, aluno, tema);
     }
 
     @Override
@@ -114,6 +122,7 @@ public class Candidatura {
         String strDate = dateFormat.format(dataCandidatura);
         return "Candidatura[" +
                 "id=" + id + ", " +
+                "nome_aluno=" + aluno.getName() + ", " +
                 "data de candidatura =" + strDate + ", " +
                 "Estado de candidatura =" + estado.name() + ", " +
                 "Id da Tese associada=" + tese.getId() + ", " +

@@ -1,10 +1,15 @@
 package pt.ul.fc.css.example.demo.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 
 
@@ -14,8 +19,8 @@ public class Aluno extends Utilizador{
     @NonNull
     private Double average;
 
-    @ManyToOne
-    private Candidatura candidatura;
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Candidatura> candidaturas;
 
     @ManyToOne
     @JoinColumn(name="mestrado_id", nullable = false)
@@ -24,14 +29,21 @@ public class Aluno extends Utilizador{
     public Aluno(double average, String name, String contact, Mestrado mestrado) {
         super(name, contact);
         this.average = average;
-        this.candidatura = null;
+        this.candidaturas = new ArrayList<Candidatura>();
+        this.mestrado = mestrado;
+    }
+
+    public Aluno(double average, String name, String contact, Mestrado mestrado, List<Candidatura> candidaturas) {
+        super(name, contact);
+        this.average = average;
+        this.candidaturas = candidaturas;
         this.mestrado = mestrado;
     }
 
     protected Aluno() {
         super();
         this.average = 0.0;
-        this.candidatura = null;
+        this.candidaturas = new ArrayList<Candidatura>();
         this.mestrado = new Mestrado();
     }
 
@@ -43,12 +55,12 @@ public class Aluno extends Utilizador{
         return average;
     }
 
-    public Candidatura getCandidatura() {
-        return (candidatura != null) ? this.candidatura : null;
+    public List<Candidatura> getCandidatura() {
+        return (candidaturas != null) ? this.candidaturas : null;
     }
 
-    public void setCandidatura(Candidatura candidatura) {
-        this.candidatura = candidatura;
+    public void AddCandidatura(Candidatura candidatura) {
+        candidaturas.add(candidatura);
     }
 
     public Mestrado getMestrado() {
@@ -64,7 +76,7 @@ public class Aluno extends Utilizador{
         var that = (Aluno) obj;
         return Objects.equals(super.getId(), that.getId()) &&
                 Objects.equals(this.average, that.average) &&
-                Objects.equals(this.candidatura, that.candidatura);
+                Objects.equals(this.candidaturas, that.candidaturas);
     }
 
     @Override
@@ -74,8 +86,13 @@ public class Aluno extends Utilizador{
 
     @Override
     public String toString() {
+        StringBuilder candidaturasIds = new StringBuilder();
+        for(Candidatura candidatura: this.candidaturas){
+            candidaturasIds.append(candidatura.getId()).append(", ");
+        }
         return "Aluno[" +
                 "n_aluno=" + super.getId() + ", " +
+                "ids_candidaturas=" + candidaturasIds.toString() + ", " +
                 "average=" + average + ", " +']';
     }
 

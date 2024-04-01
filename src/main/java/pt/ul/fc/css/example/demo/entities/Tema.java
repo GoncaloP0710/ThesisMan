@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.micrometer.common.lang.NonNull;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 
@@ -29,7 +30,11 @@ public class Tema {
     @NonNull
     private float remuneracaoMensal;
 
-    @ElementCollection
+    @ManyToMany(fetch = jakarta.persistence.FetchType.EAGER)
+    @JoinTable(
+        name = "tema_mestrado", 
+        joinColumns = @JoinColumn(name = "tema_id"), 
+        inverseJoinColumns = @JoinColumn(name = "mestrado_id"))
     private List<Mestrado> mestradosCompativeis;
 
     @NonNull
@@ -46,12 +51,20 @@ public class Tema {
         this.mestradosCompativeis = mestradosCompativeis;
     }
 
+    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Docente submissor){
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.remuneracaoMensal = remuneracaoMensal;
+        this.submissor = submissor;
+        this.mestradosCompativeis = new ArrayList<Mestrado>();
+    }
+
     public Tema() {
         this.titulo = "";
         this.descricao = "";
         this.remuneracaoMensal = 0;
         this.submissor = null;
-        this.mestradosCompativeis = null;
+        this.mestradosCompativeis = new ArrayList<Mestrado>();
     }
 
     public String getTitulo() {
@@ -72,6 +85,10 @@ public class Tema {
 
     public List<Mestrado> getMestrados() {
         return this.mestradosCompativeis;
+    }
+
+    public void addMestradosCompativeis(Mestrado mestrado){
+        this.mestradosCompativeis.add(mestrado);
     }
 
     @Override

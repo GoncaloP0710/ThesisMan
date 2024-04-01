@@ -29,13 +29,13 @@ public class Juri {
     @JoinColumn(name="orientador_id")
     private Docente DocenteOrientador;
 
-    public Juri(Docente presidente, Docente arguente, Docente DocenteOrientador) {
+    public Juri(@NonNull Docente arguente, @NonNull Docente DocenteOrientador, Docente presidente) {
         this.presidente = presidente;
         this.arguente = arguente;
         this.DocenteOrientador = DocenteOrientador;
     }
 
-    public Juri(Docente arguente, Docente DocenteOrientador) {
+    public Juri(@NonNull Docente arguente, @NonNull Docente DocenteOrientador) {
         this.presidente = null;
         this.arguente = arguente;
         this.DocenteOrientador = DocenteOrientador;
