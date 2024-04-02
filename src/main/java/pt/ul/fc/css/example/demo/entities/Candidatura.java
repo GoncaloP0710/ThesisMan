@@ -43,6 +43,7 @@ public class Candidatura {
     @JoinColumn(name = "aluno_id")
     private Aluno aluno;
 
+
     public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado, @NonNull Aluno aluno) {
         this.dataCandidatura = dataCandidatura;
         this.estado = estado;
@@ -59,26 +60,56 @@ public class Candidatura {
         this.aluno = new Aluno();
     }
 
+    /**
+     * Returns the id of the candidatura.
+     * 
+     * @return The id of the candidatura.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Returns the date of the candidatura.
+     * 
+     * @return The date of the candidatura.
+     */
     public Date getDataCandidatura() {
         return dataCandidatura;
     }
-
+    
+    /**
+     * Returns the estado of the candidatura.
+     * 
+     * @return The estado of the candidatura.
+     */
     public EstadoCandidatura getEstado() {
         return estado;
     }
 
+    /**
+     * Returns the tese associated with the candidatura.
+     * 
+     * @return The tese associated with the candidatura.
+     */
     public Tese getTese() {
         return tese;
     }
 
+    /**
+     * Returns the tema associated with the candidatura.
+     * 
+     * @return The tema associated with the candidatura.
+     */
     public Tema getTema() {
         return tema;
     }
 
+    /**
+     * Sets the tese associated with the candidatura.
+     * 
+     * @param tese The tese to be associated with the candidatura.
+     */
     public void setTese(Tese tese) {
         if(estado == EstadoCandidatura.APROVADO){
             this.tese = tese;
@@ -87,6 +118,11 @@ public class Candidatura {
         }
     }
 
+    /**
+     * Sets the tema associated with the candidatura.
+     * 
+     * @param tema The tema to be associated with the candidatura.
+     */
     public void setTema(Tema tema) {
         if(estado == EstadoCandidatura.APROVADO){
             System.out.println("Não é possível associar um tema a uma candidatura que já foi processada.");
@@ -95,7 +131,6 @@ public class Candidatura {
         }
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == this) 

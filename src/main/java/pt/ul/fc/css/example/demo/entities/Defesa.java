@@ -41,6 +41,7 @@ public final class Defesa{
     @JoinColumn(name="juri_id")
     private Juri juri;
 
+    
     public Defesa(@NonNull boolean isFinal, @NonNull boolean isPresencial) {
         this.isFinal = isFinal;
         this.isPresencial = isPresencial;
@@ -61,59 +62,123 @@ public final class Defesa{
         juri = null;
     }
 
+    /**
+     * Returns the ID of the defense.
+     *
+     * @return the ID of the defense
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Returns true if the defense is the final defense, false otherwise.
+     *
+     * @return true if the defense is the final defense, false otherwise
+     */
     public boolean isFinal() {
         return isFinal;
     }
 
+    /**
+     * Returns true if the defense is presencial, false otherwise.
+     *
+     * @return true if the defense is presencial, false otherwise
+     */
     public boolean isPresencial() {
         return isPresencial;
     }
 
+    /**
+     * Returns the date of the defense.
+     *
+     * @return the date of the defense
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Returns the duration of the defense.
+     *
+     * @return the duration of the defense
+     */
     public int getDuracao() {
         return duracao;
     }
 
+    /**
+     * Returns the grade of the defense.
+     *
+     * @return the grade of the defense
+     */
     public float getNota() {
         return nota;
     }
 
+    /**
+     * Returns the room of the defense.
+     *
+     * @return the room of the defense
+     */
     public String getSala() {
         return sala;
     }
 
+    /**
+     * Returns the jury of the defense.
+     *
+     * @return the jury of the defense
+     */
     public Juri getJuri() {
         return juri;
     }
 
+    /**
+     * Sets the Tese object associated with the defense.
+     *
+     * @param tese the Tese object to set
+     */
     public void setTese(Tese tese) {
         this.tese = tese;
     }
 
+    /**
+     * Sets the date of the defense.
+     *
+     * @param date the date to set
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * Sets the room of the defense.
+     *
+     * @param sala the room to set
+     */
     public void setSala(String sala){
         this.sala = sala;
     }
 
+    /**
+     * Sets the Juri object associated with the defense.
+     *
+     * @param juri the Juri object to set
+     */
     public void setJuri(Juri juri) {
         this.juri = juri;
     }
 
+    /**
+     * Sets the grade of the defense.
+     *
+     * @param nota the grade to set
+     */
     public void setNota(float nota) {
         this.nota = nota;
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == this) 

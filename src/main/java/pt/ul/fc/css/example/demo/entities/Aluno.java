@@ -26,6 +26,7 @@ public class Aluno extends Utilizador{
     @JoinColumn(name="mestrado_id", nullable = false)
     private Mestrado mestrado;
     
+    
     public Aluno(double average, String name, String contact, Mestrado mestrado) {
         super(name, contact);
         this.average = average;
@@ -33,6 +34,7 @@ public class Aluno extends Utilizador{
         this.mestrado = mestrado;
     }
 
+    
     public Aluno(double average, String name, String contact, Mestrado mestrado, List<Candidatura> candidaturas) {
         super(name, contact);
         this.average = average;
@@ -47,22 +49,47 @@ public class Aluno extends Utilizador{
         this.mestrado = new Mestrado();
     }
 
+    /**
+     * Returns the student's identification number.
+     *
+     * @return the student's identification number
+     */
     public Integer getNumAluno() {
         return super.getId();
     }
 
+    /**
+     * Returns the average of the student.
+     *
+     * @return the average of the student
+     */
     public Double getAverage() {
         return average;
     }
 
+    /**
+     * Returns the list of candidaturas associated with the student.
+     *
+     * @return the list of candidaturas associated with the student, or null if there are no candidaturas
+     */
     public List<Candidatura> getCandidatura() {
         return (candidaturas != null) ? this.candidaturas : null;
     }
 
+    /**
+     * Adds a candidatura to the student's list of candidaturas.
+     *
+     * @param candidatura the candidatura to be added
+     */
     public void AddCandidatura(Candidatura candidatura) {
         candidaturas.add(candidatura);
     }
 
+    /**
+     * Returns the mestrado associated with the student.
+     *
+     * @return the mestrado associated with the student
+     */
     public Mestrado getMestrado() {
         return this.mestrado;
     }

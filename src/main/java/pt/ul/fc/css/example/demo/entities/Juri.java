@@ -1,5 +1,7 @@
 package pt.ul.fc.css.example.demo.entities;
 
+import java.util.Objects;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+/**
+ * Represents a Juri entity.
+ */
 @Entity
 public class Juri {
 
@@ -29,34 +34,88 @@ public class Juri {
     @JoinColumn(name="orientador_id")
     private Docente DocenteOrientador;
 
+
     public Juri(@NonNull Docente arguente, @NonNull Docente DocenteOrientador, Docente presidente) {
         this.presidente = presidente;
         this.arguente = arguente;
         this.DocenteOrientador = DocenteOrientador;
     }
 
+    
     public Juri(@NonNull Docente arguente, @NonNull Docente DocenteOrientador) {
         this.presidente = null;
         this.arguente = arguente;
         this.DocenteOrientador = DocenteOrientador;
     }
 
+   
     public Juri() {
         this.presidente = null;
         this.arguente = null;
         this.DocenteOrientador = null;
     }
 
+    /**
+     * Returns the Id of the Juri
+     * 
+     * @return id of the Juri
+     */
+    public Integer getJuriId() {
+        return this.juri_id;
+    }
+    
+    /**
+     * Returns the presidente Docente.
+     * 
+     * @return The presidente Docente.
+     */
     public Docente getPresidente() {
         return presidente;
     }
 
+    /**
+     * Returns the arguente Docente.
+     * 
+     * @return The arguente Docente.
+     */
     public Docente getArguente() {
         return arguente;
     }
 
+    /**
+     * Returns the Docente Orientador.
+     * 
+     * @return The Docente Orientador.
+     */
     public Docente getDocenteOrientador() {
         return DocenteOrientador;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        var that = (Juri) obj;
+        return Objects.equals(this.juri_id, that.getJuriId()) &&
+                this.presidente.equals(that.getPresidente()) &&
+                this.arguente.equals(that.getArguente()) &&
+                this.DocenteOrientador.equals(that.getDocenteOrientador());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(juri_id, presidente, arguente, DocenteOrientador);
+    }
+
+    @Override
+    public String toString() {
+        return "Juri[" +
+                "juri_id=" + juri_id + ", " +
+                "presidente=" + ((presidente != null) ? this.presidente.getName() : " ") + ", " +
+                "arguente=" + this.arguente.getName() + ", " +
+                "Docente Orientador=" + this.DocenteOrientador.getName() + ']';
     }
 
 }

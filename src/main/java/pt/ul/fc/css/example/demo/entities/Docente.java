@@ -7,6 +7,9 @@ import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
+/**
+ * Represents a Docente (Teacher) entity.
+ */
 @Entity
 public class Docente extends Utilizador{
 
@@ -36,18 +39,38 @@ public class Docente extends Utilizador{
         isAdmnistrador = false;
     }
     
+    /**
+     * Checks if the Docente is an administrator.
+     *
+     * @return true if the Docente is an administrator, false otherwise
+     */
     public Boolean isAdmnistrador() {
         return this.isAdmnistrador;
     }
 
+    /**
+     * Gets the departamento of the Docente.
+     *
+     * @return the departamento of the Docente
+     */
     public String getDepartamento() {
         return this.departamento;
     }
 
+    /**
+     * Gets the list of temasPropostos (proposed themes) by the Docente.
+     *
+     * @return the list of temasPropostos by the Docente
+     */
     public List<Tema> getTemasPropostos() {
         return this.temasPropostos;
     }
 
+    /**
+     * Adds a Tema to the list of temasPropostos by the Docente.
+     *
+     * @param tema the Tema to be added to the list of temasPropostos
+     */
     public void addTemaPropostos(Tema tema) {
         this.temasPropostos.add(tema);
     }

@@ -14,7 +14,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
-
+/**
+ * Class that Represents a Theme for a Master's Thesis
+ * 
+ */
 @Entity
 public class Tema {
     @Id
@@ -67,26 +70,57 @@ public class Tema {
         this.mestradosCompativeis = new ArrayList<Mestrado>();
     }
 
+
+    /**
+     * Returns the title of the theme.
+     *
+     * @return the title of the theme
+     */
     public String getTitulo() {
         return titulo;
     }
 
+    /**
+     * Returns the description of the theme.
+     *
+     * @return the description of the theme
+     */
     public String getDescricao() {
         return descricao;
     }
 
+    /**
+     * Returns the monthly remuneration for the theme.
+     *
+     * @return the monthly remuneration for the theme
+     */
     public float getRemuneracaoMensal() {
         return remuneracaoMensal;
     }
 
+    /**
+     * Returns the submitter of the theme.
+     *
+     * @return the submitter of the theme
+     */
     public Utilizador getSubmissor() {
         return submissor;
     }
 
+    /**
+     * Returns the list of compatible master's degrees for the theme.
+     *
+     * @return the list of compatible master's degrees for the theme
+     */
     public List<Mestrado> getMestrados() {
         return this.mestradosCompativeis;
     }
 
+    /**
+     * Adds a compatible master's degree to the theme.
+     *
+     * @param mestrado the compatible master's degree to add
+     */
     public void addMestradosCompativeis(Mestrado mestrado){
         this.mestradosCompativeis.add(mestrado);
     }

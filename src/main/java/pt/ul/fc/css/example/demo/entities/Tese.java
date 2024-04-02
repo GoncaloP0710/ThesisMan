@@ -20,7 +20,7 @@ import java.util.Objects;
 
 
 /**
- * Representa uma tese
+ * Represents a Tese entity
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -39,24 +39,42 @@ public abstract class Tese {
     @OneToMany(mappedBy="tese", cascade = CascadeType.ALL)
     protected List<Defesa> defesas;
 
+
     public Tese(Candidatura candidatura) {
         this.candidatura = candidatura;
         this.defesas = new ArrayList<Defesa>();
     }
 
+    
     public Tese() {
         this.candidatura = null;
         this.defesas = new ArrayList<Defesa>();
     }
 
+    
+    /**
+     * Returns the ID of the Tese.
+     *
+     * @return The ID of the Tese.
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Returns the list of Defesas associated with the Tese.
+     *
+     * @return The list of Defesas associated with the Tese.
+     */
     public List<Defesa> getDefesas() {
         return this.defesas;
     }
 
+    /**
+     * Returns the Candidatura associated with the Tese.
+     *
+     * @return The Candidatura associated with the Tese, or null if there is no associated Candidatura.
+     */
     public Candidatura getCandidatura() {
         return (this.candidatura == null) ? null: this.candidatura;
     }

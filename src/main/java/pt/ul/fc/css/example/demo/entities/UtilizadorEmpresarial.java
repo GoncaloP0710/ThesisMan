@@ -9,8 +9,12 @@ import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
+
+/**
+ * Represents a UtilizadorEmpresarial entity.
+ */
 @Entity
-public class UtilizadorEmpresarial extends Utilizador{
+public class UtilizadorEmpresarial extends Utilizador {
 
     @NonNull
     private String empresa;
@@ -18,11 +22,13 @@ public class UtilizadorEmpresarial extends Utilizador{
     @OneToMany(mappedBy = "submissor")
     private List<Tema> temasPropostos;
 
+
     public UtilizadorEmpresarial(String empresa, String name, String contact) {
         super(name, contact);
         this.empresa = empresa;
         temasPropostos = new ArrayList<Tema>();
     }
+
 
     protected UtilizadorEmpresarial() {
         super();
@@ -30,18 +36,38 @@ public class UtilizadorEmpresarial extends Utilizador{
         this.temasPropostos = new ArrayList<Tema>();
     }
 
+    /**
+     * Returns the empresa of the UtilizadorEmpresarial.
+     *
+     * @return the empresa of the UtilizadorEmpresarial
+     */
     public String getEmpresa() {
         return empresa;
     }
 
+    /**
+     * Returns the list of temasPropostos of the UtilizadorEmpresarial.
+     *
+     * @return the list of temasPropostos of the UtilizadorEmpresarial
+     */
     public List<Tema> getTemasPropostos() {
         return temasPropostos;
     }
 
+    /**
+     * Sets the empresa of the UtilizadorEmpresarial.
+     *
+     * @param empresa the empresa to be set
+     */
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
 
+    /**
+     * Sets the list of temasPropostos of the UtilizadorEmpresarial.
+     *
+     * @param temasPropostos the list of temasPropostos to be set
+     */
     public void setTemas(List<Tema> temasPropostos) {
         this.temasPropostos = temasPropostos;
     }
