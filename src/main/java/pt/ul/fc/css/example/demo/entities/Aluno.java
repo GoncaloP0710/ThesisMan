@@ -81,7 +81,7 @@ public class Aluno extends Utilizador{
      *
      * @param candidatura the candidatura to be added
      */
-    public void AddCandidatura(Candidatura candidatura) {
+    public void addCandidatura(Candidatura candidatura) {
         candidaturas.add(candidatura);
     }
 

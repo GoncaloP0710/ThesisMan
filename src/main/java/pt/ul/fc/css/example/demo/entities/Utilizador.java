@@ -18,19 +18,19 @@ public abstract class Utilizador {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer userId;
 
-    private String name;
+    private String nome;
 
-    private String contact;
+    private String contacto;
 
     
     public Utilizador(String name, String contact) {
         this.name = name;
-        this.contact = contact;
+        this.contacto = contact;
     }
 
     protected Utilizador() {
         this.name = "";
-        this.contact = "";
+        this.contacto = "";
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class Utilizador {
      *
      * @return the contact information of the Utilizador
      */
-    public String getContact() {
-        return contact;
+    public String getContacto() {
+        return contacto;
     }
 }

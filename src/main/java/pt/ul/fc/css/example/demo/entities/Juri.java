@@ -32,27 +32,27 @@ public class Juri {
     @NonNull
     @ManyToOne
     @JoinColumn(name="orientador_id")
-    private Docente DocenteOrientador;
+    private Docente docenteOrientador;
 
 
-    public Juri(@NonNull Docente arguente, @NonNull Docente DocenteOrientador, Docente presidente) {
+    public Juri(@NonNull Docente arguente, @NonNull Docente docenteOrientador, Docente presidente) {
         this.presidente = presidente;
         this.arguente = arguente;
-        this.DocenteOrientador = DocenteOrientador;
+        this.docenteOrientador = docenteOrientador;
     }
 
     
-    public Juri(@NonNull Docente arguente, @NonNull Docente DocenteOrientador) {
+    public Juri(@NonNull Docente arguente, @NonNull Docente docenteOrientador) {
         this.presidente = null;
         this.arguente = arguente;
-        this.DocenteOrientador = DocenteOrientador;
+        this.docenteOrientador = docenteOrientador;
     }
 
    
     public Juri() {
         this.presidente = null;
         this.arguente = null;
-        this.DocenteOrientador = null;
+        this.docenteOrientador = null;
     }
 
     /**
@@ -88,7 +88,7 @@ public class Juri {
      * @return The Docente Orientador.
      */
     public Docente getDocenteOrientador() {
-        return DocenteOrientador;
+        return docenteOrientador;
     }
 
     @Override
@@ -101,12 +101,12 @@ public class Juri {
         return Objects.equals(this.juri_id, that.getJuriId()) &&
                 this.presidente.equals(that.getPresidente()) &&
                 this.arguente.equals(that.getArguente()) &&
-                this.DocenteOrientador.equals(that.getDocenteOrientador());
+                this.docenteOrientador.equals(that.getDocenteOrientador());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(juri_id, presidente, arguente, DocenteOrientador);
+        return Objects.hash(juri_id, presidente, arguente, docenteOrientador);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class Juri {
                 "juri_id=" + juri_id + ", " +
                 "presidente=" + ((presidente != null) ? this.presidente.getName() : " ") + ", " +
                 "arguente=" + this.arguente.getName() + ", " +
-                "Docente Orientador=" + this.DocenteOrientador.getName() + ']';
+                "Docente Orientador=" + this.docenteOrientador.getName() + ']';
     }
 
 }

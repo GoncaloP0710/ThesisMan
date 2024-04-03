@@ -24,7 +24,7 @@ public final class Defesa{
     @NonNull
     Boolean isPresencial;
 
-    Date date;
+    Date data;
 
     @NonNull
     Integer duracao;

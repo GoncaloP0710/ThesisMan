@@ -72,6 +72,15 @@ public class UtilizadorEmpresarial extends Utilizador {
         this.temasPropostos = temasPropostos;
     }
 
+    /**
+     * Adds the tema to this.temasPropostos of the UtilizadorEmpresarial
+     * 
+     * @param tema the tema to be added
+     */
+    public void addTemaPropostos(Tema tema) {
+        this.temasPropostos.add(tema);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this)
