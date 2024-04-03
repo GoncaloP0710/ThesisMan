@@ -24,12 +24,12 @@ public abstract class Utilizador {
 
     
     public Utilizador(String name, String contact) {
-        this.name = name;
+        this.nome = name;
         this.contacto = contact;
     }
 
     protected Utilizador() {
-        this.name = "";
+        this.nome = "";
         this.contacto = "";
     }
 
@@ -48,7 +48,7 @@ public abstract class Utilizador {
      * @return the name of the Utilizador
      */
     public String getName() {
-        return name;
+        return nome;
     }
 
     /**

@@ -35,8 +35,10 @@ public class ThesisManApplication {
         return (args) -> {
 
             //------------------------Criar mestrados----------------------------------------------//
-            Mestrado mestrado1 = new Mestrado("MEIC-A");
-            Mestrado mestrado2 = new Mestrado("Yappin");
+            Mestrado mestrado1 = new Mestrado("Engenharia Informática");
+            Mestrado mestrado2 = new Mestrado("Engenharia Biológica");
+            Mestrado mestrado3 = new Mestrado("Matemática Aplicada");
+            Mestrado mestrado4 = new Mestrado("Engenharia Física Tecnológica");
 
             
             repository7.save(mestrado1);
@@ -59,10 +61,10 @@ public class ThesisManApplication {
 
 
             //---------------------------Criar docentes-----------------------------------------//
-            Docente docente1 = new Docente("informática", true, "Alcides", "1234");
-            Docente docente2 = new Docente("biologia", false, "José", "1235");
-            Docente docente3 = new Docente("matemática", false, "Fiorentino", "1236");
-            Docente docente4 = new Docente("física", true, "Felipe", "1237");
+            Docente docente1 = new Docente("Informática", true, "Joaquim", "1234");
+            Docente docente2 = new Docente("Biologia", false, "José", "1235");
+            Docente docente3 = new Docente("Matemática", false, "Duarte", "1236");
+            Docente docente4 = new Docente("Física", true, "Felipe", "1237");
 
             repository2.save(docente1);
             repository2.save(docente2);
@@ -70,14 +72,20 @@ public class ThesisManApplication {
             repository2.save(docente4);
 
             mestrado1.setCoordenador(docente1);
+            mestrado2.setCoordenador(docente2);
             mestrado2.setCoordenador(docente3);
+            mestrado2.setCoordenador(docente4);
+
             repository7.save(mestrado1);
             repository7.save(mestrado2);
+            repository7.save(mestrado3);
+            repository7.save(mestrado4);
+
     
             //-------------------------Criar Utilizadores Empresariais--------------------------//
-            UtilizadorEmpresarial utilizadorEmpresarial1 = new UtilizadorEmpresarial("PainConjunta", "João", "969 833 441");
-            UtilizadorEmpresarial utilizadorEmpresarial2 = new UtilizadorEmpresarial("PainConjunta", "Xiting Wang", "920 186 037");
-            UtilizadorEmpresarial utilizadorEmpresarial3 = new UtilizadorEmpresarial("PainConjunta", "João", "965 369 829");
+            UtilizadorEmpresarial utilizadorEmpresarial1 = new UtilizadorEmpresarial("Empresa de Informática", "João", "345-3231-677");
+            UtilizadorEmpresarial utilizadorEmpresarial2 = new UtilizadorEmpresarial("Empresa de Matemática", "Wang", "345-3331-697");
+            UtilizadorEmpresarial utilizadorEmpresarial3 = new UtilizadorEmpresarial("Empresa de Biologia", "Fernando", "325-3131-695");
 
             repository3.save(utilizadorEmpresarial1);
             repository3.save(utilizadorEmpresarial2);
@@ -86,23 +94,23 @@ public class ThesisManApplication {
             
             
             //----------------------------Criar e Submeter Temas---------------------------------------------//
-            Tema tema1 = new Tema("Femboy Hooters", "Femboys", 750.0f, docente1);
-            Tema tema2 = new Tema("Brawl Stars Art of war", "yaping", 69.0f, docente4);
-
+            Tema tema1 = new Tema("Videogame Accesiblity", "How to create games that are inclusive to every kind of person", 750.0f, docente1);
+            Tema tema2 = new Tema("Descrição de Algoritmos super mega potentes", "Com o auxílio da Matemática, descrever algoritmos capazes de fazer este projeto melhor que nós", 69.0f, utilizadorEmpresarial2);
+            Tema tema3 = new Tema("Baleias", "Baleias são mamíferos tão inteligentes que precisamos de saber mais sobre eles", 43.0f, docente2);
             repository4.save(tema1);
             repository4.save(tema2);
-
-            tema1.addMestradosCompativeis(mestrado2);
-            //repository4.save(tema1);
-            repository7.save(mestrado2);
-
-            tema2.addMestradosCompativeis(mestrado2);
-            repository4.save(tema2);
-            repository7.save(mestrado2);
+            repository4.save(tema3);
 
             tema1.addMestradosCompativeis(mestrado1);
-            repository4.save(tema1); // !
+            
             repository7.save(mestrado1);
+
+            tema2.addMestradosCompativeis(mestrado3);
+            tema2.addMestradosCompativeis(mestrado1);
+            repository4.save(tema2);
+            repository7.save(mestrado1);
+            repository7.save(mestrado3);
+
 
            //----------------------------Criar Candidaturas---------------------------------------------//
            Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1);
@@ -134,9 +142,9 @@ public class ThesisManApplication {
             defesa2.setTese(tese2);
             repository9.save(defesa2);
 
-            defesa1.setDate(new Date());
+            defesa1.setData(new Date());
             repository9.save(defesa1);
-            defesa2.setDate(new Date());
+            defesa2.setData(new Date());
             repository9.save(defesa2);
 
             defesa1.setSala("1.2.24");

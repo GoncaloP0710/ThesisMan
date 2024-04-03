@@ -46,7 +46,7 @@ public class Tema {
     private Utilizador submissor;
 
 
-    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Docente submissor, List<Mestrado> mestradosCompativeis){
+    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Utilizador submissor, List<Mestrado> mestradosCompativeis){
         this.titulo = titulo;
         this.descricao = descricao;
         this.remuneracaoMensal = remuneracaoMensal;
@@ -54,7 +54,7 @@ public class Tema {
         this.mestradosCompativeis = mestradosCompativeis;
     }
 
-    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Docente submissor){
+    public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Utilizador submissor){
         this.titulo = titulo;
         this.descricao = descricao;
         this.remuneracaoMensal = remuneracaoMensal;

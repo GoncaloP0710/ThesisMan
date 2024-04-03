@@ -45,7 +45,7 @@ public final class Defesa{
     public Defesa(@NonNull boolean isFinal, @NonNull boolean isPresencial) {
         this.isFinal = isFinal;
         this.isPresencial = isPresencial;
-        this.date = null;
+        this.data = null;
         this.duracao = (isFinal) ? 90: 60;
         this.nota = -1;
         this.sala = null;
@@ -55,7 +55,7 @@ public final class Defesa{
     public Defesa() {
         this.isFinal = false;
         this.isPresencial = false;
-        this.date = null;
+        this.data = null;
         this.duracao = 60;
         this.nota = -1;
         this.sala = null;
@@ -94,8 +94,8 @@ public final class Defesa{
      *
      * @return the date of the defense
      */
-    public Date getDate() {
-        return date;
+    public Date getData() {
+        return data;
     }
 
     /**
@@ -148,8 +148,8 @@ public final class Defesa{
      *
      * @param date the date to set
      */
-    public void setDate(Date date) {
-        this.date = date;
+    public void setData(Date date) {
+        this.data = date;
     }
 
     /**
@@ -189,7 +189,7 @@ public final class Defesa{
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.isFinal, that.isFinal) &&
                 Objects.equals(this.isPresencial, that.isPresencial) &&
-                Objects.equals(this.date, that.date) &&
+                Objects.equals(this.data, that.data) &&
                 Objects.equals(this.duracao, that.duracao) &&
                 Objects.equals(this.nota, that.nota) &&
                 Objects.equals(this.sala, that.sala);
@@ -198,7 +198,7 @@ public final class Defesa{
     @Override
     public int hashCode() {
         return Objects.hash(id, isFinal, isPresencial, 
-                            date, duracao, nota, sala);
+                            data, duracao, nota, sala);
     }
 
     @Override
@@ -207,7 +207,7 @@ public final class Defesa{
                 "id=" + id + ", " +
                 "isFinal=" + isFinal + ", " +
                 "isPresencial=" + isPresencial + ", " +
-                "date=" + date + ", " +
+                "date=" + data + ", " +
                 "duracao=" + duracao + ", " +
                 "nota=" + nota + ", " +
                 "sala=" + sala + ']';
