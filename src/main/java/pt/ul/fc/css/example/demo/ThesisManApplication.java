@@ -73,8 +73,8 @@ public class ThesisManApplication {
 
             mestrado1.setCoordenador(docente1);
             mestrado2.setCoordenador(docente2);
-            mestrado2.setCoordenador(docente3);
-            mestrado2.setCoordenador(docente4);
+            mestrado3.setCoordenador(docente3);
+            mestrado4.setCoordenador(docente4);
 
             repository7.save(mestrado1);
             repository7.save(mestrado2);
@@ -96,7 +96,7 @@ public class ThesisManApplication {
             //----------------------------Criar e Submeter Temas---------------------------------------------//
             Tema tema1 = new Tema("Videogame Accesiblity", "How to create games that are inclusive to every kind of person", 750.0f, docente1);
             Tema tema2 = new Tema("Descrição de Algoritmos super mega potentes", "Com o auxílio da Matemática, descrever algoritmos capazes de fazer este projeto melhor que nós", 69.0f, utilizadorEmpresarial2);
-            Tema tema3 = new Tema("Baleias", "Baleias são mamíferos tão inteligentes que precisamos de saber mais sobre eles", 43.0f, docente2);
+            Tema tema3 = new Tema("Baleias", "Baleias são mamíferos tão inteligentes que precisamos de saber mais sobre eles!!!!!!!", 43.0f, docente2);
             repository4.save(tema1);
             repository4.save(tema2);
             repository4.save(tema3);
@@ -152,11 +152,21 @@ public class ThesisManApplication {
             defesa2.setSala("1.3.30");
             repository9.save(defesa2);
 
+            defesa1.setNota(19.0f);
+            repository9.save(defesa1);
+            defesa2.setNota(17.0f);
+            repository9.save(defesa2);
+
             //----------------------------Criar Juris---------------------------------------------//
             Juri juri1 = new Juri(docente3, docente4);
             defesa1.setJuri(juri1);
             repository8.save(juri1);
             repository9.save(defesa1);
+
+            defesa2.setJuri(juri1);
+            repository8.save(juri1);
+            repository9.save(defesa2);
+
 
             
 

@@ -111,11 +111,7 @@ public class Candidatura {
      * @param tese The tese to be associated with the candidatura.
      */
     public void setTese(Tese tese) {
-        if(estado == EstadoCandidatura.APROVADO){
             this.tese = tese;
-        }else{
-            System.out.println("Não é possível associar uma tese a uma candidatura que não foi aprovada.");
-        }
     }
 
     /**
@@ -124,11 +120,8 @@ public class Candidatura {
      * @param tema The tema to be associated with the candidatura.
      */
     public void setTema(Tema tema) {
-        if(estado == EstadoCandidatura.APROVADO){
-            System.out.println("Não é possível associar um tema a uma candidatura que já foi processada.");
-        }else{
             this.tema = tema;
-        }
+
     }
 
     @Override

@@ -30,10 +30,7 @@ public class Mestrado {
     
     public Mestrado(String nome, Docente coordenador) {
         this.nome = nome;
-        this.coordenador = (coordenador.isAdmnistrador()) ? coordenador: null;
-        if (this.coordenador == null) {
-            System.out.println("Mestrado: " + nome + " não tem administrador");
-        }
+        this.coordenador = coordenador;
     }
 
     
@@ -73,10 +70,7 @@ public class Mestrado {
      * @param coordenador The coordenador to be set.
      */
     public void setCoordenador(Docente coordenador){
-        this.coordenador = (coordenador.isAdmnistrador()) ? coordenador: null;
-        if (this.coordenador == null) {
-            System.out.println("Mestrado: " + nome + " não tem administrador");
-        }
+        this.coordenador = coordenador;
     }
 
     @Override
