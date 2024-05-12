@@ -1,11 +1,16 @@
 package pt.ul.fc.css.example.demo.handlers;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import pt.ul.fc.css.example.demo.entities.*;
 import pt.ul.fc.css.example.demo.repositories.*;
+import pt.ul.fc.css.example.exceptions.ArgumentException;
 
 public class TemaHandler {
-    
+    //TODO Primeiro devia verificar se o tema já está na base dados e só depois colocar
+    //TODO usar OPTIONAL sempre que possível e que faça sentido
     // Repositório de temas
     private TemaRepository temaRepository;
 
@@ -24,7 +29,10 @@ public class TemaHandler {
     }
 
     // Submissão de temas por parte dos docentes
-    public void submitTemaDocente(String titulo, String descricao, float remuneracaoMensal, Docente submissor, List<Mestrado> mestradosCompativeis) {
+    public void submitTemaDocente(String titulo, String descricao, float remuneracaoMensal, Docente submissor, List<Mestrado> mestradosCompativeis) throws ArgumentException {
+        if(Stream.of(titulo, descricao, remuneracaoMensal, submissor,mestradosCompativeis).filter(Objects::nonNull).count() != 1) {
+            throw new ArgumentException("Todos os campos são obrigatórios");
+        }
         Tema tema = new Tema(titulo, descricao, remuneracaoMensal, submissor, mestradosCompativeis);
         temaRepository.save(tema);
 
@@ -33,7 +41,10 @@ public class TemaHandler {
     }
 
     // Submissão de temas por parte dos docentes
-    public void submitTemaDocente(String titulo, String descricao, float remuneracaoMensal, Docente submissor) {
+    public void submitTemaDocente(String titulo, String descricao, float remuneracaoMensal, Docente submissor) throws ArgumentException {
+        if(Stream.of(titulo, descricao, remuneracaoMensal, submissor).filter(Objects::nonNull).count() != 1) {
+            throw new ArgumentException("Todos os campos são obrigatórios");
+        }
         Tema tema = new Tema(titulo, descricao, remuneracaoMensal, submissor);
         temaRepository.save(tema);
 
@@ -42,7 +53,10 @@ public class TemaHandler {
     }
 
     // Submissão de temas por parte dos utilizadores empresariais
-    public void submitTemaEmpresarial(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor, List<Mestrado> mestradosCompativeis) {
+    public void submitTemaEmpresarial(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor, List<Mestrado> mestradosCompativeis) throws ArgumentException {
+        if(Stream.of(titulo, descricao, remuneracaoMensal, submissor, mestradosCompativeis).filter(Objects::nonNull).count() != 1) {
+            throw new ArgumentException("Todos os campos são obrigatórios");
+        }
         Tema tema = new Tema(titulo, descricao, remuneracaoMensal, submissor, mestradosCompativeis);
         temaRepository.save(tema);
 
@@ -51,7 +65,10 @@ public class TemaHandler {
     }
 
     // Submissão de temas por parte dos utilizadores empresariais
-    public void submitTemaEmpresarial(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor) {
+    public void submitTemaEmpresarial(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor) throws ArgumentException {
+        if(Stream.of(titulo, descricao, remuneracaoMensal, submissor).filter(Objects::nonNull).count() != 1) {
+            throw new ArgumentException("Todos os campos são obrigatórios");
+        }
         Tema tema = new Tema(titulo, descricao, remuneracaoMensal, submissor);
         temaRepository.save(tema);
 

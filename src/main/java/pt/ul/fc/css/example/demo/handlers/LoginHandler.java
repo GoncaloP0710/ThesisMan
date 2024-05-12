@@ -1,33 +1,40 @@
 package pt.ul.fc.css.example.demo.handlers;
 
+import java.util.Optional;
+
 import pt.ul.fc.css.example.demo.entities.*;
 import pt.ul.fc.css.example.demo.repositories.*;
+import pt.ul.fc.css.example.exceptions.NotPresentException;
 
 public class LoginHandler {
-
+    //TODO Ver como está a função do login do aluno e fazer parecido para o resto
+    //TODO acho que o utilizador empresarial é que precisamos de checkar mais cenas
     // Repositório de alunos
     private AlunoRepository alunoRepository;
 
     // Repositório de utilizadores empresariais
     private UtilizadorEmpresarialRepository utilizadorEmpresarialRepository;
 
+    private DocenteRepository docenteRepository;
     // Construtor
-    public LoginHandler(AlunoRepository alunoRepository, UtilizadorEmpresarialRepository utilizadorEmpresarialRepository) {
+    public LoginHandler(AlunoRepository alunoRepository, UtilizadorEmpresarialRepository utilizadorEmpresarialRepository,
+                        DocenteRepository docenteRepository) {
         this.alunoRepository = alunoRepository;
         this.utilizadorEmpresarialRepository = utilizadorEmpresarialRepository;
+        this.docenteRepository = docenteRepository;
     }
 
     // login de aluno
-    public Aluno alunoLogin(String contact, String password) {
+    public Aluno alunoLogin(String contact, String password) throws NotPresentException {
         
         // Procurar aluno com o username fornecido
-        Aluno currentAluno = alunoRepository.findByContact(contact);
+       Optional<Aluno> currentAluno = alunoRepository.findByContact(contact);
 
         // Verificar se o aluno existe
-        if (currentAluno!=null) {
-            return currentAluno;
+        if(currentAluno.isPresent()){
+            return currentAluno.get();
         } else {
-            return null;
+            throw new NotPresentException("Aluno não encontrado");
         }
     }
 
