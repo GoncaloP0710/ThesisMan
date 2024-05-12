@@ -69,10 +69,9 @@ public class TemaHandler {
         List <Candidatura> candidaturas = aluno.getCandidatura();
         for (Candidatura candidatura: candidaturas) {
             if (candidatura.getTema().equals(tema)) {
-                // TODO: alterar codigo da candidatura para atribuido ser visivel ou adicionar um seter
-                // candidatura.estado = EstadoCandidatura.APROVADO;
+                candidatura.setEstado(EstadoCandidatura.EMPROCESSAMENTO);
             } else {
-                // TODO: alterar EstadoCandidatura para REJEITADO
+                candidatura.setEstado(EstadoCandidatura.REJEITADO);
             }
         }
     }
