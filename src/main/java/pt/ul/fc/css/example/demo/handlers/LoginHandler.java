@@ -19,6 +19,7 @@ public class LoginHandler {
 
     // login de aluno
     public Aluno alunoLogin(String contact, String password) {
+        
         // Procurar aluno com o username fornecido
         Aluno currentAluno = alunoRepository.findByContact(contact);
 
@@ -32,13 +33,14 @@ public class LoginHandler {
 
     // registo de utilizador empresarial
     public UtilizadorEmpresarial userEmpresarialRegister(String empresa, String name, String contact) {
-        UtilizadorEmpresarial utilizadorEmpr = new UtilizadorEmpresarial(empresa, name, contact);
-        utilizadorEmpresarialRepository.save(utilizadorEmpr);
-        return utilizadorEmpr;
+        UtilizadorEmpresarial utilizadorEmpresarial = new UtilizadorEmpresarial(empresa, name, contact);
+        utilizadorEmpresarialRepository.save(utilizadorEmpresarial);
+        return utilizadorEmpresarial;
     }
 
     // login de utilizador empresarial
     public UtilizadorEmpresarial userEmpresarialLogin(String contact) {
+
         // Procurar utilizador empresarial com o username fornecido
         UtilizadorEmpresarial currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByContact(contact);
 
