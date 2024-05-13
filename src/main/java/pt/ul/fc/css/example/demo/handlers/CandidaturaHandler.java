@@ -28,29 +28,30 @@ public class CandidaturaHandler {
         this.temaRepository = temaRepository;
     }
 
-    public void newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Aluno aluno) throws IllegalCandidaturaException, NotPresentException {
-        Optional<List<Candidatura>> candidatura = candidaturaRepository.findByAlunoId(aluno.getId());
-        if (candidatura.isPresent()) {
-            List<Candidatura> candidaturas = candidatura.get();
+    public void newCandidatura(Date dataCandidatura, EstadoCandidatura estado, String email) throws IllegalCandidaturaException, NotPresentException {
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoEmail(email);
+        if (candidaturas != null) {
             if(candidaturas.size() >= 5){
                 throw new IllegalCandidaturaException("O aluno já tem 5 candidaturas ativas");
             }
         }
-        Optional<Aluno> aluno_optional = alunoRepository.findById(aluno.getId());
-        if (!aluno_optional.isPresent()) {
+        Optional<Aluno> optAluno = alunoRepository.findByEmail(email);
+        if (!optAluno.isPresent()) {
             throw new NotPresentException("Aluno não encontrado");
         }
+        Aluno aluno = optAluno.get();
         aluno.addCandidatura(currentCandidatura);
         currentCandidatura = new Candidatura(dataCandidatura, estado, aluno);
         candidaturaRepository.save(currentCandidatura);
         alunoRepository.save(aluno);
     }
 
-    public void addTemaToCandidatura(Tema tema) throws NotPresentException {
-        Optional<Tema> tema_optional = temaRepository.findByTitulo(tema.getTitulo());
-        if (!tema_optional.isPresent()) {
+    public void addTemaToCandidatura(String titulo) throws NotPresentException {
+        Optional<Tema> optTema = temaRepository.findByTitulo(titulo);
+        if (!optTema.isPresent()) {
             throw new NotPresentException("Tema não encontrado");
         }
+        Tema tema = optTema.get();
         currentCandidatura.setTema(tema);
         candidaturaRepository.save(currentCandidatura);
     }
