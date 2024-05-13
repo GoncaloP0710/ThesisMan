@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Enumerated;
@@ -33,6 +34,9 @@ public class Candidatura {
 
     @OneToOne(mappedBy = "candidatura")
     private Tese tese;
+
+    @Lob
+    private byte[] document;
 
     @ManyToOne
     @JoinColumn(name="tema_id")
@@ -105,6 +109,10 @@ public class Candidatura {
         return tema;
     }
 
+    public byte[] getDocument() {
+        return document;
+    }
+
     /**
      * Sets the tese associated with the candidatura.
      * 
@@ -126,6 +134,10 @@ public class Candidatura {
 
     public void setEstado(EstadoCandidatura estado) {
         this.estado = estado;
+    }
+
+    public void setDocument(byte[] document) {
+        this.document = document;
     }
 
     @Override

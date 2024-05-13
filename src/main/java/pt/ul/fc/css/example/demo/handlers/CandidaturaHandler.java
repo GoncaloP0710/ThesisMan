@@ -21,8 +21,11 @@ public class CandidaturaHandler {
 
     private TemaRepository temaRepository;
 
-    public CandidaturaHandler(CandidaturaRepository candidaturaRepository, AlunoRepository alunoRepository) {
+    public CandidaturaHandler(CandidaturaRepository candidaturaRepository, AlunoRepository alunoRepository,
+                                 TemaRepository temaRepository) {
         this.candidaturaRepository = candidaturaRepository;
+        this.alunoRepository = alunoRepository;
+        this.temaRepository = temaRepository;
     }
 
     public void newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Aluno aluno) throws IllegalCandidaturaException, NotPresentException {
@@ -57,7 +60,7 @@ public class CandidaturaHandler {
         candidaturaRepository.save(currentCandidatura);
     }
 
-    public void close() {
+    public void cancelCandidatura() {
         currentCandidatura = null;
     }
 }
