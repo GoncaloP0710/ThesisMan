@@ -7,16 +7,9 @@ import pt.ul.fc.css.example.demo.repositories.*;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
 public class LoginHandler {
-    //TODO Ver como está a função do login do aluno e fazer parecido para o resto
-    //TODO acho que o utilizador empresarial é que precisamos de checkar mais cenas
-    
-    // Repositório de alunos
+
     private AlunoRepository alunoRepository;
-
-    // Repositório de utilizadores empresariais
     private UtilizadorEmpresarialRepository utilizadorEmpresarialRepository;
-
-    // Repositório de docentes
     private DocenteRepository docenteRepository;
 
     // Construtor
@@ -28,11 +21,9 @@ public class LoginHandler {
     }
 
     // login de aluno
-    public Aluno alunoLogin(String contact, String password) throws NotPresentException {
-        
+    public Aluno loginAluno(String email, String password) throws NotPresentException {
         // Procurar aluno com o username fornecido
-        Optional<Aluno> currentAluno = alunoRepository.findByContact(contact);
-
+        Optional<Aluno> currentAluno = alunoRepository.findByEmail(email);
         // Verificar se o aluno existe
         if(currentAluno.isPresent()){
             return currentAluno.get();
@@ -42,23 +33,35 @@ public class LoginHandler {
     }
 
     // registo de utilizador empresarial
-    public UtilizadorEmpresarial userEmpresarialRegister(String empresa, String name, String contact) {
-        UtilizadorEmpresarial utilizadorEmpresarial = new UtilizadorEmpresarial(empresa, name, contact);
-        utilizadorEmpresarialRepository.save(utilizadorEmpresarial);
-        return utilizadorEmpresarial;
+    public UtilizadorEmpresarial registerUtilizadorEmpresarial(String empresa, String name, String email) {
+        Optional<UtilizadorEmpresarial> currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByEmail(email);
+        if(!currentUtilizadorEmpresarial.isEmpty()){
+           throw new IllegalArgumentException("Utilizador Empresarial já existe");
+        }else{
+            UtilizadorEmpresarial utilizadorEmpresarial = new UtilizadorEmpresarial(empresa, name, email);
+            utilizadorEmpresarialRepository.save(utilizadorEmpresarial);
+            return utilizadorEmpresarial;
+        }
     }
 
     // login de utilizador empresarial
-    public UtilizadorEmpresarial userEmpresarialLogin(String contact) throws NotPresentException {
-
+    public UtilizadorEmpresarial loginUserEmpresarial(String email) throws NotPresentException {
         // Procurar utilizador empresarial com o username fornecido
-        Optional<UtilizadorEmpresarial> currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByContact(contact);
-
+        Optional<UtilizadorEmpresarial> currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByEmail(email);
         // Verificar se o utilizador empresarial existe
         if (currentUtilizadorEmpresarial.isPresent()) {
             return currentUtilizadorEmpresarial.get();
         } else {
             throw new NotPresentException("Utilizador Empresarial não encontrado");
+        }
+    }
+
+    public Docente loginDocente(String email, String password) throws NotPresentException {
+        Optional<Docente> currentDocente = docenteRepository.findByEmail(email);
+        if(currentDocente.isPresent()){
+            return currentDocente.get();
+        } else {
+            throw new NotPresentException("Docente não encontrado");
         }
     }
 }

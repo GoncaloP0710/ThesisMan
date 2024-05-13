@@ -9,6 +9,6 @@ public interface CandidaturaRepository extends JpaRepository<Candidatura, Intege
 
     Optional<Candidatura> findById(Integer id);
     Optional<Candidatura> findByTema(String tema);
-    List<Candidatura> findByAlunoId(Integer alunoId);
+    Optional<List<Candidatura>> findByAlunoId(Integer alunoId);
 
 }

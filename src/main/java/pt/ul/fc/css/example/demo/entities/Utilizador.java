@@ -20,17 +20,17 @@ public abstract class Utilizador {
 
     private String nome;
 
-    private String contacto;
+    private String email;
 
     
     public Utilizador(String name, String contact) {
         this.nome = name;
-        this.contacto = contact;
+        this.email = contact;
     }
 
     protected Utilizador() {
         this.nome = "";
-        this.contacto = "";
+        this.email = "";
     }
 
     /**
@@ -57,6 +57,6 @@ public abstract class Utilizador {
      * @return the contact information of the Utilizador
      */
     public String getContacto() {
-        return contacto;
+        return email;
     }
 }

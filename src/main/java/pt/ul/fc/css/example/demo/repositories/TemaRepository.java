@@ -16,13 +16,13 @@ public interface TemaRepository extends JpaRepository<Tema, Integer>{
 
     List<Tema> findAllByMestrado(Mestrado mestrado);
 
-    Optional<Tema> findByAll(String titulo, String descricao, float remuneracaoMensal, Docente submissor,
+    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, Docente submissor,
             List<Mestrado> mestradosCompativeis);
 
-    Optional<Tema> findByAll(String titulo, String descricao, float remuneracaoMensal, Docente submissor);
+    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, Docente submissor);
 
-    Optional<Tema> findByAll(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor,
+    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor,
             List<Mestrado> mestradosCompativeis);
 
-    Optional<Tema> findByAll(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor);
+    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor);
 }

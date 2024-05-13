@@ -7,9 +7,12 @@ import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
 
 public interface UtilizadorEmpresarialRepository extends JpaRepository<UtilizadorEmpresarial, Integer> {
 
-    Optional<UtilizadorEmpresarial> findByContact(String contact);
+    List<UtilizadorEmpresarial> findAll();
+    Optional<UtilizadorEmpresarial> findById(Integer id);
+    List<UtilizadorEmpresarial> findAllByEmpresa(String empresa);
+    Optional<UtilizadorEmpresarial> findByEmail(String email);
     Optional<UtilizadorEmpresarial> findByEmpresa(String empresa);
-    UtilizadorEmpresarial findByTemasPropostos(List<Integer> temasPropostosId);
+    Optional<UtilizadorEmpresarial> findByTemasPropostos(List<Integer> temasPropostosId);
 
 }
     
