@@ -9,13 +9,16 @@ import pt.ul.fc.css.example.exceptions.NotPresentException;
 public class LoginHandler {
     //TODO Ver como está a função do login do aluno e fazer parecido para o resto
     //TODO acho que o utilizador empresarial é que precisamos de checkar mais cenas
+    
     // Repositório de alunos
     private AlunoRepository alunoRepository;
 
     // Repositório de utilizadores empresariais
     private UtilizadorEmpresarialRepository utilizadorEmpresarialRepository;
 
+    // Repositório de docentes
     private DocenteRepository docenteRepository;
+
     // Construtor
     public LoginHandler(AlunoRepository alunoRepository, UtilizadorEmpresarialRepository utilizadorEmpresarialRepository,
                         DocenteRepository docenteRepository) {
@@ -28,7 +31,7 @@ public class LoginHandler {
     public Aluno alunoLogin(String contact, String password) throws NotPresentException {
         
         // Procurar aluno com o username fornecido
-       Optional<Aluno> currentAluno = alunoRepository.findByContact(contact);
+        Optional<Aluno> currentAluno = alunoRepository.findByContact(contact);
 
         // Verificar se o aluno existe
         if(currentAluno.isPresent()){
@@ -46,16 +49,16 @@ public class LoginHandler {
     }
 
     // login de utilizador empresarial
-    public UtilizadorEmpresarial userEmpresarialLogin(String contact) {
+    public UtilizadorEmpresarial userEmpresarialLogin(String contact) throws NotPresentException {
 
         // Procurar utilizador empresarial com o username fornecido
-        UtilizadorEmpresarial currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByContact(contact);
+        Optional<UtilizadorEmpresarial> currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByContact(contact);
 
         // Verificar se o utilizador empresarial existe
-        if (currentUtilizadorEmpresarial!=null) {
-            return currentUtilizadorEmpresarial;
+        if (currentUtilizadorEmpresarial.isPresent()) {
+            return currentUtilizadorEmpresarial.get();
         } else {
-            return null;
+            throw new NotPresentException("Utilizador Empresarial não encontrado");
         }
     }
 }
