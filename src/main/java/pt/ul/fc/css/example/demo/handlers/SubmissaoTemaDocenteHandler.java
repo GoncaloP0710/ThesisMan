@@ -8,6 +8,7 @@ import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
 import pt.ul.fc.css.example.demo.repositories.MestradoRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
+import pt.ul.fc.css.example.exceptions.NotPresentException;
 
 public class SubmissaoTemaDocenteHandler {
     private TemaRepository temaRepository;
@@ -19,21 +20,22 @@ public class SubmissaoTemaDocenteHandler {
         this.docenteRepository = docenteRepository;
     }
 
-    public void submeterTema(String titulo, String descricao, float remuneracaoMensal, String email) {
-        if (docenteRepository.findByEmail(email).isEmpty()) {
-            throw new IllegalArgumentException("Docente não encontrado");
+    public void submeterTema(String titulo, String descricao, float remuneracaoMensal, String email) throws NotPresentException {
+        Optional<Docente> optDocente = docenteRepository.findByEmail(email); 
+        if (optDocente.isEmpty()) {
+            throw new NotPresentException("Docente não encontrado");
         }
-        Tema tema = new Tema(titulo, descricao, remuneracaoMensal, docenteRepository.findByEmail(email).get());
+        Tema tema = new Tema(titulo, descricao, remuneracaoMensal, optDocente.get());
         temaRepository.save(tema);
     }
 
-    public void adicionarMestradoCompatível(String nome, String titulo, String email){
+    public void adicionarMestradoCompatível(String nome, String titulo, String email) throws NotPresentException{
         if (docenteRepository.findByEmail(email).isEmpty()) {
-            throw new IllegalArgumentException("Docente não encontrado");
+            throw new NotPresentException("Docente não encontrado");
         }
         Optional<Tema> optTema = temaRepository.findByTitulo(titulo);
         if (optTema.isEmpty()) {
-            throw new IllegalArgumentException("Tema não encontrado");
+            throw new NotPresentException("Tema não encontrado");
         }
         Tema tema = optTema.get();
         if(!tema.getSubmissor().getEmail().equals(email)){
@@ -41,7 +43,7 @@ public class SubmissaoTemaDocenteHandler {
         }
         Optional<Mestrado> optMestrado = mestradoRepository.findByNome(nome);
         if(optMestrado.isEmpty()){
-            throw new IllegalArgumentException("Mestrado não encontrado");
+            throw new NotPresentException("Mestrado não encontrado");
         }
         Mestrado mestrado = optMestrado.get();
         tema.addMestradosCompativeis(mestrado);

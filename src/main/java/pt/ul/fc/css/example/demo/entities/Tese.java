@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.InheritanceType;
@@ -35,6 +36,12 @@ public abstract class Tese {
     @OneToOne(cascade= CascadeType.MERGE)
     @JoinColumn(name = "candidatura_id", referencedColumnName = "id")
     private Candidatura candidatura;
+
+    @Lob
+    private byte[] documentProposto;
+
+    @Lob
+    private byte[] documentFinal;
 
     @OneToMany(mappedBy="tese", cascade = CascadeType.ALL)
     protected List<Defesa> defesas;
@@ -86,6 +93,31 @@ public abstract class Tese {
             }
         }
         return null;
+    }
+
+    public Defesa getDefesaFinal() {
+        for(Defesa defesa: defesas){
+            if(defesa.isFinal()){
+                return defesa;
+            }
+        }
+        return null;
+    }
+
+    public byte[] getDocumentProposto() {
+        return this.documentProposto;
+    }
+
+    public byte[] getDocumentFinal() {
+        return this.documentFinal;
+    }
+
+    public void setDocumentProposto(byte[] document) {
+        this.documentProposto = document;
+    }
+
+    public void setDocumentFinal(byte[] document) {
+        this.documentFinal = document;
     }
 
     @Override

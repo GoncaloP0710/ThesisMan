@@ -4,6 +4,7 @@ import pt.ul.fc.css.example.demo.entities.*;
 import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
+import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.exceptions.IllegalCandidaturaException;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
@@ -20,6 +21,7 @@ public class CandidaturaHandler {
     private AlunoRepository alunoRepository;
 
     private TemaRepository temaRepository;
+    private TeseRepository teseRepository;
 
     public CandidaturaHandler(CandidaturaRepository candidaturaRepository, AlunoRepository alunoRepository,
                                  TemaRepository temaRepository) {
@@ -56,7 +58,11 @@ public class CandidaturaHandler {
         candidaturaRepository.save(currentCandidatura);
     }
 
-    public void addTeseToCandidatura(Tese tese) {
+    public void addTeseToCandidatura(Integer id) throws NotPresentException {
+        Optional<Tese> optTese = teseRepository.findById(id);
+        if(optTese.isEmpty())
+            throw new NotPresentException("Tese não encontrada");
+        Tese tese = optTese.get();
         currentCandidatura.setTese(tese);
         candidaturaRepository.save(currentCandidatura);
     }

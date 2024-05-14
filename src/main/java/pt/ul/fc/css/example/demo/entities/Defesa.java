@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import org.springframework.lang.NonNull;
 
@@ -41,7 +42,6 @@ public final class Defesa{
     @JoinColumn(name="juri_id")
     private Juri juri;
 
-    
     public Defesa(@NonNull boolean isFinal, @NonNull boolean isPresencial) {
         this.isFinal = isFinal;
         this.isPresencial = isPresencial;

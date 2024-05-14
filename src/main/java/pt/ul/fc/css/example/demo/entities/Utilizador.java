@@ -23,9 +23,9 @@ public abstract class Utilizador {
     private String email;
 
     
-    public Utilizador(String name, String contact) {
+    public Utilizador(String name, String email) {
         this.nome = name;
-        this.email = contact;
+        this.email = email;
     }
 
     protected Utilizador() {

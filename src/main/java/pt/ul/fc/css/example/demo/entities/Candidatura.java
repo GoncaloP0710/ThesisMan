@@ -35,9 +35,6 @@ public class Candidatura {
     @OneToOne(mappedBy = "candidatura")
     private Tese tese;
 
-    @Lob
-    private byte[] document;
-
     @ManyToOne
     @JoinColumn(name="tema_id")
     private Tema tema;
@@ -109,10 +106,6 @@ public class Candidatura {
         return tema;
     }
 
-    public byte[] getDocument() {
-        return document;
-    }
-
     /**
      * Sets the tese associated with the candidatura.
      * 
@@ -134,10 +127,6 @@ public class Candidatura {
 
     public void setEstado(EstadoCandidatura estado) {
         this.estado = estado;
-    }
-
-    public void setDocument(byte[] document) {
-        this.document = document;
     }
 
     @Override

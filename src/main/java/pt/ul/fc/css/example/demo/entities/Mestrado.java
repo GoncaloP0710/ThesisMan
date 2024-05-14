@@ -45,6 +45,9 @@ public class Mestrado {
         this.coordenador = null;
     }
     
+    public Integer getId() {
+        return mestradoId;
+    }
     /**
      * Returns the nome of the Mestrado.
      * 

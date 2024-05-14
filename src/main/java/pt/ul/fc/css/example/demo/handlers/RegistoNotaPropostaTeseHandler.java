@@ -7,6 +7,7 @@ import pt.ul.fc.css.example.demo.entities.Tese;
 import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
+import pt.ul.fc.css.example.exceptions.NotPresentException;
 
 public class RegistoNotaPropostaTeseHandler {
     private TeseRepository teseRepository;
@@ -20,7 +21,7 @@ public class RegistoNotaPropostaTeseHandler {
         this.docenteRepository = docenteRepository;
     }
 
-    public void registarNotaPropostaTese(Integer teseID, String emailDocente, float nota) {
+    public void registarNotaPropostaTese(Integer teseID, String emailDocente, float nota) throws NotPresentException {
         if (teseID == null || emailDocente == null) {
             throw new IllegalArgumentException("Tese e docente e nota são obrigatórios");
         }
@@ -29,7 +30,7 @@ public class RegistoNotaPropostaTeseHandler {
         }
         Optional<Tese> optTese = teseRepository.findById(teseID);
         if(optTese.isEmpty()) {
-            throw new IllegalArgumentException("Tese não encontrada");
+            throw new NotPresentException("Tese não encontrada");
         }
         Tese tese = optTese.get();
         if(!tese.getCandidatura().getTema().getSubmissor().getEmail().equals(emailDocente)) {

@@ -70,6 +70,15 @@ public class Tema {
         this.mestradosCompativeis = new ArrayList<Mestrado>();
     }
 
+    /**
+     * Return the id of the theme.
+     * 
+     * @return the id of the theme
+     */
+    public Integer getId() {
+        return temaId;
+    }
+
 
     /**
      * Returns the title of the theme.
