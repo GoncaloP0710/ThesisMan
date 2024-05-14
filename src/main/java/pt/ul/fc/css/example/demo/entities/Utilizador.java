@@ -56,7 +56,7 @@ public abstract class Utilizador {
      *
      * @return the contact information of the Utilizador
      */
-    public String getContacto() {
+    public String getEmail() {
         return email;
     }
 }

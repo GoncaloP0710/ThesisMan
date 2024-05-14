@@ -79,6 +79,15 @@ public abstract class Tese {
         return (this.candidatura == null) ? null: this.candidatura;
     }
 
+    public Defesa getDefesaProposta() {
+        for(Defesa defesa: defesas){
+            if(!defesa.isFinal()){
+                return defesa;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this)
@@ -89,6 +98,10 @@ public abstract class Tese {
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.candidatura, that.candidatura) &&
                 Objects.equals(this.defesas, that.defesas);
+    }
+
+    public void setDefesaProposta(Defesa defesa) {
+        this.defesas.add(defesa);
     }
 
     @Override

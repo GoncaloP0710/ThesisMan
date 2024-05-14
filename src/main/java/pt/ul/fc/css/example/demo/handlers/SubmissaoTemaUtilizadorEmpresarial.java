@@ -39,7 +39,7 @@ public class SubmissaoTemaUtilizadorEmpresarial {
             throw new IllegalArgumentException("Tema não encontrado");
         }
         Tema tema = optTema.get();
-        if(!tema.getSubmissor().getContacto().equals(email)){
+        if(!tema.getSubmissor().getEmail().equals(email)){
             throw new IllegalArgumentException("Utilizador Empresarial não é o submissor do tema");
         }
         Optional<Mestrado> optMestrado = mestradoRepository.findByNome(nome);
