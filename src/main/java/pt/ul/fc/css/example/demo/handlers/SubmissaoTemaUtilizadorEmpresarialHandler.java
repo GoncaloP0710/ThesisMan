@@ -6,6 +6,7 @@ import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.entities.Utilizador;
+import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
 import pt.ul.fc.css.example.demo.repositories.MestradoRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.demo.repositories.UtilizadorEmpresarialRepository;
@@ -24,11 +25,22 @@ public class SubmissaoTemaUtilizadorEmpresarialHandler {
     }
 
     public void submeterTema(String titulo, String descricao, float remuneracaoMensal, String email) throws NotPresentException {
-        if (utilizadorEmpresarialRepository.findByEmail(email).isEmpty()) {
+        Optional<UtilizadorEmpresarial> optUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByEmail(email); 
+        if (optUtilizadorEmpresarial.isEmpty()) {
             throw new NotPresentException("Utilizador empresarial não encontrado");
         }
-        Tema tema = new Tema(titulo, descricao, remuneracaoMensal, utilizadorEmpresarialRepository.findByEmail(email).get());
+        UtilizadorEmpresarial utilizadorEmpresarial = optUtilizadorEmpresarial.get();
+        Optional<Tema> optTema = temaRepository.findByTituloDescricaoRenumeracao(titulo, descricao, remuneracaoMensal);
+        if (!optTema.isEmpty()) {
+            throw new IllegalArgumentException("Tema já existe");
+        }
+
+        Tema tema = new Tema(titulo, descricao, remuneracaoMensal, utilizadorEmpresarial);
         temaRepository.save(tema);
+
+        // TODO: No ThesisManApplication nao faziamos isto mas sera que nao deviamos?
+        utilizadorEmpresarial.addTemaPropostos(tema);
+        utilizadorEmpresarialRepository.save(utilizadorEmpresarial);
     }
 
     public void adicionarMestradoCompativel(String nome, String titulo, String email) throws NotPresentException{
@@ -51,8 +63,4 @@ public class SubmissaoTemaUtilizadorEmpresarialHandler {
         tema.addMestradosCompativeis(mestrado);
         temaRepository.save(tema);
     }
-
-
-
-
 }

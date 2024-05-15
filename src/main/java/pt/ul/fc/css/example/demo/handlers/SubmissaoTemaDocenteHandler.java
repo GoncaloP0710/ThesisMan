@@ -25,8 +25,18 @@ public class SubmissaoTemaDocenteHandler {
         if (optDocente.isEmpty()) {
             throw new NotPresentException("Docente não encontrado");
         }
-        Tema tema = new Tema(titulo, descricao, remuneracaoMensal, optDocente.get());
+        Docente docente = optDocente.get();
+        Optional<Tema> optTema = temaRepository.findByTituloDescricaoRenumeracao(titulo, descricao, remuneracaoMensal);
+        if (!optTema.isEmpty()) {
+            throw new IllegalArgumentException("Tema já existe");
+        }
+
+        Tema tema = new Tema(titulo, descricao, remuneracaoMensal, docente);
         temaRepository.save(tema);
+
+        // TODO: No ThesisManApplication nao faziamos isto mas sera que nao deviamos?
+        docente.addTemaPropostos(tema);
+        docenteRepository.save(docente);
     }
 
     public void adicionarMestradoCompatível(String nome, String titulo, String email) throws NotPresentException{

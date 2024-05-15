@@ -25,4 +25,6 @@ public interface TemaRepository extends JpaRepository<Tema, Integer>{
             List<Mestrado> mestradosCompativeis);
 
     Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor);
+
+    Optional<Tema> findByTituloDescricaoRenumeracao(String titulo, String descricao, float remuneracaoMensal);
 }
