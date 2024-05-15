@@ -2,6 +2,8 @@ package pt.ul.fc.css.example.demo.handlers;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Defesa;
 import pt.ul.fc.css.example.demo.entities.Tese;
 import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
@@ -9,6 +11,7 @@ import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class RegistoNotaPropostaTeseHandler {
     private TeseRepository teseRepository;
     private Defesa currentDefesa;

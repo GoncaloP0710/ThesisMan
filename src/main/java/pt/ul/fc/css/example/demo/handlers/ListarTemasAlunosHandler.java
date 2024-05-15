@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
@@ -12,6 +14,7 @@ import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class ListarTemasAlunosHandler {
     private TemaRepository temaRepository;
     private AlunoRepository alunoRepository;
@@ -32,7 +35,7 @@ public class ListarTemasAlunosHandler {
 
         Aluno aluno = optAluno.get();
         List<TemaDTO> result = new ArrayList<>();
-        List<Tema> temas = temaRepository.findAllByMestrado(aluno.getMestrado());
+        List<Tema> temas = temaRepository.findByMestrado(aluno.getMestrado().getId());
 
         List<Integer> mestradosIds = new ArrayList<>();
         for (Tema t : temas) {

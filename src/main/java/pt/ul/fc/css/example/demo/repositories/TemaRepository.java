@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
@@ -14,17 +16,8 @@ public interface TemaRepository extends JpaRepository<Tema, Integer>{
     //queries
     Optional<Tema> findByTitulo(String titulo);
 
-    List<Tema> findAllByMestrado(Mestrado mestrado);
-
-    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, Docente submissor,
-            List<Mestrado> mestradosCompativeis);
-
-    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, Docente submissor);
-
-    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor,
-            List<Mestrado> mestradosCompativeis);
-
-    Optional<List<Tema>> findAll(String titulo, String descricao, float remuneracaoMensal, UtilizadorEmpresarial submissor);
-
-    Optional<Tema> findByTituloDescricaoRenumeracao(String titulo, String descricao, float remuneracaoMensal);
+    @Query("SELECT t FROM Tema t JOIN t.mestrados m WHERE m.id = :mestradoId")
+    List<Tema> findByMestrado(@Param("mestradoId") Integer mestradoId);
+    List<Tema> findAll();
+    Optional<Tema> findByTituloAndDescricaoAndRemuneracaoMensal(String titulo, String descricao, float remuneracaoMensal);
 }

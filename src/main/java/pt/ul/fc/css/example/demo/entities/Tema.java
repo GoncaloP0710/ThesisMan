@@ -38,7 +38,7 @@ public class Tema {
         name = "tema_mestrado", 
         joinColumns = @JoinColumn(name = "tema_id"), 
         inverseJoinColumns = @JoinColumn(name = "mestrado_id"))
-    private List<Mestrado> mestradosCompativeis;
+    private List<Mestrado> mestrados;
 
     @NonNull
     @ManyToOne
@@ -51,7 +51,7 @@ public class Tema {
         this.descricao = descricao;
         this.remuneracaoMensal = remuneracaoMensal;
         this.submissor = submissor;
-        this.mestradosCompativeis = mestradosCompativeis;
+        this.mestrados = mestradosCompativeis;
     }
 
     public Tema(@NonNull String titulo, @NonNull String descricao, float remuneracaoMensal, @NonNull Utilizador submissor){
@@ -59,7 +59,7 @@ public class Tema {
         this.descricao = descricao;
         this.remuneracaoMensal = remuneracaoMensal;
         this.submissor = submissor;
-        this.mestradosCompativeis = new ArrayList<Mestrado>();
+        this.mestrados = new ArrayList<Mestrado>();
     }
 
     public Tema() {
@@ -67,7 +67,7 @@ public class Tema {
         this.descricao = "";
         this.remuneracaoMensal = 0;
         this.submissor = null;
-        this.mestradosCompativeis = new ArrayList<Mestrado>();
+        this.mestrados = new ArrayList<Mestrado>();
     }
 
     /**
@@ -122,7 +122,7 @@ public class Tema {
      * @return the list of compatible master's degrees for the theme
      */
     public List<Mestrado> getMestrados() {
-        return this.mestradosCompativeis;
+        return this.mestrados;
     }
 
     /**
@@ -131,7 +131,7 @@ public class Tema {
      * @param mestrado the compatible master's degree to add
      */
     public void addMestradosCompativeis(Mestrado mestrado){
-        this.mestradosCompativeis.add(mestrado);
+        this.mestrados.add(mestrado);
     }
 
     @Override

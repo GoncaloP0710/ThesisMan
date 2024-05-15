@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
@@ -15,6 +17,7 @@ import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class SubmissaoDocFinalTeseAlunoHandler {
 
     private TeseRepository teseRepository;

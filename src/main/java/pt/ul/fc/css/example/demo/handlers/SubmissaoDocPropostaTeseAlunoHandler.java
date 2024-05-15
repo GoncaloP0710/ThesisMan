@@ -3,6 +3,8 @@ package pt.ul.fc.css.example.demo.handlers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
 import pt.ul.fc.css.example.demo.entities.Tese;
@@ -11,6 +13,7 @@ import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class SubmissaoDocPropostaTeseAlunoHandler {
         
         private CandidaturaRepository candidaturaRepository;

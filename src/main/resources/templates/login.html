@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt_PT">
+<head>
+    <meta charset="ISO-8859-1" />
+    <link href="css/style.css" rel="stylesheet" />
+    <title>Spring Boot Application</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <form th:action = "@{/menu}" method="post">
+        <input type="text" name="email" />
+        <input type="submit" value="Inicar Sessão"/>
+    </form>
+    <form th:action="@{/create}" method="get">
+        <input type="submit" value="Criar Conta" />
+    </form>
+    <h2 id="error" th:text="${error}"></h2>
+</body>
+</html>

@@ -2,16 +2,17 @@ package pt.ul.fc.css.example.demo.handlers;
 
 import java.util.Optional;
 
-import pt.ul.fc.css.example.demo.entities.Docente;
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.entities.Tema;
-import pt.ul.fc.css.example.demo.entities.Utilizador;
 import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
 import pt.ul.fc.css.example.demo.repositories.MestradoRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.demo.repositories.UtilizadorEmpresarialRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class SubmissaoTemaUtilizadorEmpresarialHandler {
     private TemaRepository temaRepository;
     private UtilizadorEmpresarialRepository utilizadorEmpresarialRepository;
@@ -30,7 +31,7 @@ public class SubmissaoTemaUtilizadorEmpresarialHandler {
             throw new NotPresentException("Utilizador empresarial não encontrado");
         }
         UtilizadorEmpresarial utilizadorEmpresarial = optUtilizadorEmpresarial.get();
-        Optional<Tema> optTema = temaRepository.findByTituloDescricaoRenumeracao(titulo, descricao, remuneracaoMensal);
+        Optional<Tema> optTema = temaRepository.findByTituloAndDescricaoAndRemuneracaoMensal(titulo, descricao, remuneracaoMensal);
         if (!optTema.isEmpty()) {
             throw new IllegalArgumentException("Tema já existe");
         }
@@ -52,7 +53,8 @@ public class SubmissaoTemaUtilizadorEmpresarialHandler {
             throw new NotPresentException("Tema não encontrado");
         }
         Tema tema = optTema.get();
-        if(!tema.getSubmissor().getEmail().equals(email)){
+        String temaEmail = tema.getSubmissor().getEmail();
+        if(temaEmail.equals(email)){
             throw new IllegalArgumentException("Utilizador Empresarial não é o submissor do tema");
         }
         Optional<Mestrado> optMestrado = mestradoRepository.findByNome(nome);

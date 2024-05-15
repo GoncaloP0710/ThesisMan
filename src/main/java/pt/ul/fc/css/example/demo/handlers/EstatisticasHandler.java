@@ -1,12 +1,16 @@
 package pt.ul.fc.css.example.demo.handlers;
 
 import java.util.Optional;
+
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.demo.entities.Defesa;
 import pt.ul.fc.css.example.demo.entities.Tese;
 
+@Component
 public class EstatisticasHandler {
 
     private TeseRepository teseRepository;

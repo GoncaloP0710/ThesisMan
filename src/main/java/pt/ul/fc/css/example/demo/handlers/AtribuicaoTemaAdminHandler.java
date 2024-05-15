@@ -3,6 +3,8 @@ package pt.ul.fc.css.example.demo.handlers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Tema;
@@ -17,6 +19,7 @@ import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class AtribuicaoTemaAdminHandler {
     private TemaRepository temaRepository;
     private DocenteRepository docenteRepository;

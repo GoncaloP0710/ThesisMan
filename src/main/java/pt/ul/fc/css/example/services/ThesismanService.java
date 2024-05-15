@@ -32,7 +32,7 @@ import pt.ul.fc.css.example.demo.repositories.JuriRepository;
 import pt.ul.fc.css.example.demo.repositories.MestradoRepository;
 
 @Service
-public class ThesismanService implements IThesismanService{
+public class ThesismanService{
 
     @Autowired private AtribuicaoTemaAdminHandler atribuicaoTemaAdminHandler;
     @Autowired private CandidaturaHandler candidaturaHandler;
@@ -127,8 +127,8 @@ public class ThesismanService implements IThesismanService{
         candidaturaHandler.addTemaToCandidatura(titulo, candidaturaID);
     }
 
-    public void addTeseToCandidatura(Integer id) throws NotPresentException{
-        candidaturaHandler.addTeseToCandidatura(id);
+    public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException{
+        candidaturaHandler.addTeseToCandidatura(teseID, candidaturaID);
     }
 
     public void cancelCandidatura(Integer id) throws NotPresentException{
@@ -139,8 +139,8 @@ public class ThesismanService implements IThesismanService{
         listarTemasAlunosHandler.listarTemasAluno(emailAluno);
     }
 
-    public void marcarDefesPropostaTese(Integer teseID, String emailDocente, Boolean isPresencial, String sala){
-        marcacaoDefesaPropostaTeseHandler.marcarDefesaPropostaTese(teseID, emailDocente, isPresencial, sala);
+    public void marcarDefesPropostaTese(Integer teseID, String emailDocente, Integer arguenteID,Integer docenteOrientadorID, Boolean isPresencial, String sala, Integer duracao, Date data) throws NotPresentException{
+        marcacaoDefesaPropostaTeseHandler.marcarDefesaPropostaTese(teseID, emailDocente, arguenteID, docenteOrientadorID, isPresencial, sala, duracao, data);
     }
 
     public void registarNotaPropostaTese(Integer teseID, String emailDocente, float nota) throws NotPresentException{

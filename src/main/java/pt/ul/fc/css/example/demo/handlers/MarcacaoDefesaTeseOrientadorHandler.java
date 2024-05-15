@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Defesa;
 import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Juri;
@@ -16,6 +18,7 @@ import pt.ul.fc.css.example.demo.repositories.JuriRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class MarcacaoDefesaTeseOrientadorHandler {
     private TeseRepository teseRepository;
     private Defesa currentDefesa;

@@ -12,8 +12,8 @@ class DemoApplicationTests {
 
   //@Autowired private AuthorRepository repository;
 
-  @Test
-  void testAuthorListIsNotEmpty() {
-    assertTrue(true);
-  }
+  // @Test
+  // void testAuthorListIsNotEmpty() {
+  //   assertTrue(true);
+  // }
 }

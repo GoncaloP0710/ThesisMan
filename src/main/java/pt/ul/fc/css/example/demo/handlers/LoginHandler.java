@@ -2,11 +2,14 @@ package pt.ul.fc.css.example.demo.handlers;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.*;
 import pt.ul.fc.css.example.demo.repositories.*;
 import pt.ul.fc.css.example.demo.dtos.*;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class LoginHandler {
 
     private AlunoRepository alunoRepository;
@@ -22,14 +25,14 @@ public class LoginHandler {
     }
 
     // login de aluno
-    public Aluno loginAluno(String email) throws NotPresentException {
+    public AlunoDTO loginAluno(String email) throws NotPresentException {
         // Procurar aluno com o username fornecido
         Optional<Aluno> optAluno = alunoRepository.findByEmail(email);
         // Verificar se o aluno existe
-        if(currentAluno.isPresent()){
+        if(optAluno.isPresent()){
             Aluno aluno = optAluno.get();
-            AlunoDTO alunoDTO = new Aluno
-            return currentAluno.get();
+            AlunoDTO alunoDTO = new AlunoDTO(aluno.getName(), aluno.getEmail());
+            return alunoDTO;
         } else {
             throw new NotPresentException("Aluno não encontrado");
         }

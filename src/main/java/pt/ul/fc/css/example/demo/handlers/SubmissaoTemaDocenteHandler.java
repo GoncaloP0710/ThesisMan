@@ -2,6 +2,8 @@ package pt.ul.fc.css.example.demo.handlers;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.entities.Tema;
@@ -10,6 +12,7 @@ import pt.ul.fc.css.example.demo.repositories.MestradoRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 
+@Component
 public class SubmissaoTemaDocenteHandler {
     private TemaRepository temaRepository;
     private DocenteRepository docenteRepository;
@@ -26,7 +29,7 @@ public class SubmissaoTemaDocenteHandler {
             throw new NotPresentException("Docente não encontrado");
         }
         Docente docente = optDocente.get();
-        Optional<Tema> optTema = temaRepository.findByTituloDescricaoRenumeracao(titulo, descricao, remuneracaoMensal);
+        Optional<Tema> optTema = temaRepository.findByTituloAndDescricaoAndRemuneracaoMensal(titulo, descricao, remuneracaoMensal);
         if (!optTema.isEmpty()) {
             throw new IllegalArgumentException("Tema já existe");
         }
