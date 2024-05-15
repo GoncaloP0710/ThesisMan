@@ -15,11 +15,7 @@ import java.util.Optional;
 public class CandidaturaHandler {
 
     private CandidaturaRepository candidaturaRepository;
-
-    private Candidatura currentCandidatura;
-
     private AlunoRepository alunoRepository;
-
     private TemaRepository temaRepository;
     private TeseRepository teseRepository;
 
@@ -42,32 +38,48 @@ public class CandidaturaHandler {
             throw new NotPresentException("Aluno não encontrado");
         }
         Aluno aluno = optAluno.get();
-        aluno.addCandidatura(currentCandidatura);
-        currentCandidatura = new Candidatura(dataCandidatura, estado, aluno);
-        candidaturaRepository.save(currentCandidatura);
+        Candidatura new_candidatura;
+        if(estado == null){
+            new_candidatura = new Candidatura(dataCandidatura, EstadoCandidatura.EMPROCESSAMENTO, aluno);
+        }else{
+            new_candidatura = new Candidatura(dataCandidatura, estado, aluno);
+        }
+        aluno.addCandidatura(new_candidatura);
+        candidaturaRepository.save(new_candidatura);
         alunoRepository.save(aluno);
     }
 
-    public void addTemaToCandidatura(String titulo) throws NotPresentException {
+    public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException {
         Optional<Tema> optTema = temaRepository.findByTitulo(titulo);
         if (!optTema.isPresent()) {
             throw new NotPresentException("Tema não encontrado");
         }
         Tema tema = optTema.get();
-        currentCandidatura.setTema(tema);
-        candidaturaRepository.save(currentCandidatura);
+        Optional<Candidatura> optCandidatura = candidaturaRepository.findById(candidaturaID);
+        if(optCandidatura.isEmpty()){
+            throw new NotPresentException("Candidatura não existe");
+        }
+        Candidatura c = optCandidatura.get();
+        c.setTema(tema);
+        candidaturaRepository.save(c);
     }
 
-    public void addTeseToCandidatura(Integer id) throws NotPresentException {
-        Optional<Tese> optTese = teseRepository.findById(id);
-        if(optTese.isEmpty())
+    public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException {
+        Optional<Tese> optTese = teseRepository.findById(teseID);
+        if(optTese.isEmpty()){
             throw new NotPresentException("Tese não encontrada");
+        }
+        Optional<Candidatura> optCandidatura = candidaturaRepository.findById(candidaturaID);
+        if(optCandidatura.isEmpty()){
+            throw new NotPresentException("Candidatura não encontrada");
+        }
         Tese tese = optTese.get();
-        currentCandidatura.setTese(tese);
-        candidaturaRepository.save(currentCandidatura);
+        Candidatura c = optCandidatura.get();
+        c.setTese(tese);
+        candidaturaRepository.save(c);
     }
 
-    public void cancelCandidatura() {
-        currentCandidatura = null;
+    public void cancelCandidatura(Integer candidaturaID) {
+        candidaturaRepository.deleteById(candidaturaID);
     }
 }

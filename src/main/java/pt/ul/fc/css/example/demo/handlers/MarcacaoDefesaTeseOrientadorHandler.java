@@ -24,7 +24,7 @@ public class MarcacaoDefesaTeseOrientadorHandler {
     }
 
     public void marcarDefesaTese(Integer teseID, String emailDocente, Integer presidenteId, 
-                                Integer arguenteId, Integer docenteOrientadorId) {
+                                Integer arguenteId, Integer docenteOrientadorId) throws NotPresentException {
 
         if (teseID == null || emailDocente == null) {
             throw new IllegalArgumentException("Tese e docente são obrigatórios");

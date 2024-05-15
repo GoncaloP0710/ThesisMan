@@ -1,13 +1,17 @@
 package pt.ul.fc.css.example.services;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pt.ul.fc.css.example.demo.entities.Docente;
+import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.handlers.AtribuicaoTemaAdminHandler;
 import pt.ul.fc.css.example.demo.handlers.CandidaturaHandler;
+import pt.ul.fc.css.example.demo.handlers.EstatisticasHandler;
 import pt.ul.fc.css.example.demo.handlers.ListarTemasAlunosHandler;
 import pt.ul.fc.css.example.demo.handlers.LoginHandler;
 import pt.ul.fc.css.example.demo.handlers.MarcacaoDefesaPropostaTeseHandler;
@@ -21,6 +25,7 @@ import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.demo.repositories.UtilizadorEmpresarialRepository;
+import pt.ul.fc.css.example.exceptions.IllegalCandidaturaException;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 import pt.ul.fc.css.example.demo.repositories.DefesaRepository;
 import pt.ul.fc.css.example.demo.repositories.JuriRepository;
@@ -38,6 +43,7 @@ public class ThesismanService implements IThesismanService{
     @Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
     @Autowired private SubmissaoTemaDocenteHandler submissaoTemaDocenteHandler;
     @Autowired private SubmissaoTemaUtilizadorEmpresarialHandler submissaoTemaUtilizadorEmpresarialHandler;
+    @Autowired private EstatisticasHandler estatisticasHandler;
 
     @Autowired private AlunoRepository alunoRepository;
     @Autowired private CandidaturaRepository candidaturaRepository;
@@ -78,15 +84,15 @@ public class ThesismanService implements IThesismanService{
     }
 
     public void loginAluno(String email, String password) throws NotPresentException{
-        loginHandler.loginAluno(email, password);
+        loginHandler.loginAluno(email);
     }
 
     public void loginDocente(String email, String password) throws NotPresentException{
-        loginHandler.loginDocente(email, password);
+        loginHandler.loginDocente(email);
     }
 
-    public void registerUtilizadorEmpresarial(String empresa, String email, String password) throws NotPresentException{
-        loginHandler.registerUtilizadorEmpresarial(empresa, email, password);
+    public void registerUtilizadorEmpresarial(String empresa,String name, String email) throws NotPresentException{
+        loginHandler.registerUtilizadorEmpresarial(empresa, name, email);
     }
 
     public void loginUtilizadorEmpresarial(String email, String password) throws NotPresentException{
@@ -104,6 +110,50 @@ public class ThesismanService implements IThesismanService{
     public void adicionarMestradoCompativel(String nome, String titulo, String email) throws NotPresentException{
         submissaoTemaUtilizadorEmpresarialHandler.adicionarMestradoCompativel(nome, titulo, email);
     }
+
+    public void submitPropostaTeseDocsAluno(Integer candidaturaID, byte[] document, String emailAluno) throws NotPresentException{
+        submissaoDocPropostaTeseAlunoHandler.SubmitPropostaTeseDocsAluno(candidaturaID, document, emailAluno);
+    }
+
+    public void atribuicaoTemaAdmin(String titulo, String emailAluno, String emailDocente) throws NotPresentException{
+        atribuicaoTemaAdminHandler.atribuirTemaAdmin(titulo, emailAluno, emailDocente);
+    }
+
+    public void newCandidatura(Date dataCandidatura, EstadoCandidatura estado, String email) throws IllegalCandidaturaException, NotPresentException{
+        candidaturaHandler.newCandidatura(dataCandidatura, estado, email);
+    }
+
+    public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException{
+        candidaturaHandler.addTemaToCandidatura(titulo, candidaturaID);
+    }
+
+    public void addTeseToCandidatura(Integer id) throws NotPresentException{
+        candidaturaHandler.addTeseToCandidatura(id);
+    }
+
+    public void cancelCandidatura(Integer id) throws NotPresentException{
+        candidaturaHandler.cancelCandidatura(id);
+    }
+
+    public void listarTemasAlunos(String emailAluno) throws NotPresentException{
+        listarTemasAlunosHandler.listarTemasAluno(emailAluno);
+    }
+
+    public void marcarDefesPropostaTese(Integer teseID, String emailDocente, Boolean isPresencial, String sala){
+        marcacaoDefesaPropostaTeseHandler.marcarDefesaPropostaTese(teseID, emailDocente, isPresencial, sala);
+    }
+
+    public void registarNotaPropostaTese(Integer teseID, String emailDocente, float nota) throws NotPresentException{
+        registoNotaPropostaTeseHandler.registarNotaPropostaTese(teseID, emailDocente, nota);
+    }
+
+    public void getEstatisticas(){
+        estatisticasHandler.getEstatisticas();
+    }
+
+
+
+
 
 
     

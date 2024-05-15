@@ -4,6 +4,9 @@ public class AlunoDTO{
 
     private String name;
     private String contact;
+    private Double average;
+    private MestradoDTO mestrado;
+    
 
     public AlunoDTO(String name, String contact) {
         this.name = name;
