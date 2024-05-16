@@ -8,12 +8,12 @@ public class DocenteDTO {
     private String contacto;
     private String departamento;
     private Boolean isAdministrador;
-    private List<String> temasPropostos;
+    private List<Integer> temasPropostos;
     private List<Integer> projetosId;
 
     public DocenteDTO() {}
 
-    public DocenteDTO(Integer id, String nome, String contacto, String departamento, Boolean isAdministrador, List<String> temasPropostos, List<Integer> projetosId) {
+    public DocenteDTO(Integer id, String nome, String contacto, String departamento, Boolean isAdministrador, List<Integer> temasPropostos, List<Integer> projetosId) {
         this.id = id;
         this.nome = nome;
         this.contacto = contacto;
@@ -43,7 +43,7 @@ public class DocenteDTO {
         return this.isAdministrador;
     }
 
-    public List<String> getTemasPropostos() {
+    public List<Integer> getTemasPropostos() {
         return this.temasPropostos;
     }
 
@@ -71,7 +71,7 @@ public class DocenteDTO {
         this.isAdministrador = isAdministrador;
     }
 
-    public void setTemasPropostos(List<String> temasPropostos) {
+    public void setTemasPropostos(List<Integer> temasPropostos) {
         this.temasPropostos = temasPropostos;
     }
 

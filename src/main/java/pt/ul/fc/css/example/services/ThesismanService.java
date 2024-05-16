@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
+import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
+import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
+import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.handlers.AtribuicaoTemaAdminHandler;
 import pt.ul.fc.css.example.demo.handlers.CandidaturaHandler;
@@ -87,16 +90,16 @@ public class ThesismanService{
         loginHandler.loginAluno(email);
     }
 
-    public void loginDocente(String email, String password) throws NotPresentException{
-        loginHandler.loginDocente(email);
+    public DocenteDTO loginDocente(String email, String password) throws NotPresentException{
+        return loginHandler.loginDocente(email);
     }
 
     public void registerUtilizadorEmpresarial(String empresa,String name, String email) throws NotPresentException{
         loginHandler.registerUtilizadorEmpresarial(empresa, name, email);
     }
 
-    public void loginUtilizadorEmpresarial(String email, String password) throws NotPresentException{
-        loginHandler.loginUserEmpresarial(email);
+    public UtilizadorEmpresarialDTO loginUtilizadorEmpresarial(String email, String password) throws NotPresentException{
+        return loginHandler.loginUserEmpresarial(email);
     }
 
     public void submeterTemaDocente(String titulo, String descricao, float remuneracaoMensal, String email) throws NotPresentException{

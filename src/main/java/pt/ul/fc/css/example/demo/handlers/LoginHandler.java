@@ -1,5 +1,7 @@
 package pt.ul.fc.css.example.demo.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -51,23 +53,43 @@ public class LoginHandler {
     }
 
     // login de utilizador empresarial
-    public UtilizadorEmpresarial loginUserEmpresarial(String email) throws NotPresentException {
+    public UtilizadorEmpresarialDTO loginUserEmpresarial(String email) throws NotPresentException {
         // Procurar utilizador empresarial com o username fornecido
         Optional<UtilizadorEmpresarial> currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByEmail(email);
         // Verificar se o utilizador empresarial existe
         if (currentUtilizadorEmpresarial.isPresent()) {
-            return currentUtilizadorEmpresarial.get();
+            UtilizadorEmpresarial utilizadorEmpresarial = currentUtilizadorEmpresarial.get();
+            UtilizadorEmpresarialDTO utilizadorEmpresarialDTO = new UtilizadorEmpresarialDTO(utilizadorEmpresarial.getEmpresa(), utilizadorEmpresarial.getEmail(), getTemasIds(utilizadorEmpresarial.getTemasPropostos()));
+            return utilizadorEmpresarialDTO;
         } else {
             throw new NotPresentException("Utilizador Empresarial não encontrado");
         }
     }
 
-    public Docente loginDocente(String email) throws NotPresentException {
+    public DocenteDTO loginDocente(String email) throws NotPresentException {
         Optional<Docente> currentDocente = docenteRepository.findByEmail(email);
         if(currentDocente.isPresent()){
-            return currentDocente.get();
+            Docente docente = currentDocente.get();
+            DocenteDTO docenteDTO = new DocenteDTO(docente.getId(), docente.getName(), docente.getEmail(), docente.getDepartamento(), docente.isAdmnistrador(), getTemasIds(docente.getTemasPropostos()), getProjetosIds(docente.getProjects()));
+            return docenteDTO;
         } else {
             throw new NotPresentException("Docente não encontrado");
         }
+    }
+
+    private List<Integer> getTemasIds(List<Tema> temas) {
+        List<Integer> result = new ArrayList<Integer>();
+        for (Tema t : temas) {
+            result.add(t.getId());
+        }
+        return result;
+    }
+
+    private List<Integer> getProjetosIds(List<Projeto> projetos) {
+        List<Integer> result = new ArrayList<Integer>();
+        for (Projeto p : projetos) {
+            result.add(p.getId());
+        }
+        return result;
     }
 }

@@ -67,6 +67,15 @@ public class Docente extends Utilizador{
     }
 
     /**
+     * Gets the list of projects supervised by the Docente.
+     *
+     * @return the list of projects supervised by the Docente
+     */
+    public List<Projeto> getProjects() {
+        return this.projeto;
+    }
+
+    /**
      * Adds a Tema to the list of temasPropostos by the Docente.
      *
      * @param tema the Tema to be added to the list of temasPropostos
