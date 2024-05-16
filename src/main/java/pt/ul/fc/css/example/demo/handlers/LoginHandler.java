@@ -41,14 +41,16 @@ public class LoginHandler {
     }
 
     // registo de utilizador empresarial
-    public UtilizadorEmpresarial registerUtilizadorEmpresarial(String empresa, String name, String email) throws NotPresentException {
+    public UtilizadorEmpresarialDTO registerUtilizadorEmpresarial(String empresa, String name, String email) throws NotPresentException {
         Optional<UtilizadorEmpresarial> currentUtilizadorEmpresarial = utilizadorEmpresarialRepository.findByEmail(email);
         if(!currentUtilizadorEmpresarial.isEmpty()){
            throw new NotPresentException("Utilizador Empresarial já existe");
         }else{
             UtilizadorEmpresarial utilizadorEmpresarial = new UtilizadorEmpresarial(empresa, name, email);
             utilizadorEmpresarialRepository.save(utilizadorEmpresarial);
-            return utilizadorEmpresarial;
+
+            UtilizadorEmpresarialDTO utilizadorEmpresarialDTO = new UtilizadorEmpresarialDTO(utilizadorEmpresarial.getEmpresa(), utilizadorEmpresarial.getEmail(), getTemasIds(utilizadorEmpresarial.getTemasPropostos()));
+            return utilizadorEmpresarialDTO;
         }
     }
 

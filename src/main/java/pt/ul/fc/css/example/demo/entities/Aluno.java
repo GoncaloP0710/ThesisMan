@@ -54,7 +54,7 @@ public class Aluno extends Utilizador{
      *
      * @return the student's identification number
      */
-    public Integer getNumAluno() {
+    public Integer getId() {
         return super.getId();
     }
 

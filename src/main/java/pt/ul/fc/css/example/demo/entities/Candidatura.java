@@ -35,6 +35,7 @@ public class Candidatura {
     @OneToOne(mappedBy = "candidatura")
     private Tese tese;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name="tema_id")
     private Tema tema;
@@ -45,11 +46,11 @@ public class Candidatura {
     private Aluno aluno;
 
 
-    public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado, @NonNull Aluno aluno) {
+    public Candidatura(@NonNull Date dataCandidatura, @NonNull EstadoCandidatura estado, @NonNull Aluno aluno, @NonNull Tema tema) {
         this.dataCandidatura = dataCandidatura;
         this.estado = estado;
         this.tese = null;
-        this.tema = null;
+        this.tema = tema;
         this.aluno = aluno;
     }
 
@@ -66,7 +67,7 @@ public class Candidatura {
      * 
      * @return The id of the candidatura.
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -107,22 +108,21 @@ public class Candidatura {
     }
 
     /**
+     * Returns the aluno associated with the candidatura.
+     * 
+     * @return The aluno associated with the candidatura.
+     */
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    /**
      * Sets the tese associated with the candidatura.
      * 
      * @param tese The tese to be associated with the candidatura.
      */
     public void setTese(Tese tese) {
             this.tese = tese;
-    }
-
-    /**
-     * Sets the tema associated with the candidatura.
-     * 
-     * @param tema The tema to be associated with the candidatura.
-     */
-    public void setTema(Tema tema) {
-            this.tema = tema;
-
     }
 
     public void setEstado(EstadoCandidatura estado) {

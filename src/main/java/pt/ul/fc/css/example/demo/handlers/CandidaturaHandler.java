@@ -1,5 +1,6 @@
 package pt.ul.fc.css.example.demo.handlers;
 
+import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.entities.*;
 import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
@@ -29,7 +30,7 @@ public class CandidaturaHandler {
         this.temaRepository = temaRepository;
     }
 
-    public void newCandidatura(Date dataCandidatura, EstadoCandidatura estado, String email) throws IllegalCandidaturaException, NotPresentException {
+    public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, String email, Integer temaId) throws IllegalCandidaturaException, NotPresentException {
         List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoEmail(email);
         if (candidaturas != null) {
             if(candidaturas.size() >= 5){
@@ -41,31 +42,38 @@ public class CandidaturaHandler {
             throw new NotPresentException("Aluno não encontrado");
         }
         Aluno aluno = optAluno.get();
-        Candidatura new_candidatura;
-        if(estado == null){
-            new_candidatura = new Candidatura(dataCandidatura, EstadoCandidatura.EMPROCESSAMENTO, aluno);
-        }else{
-            new_candidatura = new Candidatura(dataCandidatura, estado, aluno);
-        }
-        aluno.addCandidatura(new_candidatura);
-        candidaturaRepository.save(new_candidatura);
-        alunoRepository.save(aluno);
-    }
-
-    public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException {
-        Optional<Tema> optTema = temaRepository.findByTitulo(titulo);
+        Optional<Tema> optTema = temaRepository.findById(temaId);
         if (!optTema.isPresent()) {
             throw new NotPresentException("Tema não encontrado");
         }
         Tema tema = optTema.get();
-        Optional<Candidatura> optCandidatura = candidaturaRepository.findById(candidaturaID);
-        if(optCandidatura.isEmpty()){
-            throw new NotPresentException("Candidatura não existe");
+        Candidatura new_candidatura;
+        if(estado == null){
+            new_candidatura = new Candidatura(dataCandidatura, EstadoCandidatura.EMPROCESSAMENTO, aluno, tema);
+        }else{
+            new_candidatura = new Candidatura(dataCandidatura, estado, aluno, tema);
         }
-        Candidatura c = optCandidatura.get();
-        c.setTema(tema);
-        candidaturaRepository.save(c);
+        aluno.addCandidatura(new_candidatura);
+        candidaturaRepository.save(new_candidatura);
+        alunoRepository.save(aluno);
+
+        return new CandidaturaDTO(new_candidatura.getId(), new_candidatura.getTema().getId(),new_candidatura.getDataCandidatura(), new_candidatura.getEstado().name(), new_candidatura.getTese().getId(), new_candidatura.getAluno().getId());
     }
+
+    // public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException {
+    //     Optional<Tema> optTema = temaRepository.findByTitulo(titulo);
+    //     if (!optTema.isPresent()) {
+    //         throw new NotPresentException("Tema não encontrado");
+    //     }
+    //     Tema tema = optTema.get();
+    //     Optional<Candidatura> optCandidatura = candidaturaRepository.findById(candidaturaID);
+    //     if(optCandidatura.isEmpty()){
+    //         throw new NotPresentException("Candidatura não existe");
+    //     }
+    //     Candidatura c = optCandidatura.get();
+    //     c.setTema(tema);
+    //     candidaturaRepository.save(c);
+    // }
 
     public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException {
         Optional<Tese> optTese = teseRepository.findById(teseID);

@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class CandidaturaDTO {
     private Integer id;
-    private String tema;
+    private Integer temaId;
     private Date dataCandidatura;
     private String estado;
     private Integer teseId;
     private Integer alunoId;
 
-    public CandidaturaDTO(Integer id, String tema, Date dataCandidatura, String estado, Integer teseId, Integer alunoId) {
+    public CandidaturaDTO(Integer id, Integer temaId, Date dataCandidatura, String estado, Integer teseId, Integer alunoId) {
         this.id = id;
-        this.tema = tema;
+        this.temaId = temaId;
         this.dataCandidatura = dataCandidatura;
         this.estado = estado;
         this.teseId = teseId;
@@ -26,8 +26,8 @@ public class CandidaturaDTO {
         return id;
     }
 
-    public String getTema() {
-        return tema;
+    public Integer getTema() {
+        return temaId;
     }
 
     public Date getDataCandidatura() {
@@ -50,8 +50,8 @@ public class CandidaturaDTO {
         this.id = id;
     }
 
-    public void setTema(String tema) {
-        this.tema = tema;
+    public void setTema(Integer tema) {
+        this.temaId = tema;
     }
 
     public void setDataCandidatura(Date dataCandidatura) {

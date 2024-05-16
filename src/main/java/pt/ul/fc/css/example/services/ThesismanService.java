@@ -9,6 +9,7 @@ import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
+import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
 import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
@@ -94,8 +95,8 @@ public class ThesismanService{
         return loginHandler.loginDocente(email);
     }
 
-    public void registerUtilizadorEmpresarial(String empresa,String name, String email) throws NotPresentException{
-        loginHandler.registerUtilizadorEmpresarial(empresa, name, email);
+    public UtilizadorEmpresarialDTO registerUtilizadorEmpresarial(String empresa,String name, String email) throws NotPresentException{
+        return loginHandler.registerUtilizadorEmpresarial(empresa, name, email);
     }
 
     public UtilizadorEmpresarialDTO loginUtilizadorEmpresarial(String email, String password) throws NotPresentException{
@@ -122,13 +123,13 @@ public class ThesismanService{
         atribuicaoTemaAdminHandler.atribuirTemaAdmin(titulo, emailAluno, emailDocente);
     }
 
-    public void newCandidatura(Date dataCandidatura, EstadoCandidatura estado, String email) throws IllegalCandidaturaException, NotPresentException{
-        candidaturaHandler.newCandidatura(dataCandidatura, estado, email);
+    public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, String email, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
+        return candidaturaHandler.newCandidatura(dataCandidatura, estado, email, temaId);
     }
 
-    public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException{
-        candidaturaHandler.addTemaToCandidatura(titulo, candidaturaID);
-    }
+    // public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException{
+    //     candidaturaHandler.addTemaToCandidatura(titulo, candidaturaID);
+    // }
 
     public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException{
         candidaturaHandler.addTeseToCandidatura(teseID, candidaturaID);
