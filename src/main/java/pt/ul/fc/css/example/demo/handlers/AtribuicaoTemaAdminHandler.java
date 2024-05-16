@@ -36,8 +36,8 @@ public class AtribuicaoTemaAdminHandler {
         this.teseRepository = teseRepository;
     }
 
-    public void atribuirTemaAdmin(String titulo, String emailAluno, String emailDocente) throws NotPresentException {
-        Optional<Docente> optDocente = docenteRepository.findByEmail(emailDocente);
+    public void atribuirTemaAdmin(Integer temaId, Integer alunoId, Integer docenteId) throws NotPresentException {
+        Optional<Docente> optDocente = docenteRepository.findById(docenteId);
         if (optDocente.isEmpty()) {
             throw new NotPresentException("Docente não encontrado");
         }
@@ -45,11 +45,11 @@ public class AtribuicaoTemaAdminHandler {
         if(!docente.isAdmnistrador()){
             throw new IllegalArgumentException("Docente não tem permissões para atribuir temas");
         }
-        Optional<Aluno> optAluno = alunoRepository.findByEmail(emailAluno);
+        Optional<Aluno> optAluno = alunoRepository.findById(alunoId);
         if (optAluno.isEmpty()) {
             throw new NotPresentException("Aluno não encontrado");
         }
-        List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoEmail(emailAluno);
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoId(alunoId);
         if(candidaturas.isEmpty()){
             throw new IllegalArgumentException("Aluno não tem candidaturas");
         }
@@ -57,7 +57,7 @@ public class AtribuicaoTemaAdminHandler {
         if(optCandidatura.isEmpty()){
             throw new NotPresentException("Aluno já tem um tema atribuído");
         }
-        Optional<Tema> optTema = temaRepository.findByTitulo(titulo);
+        Optional<Tema> optTema = temaRepository.findById(temaId);
         if (optTema.isEmpty()) {
             throw new NotPresentException("Tema não encontrado");
         }
@@ -65,7 +65,7 @@ public class AtribuicaoTemaAdminHandler {
         Candidatura candidatura = optCandidatura.get();
         candidatura.setTema(tema);
 
-        // Set Tese da candidatura
+        //*Set Tese da candidatura
         if (tema.getSubmissor() instanceof Docente) {
             Dissertacao tese = new Dissertacao(candidatura);
             teseRepository.save(tese);

@@ -129,6 +129,10 @@ public class Candidatura {
         this.estado = estado;
     }
 
+    public void setTema(Tema tema) {
+        this.tema = tema;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) 

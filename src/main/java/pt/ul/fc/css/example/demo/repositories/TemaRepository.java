@@ -12,8 +12,7 @@ import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
 
 public interface TemaRepository extends JpaRepository<Tema, Integer>{
-
-    //queries
+    Optional<Tema> findById(Integer id);
     Optional<Tema> findByTitulo(String titulo);
 
     @Query("SELECT t FROM Tema t JOIN t.mestrados m WHERE m.id = :mestradoId")

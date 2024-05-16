@@ -7,7 +7,6 @@ import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Juri;
 
 public interface JuriRepository extends JpaRepository<Juri,Integer> {
-
+    Optional<Juri> findById(Integer id);
     Optional<Juri> findByJuri(Docente arguente, Docente docenteOrientador, Docente presidente);
-
     Optional<Juri> findByJuri(Docente arguente, Docente docenteOrientador);}

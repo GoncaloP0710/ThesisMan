@@ -22,15 +22,13 @@ import pt.ul.fc.css.example.exceptions.NotPresentException;
 public class MarcacaoDefesaPropostaTeseHandler {
     private TeseRepository teseRepository;
     private Defesa currentDefesa;
-    private AlunoRepository alunoRepository;
     private DocenteRepository docenteRepository;
     private DefesaRepository defesaRepository;
     private JuriRepository juriRepository;
 
-    public MarcacaoDefesaPropostaTeseHandler(TeseRepository teseRepository, AlunoRepository alunoRepository, DocenteRepository docenteRepository,
+    public MarcacaoDefesaPropostaTeseHandler(TeseRepository teseRepository, DocenteRepository docenteRepository,
                                                  DefesaRepository defesaRepository, JuriRepository juriRepository) {
         this.teseRepository = teseRepository;
-        this.alunoRepository = alunoRepository;
         this.docenteRepository = docenteRepository;
         this.defesaRepository = defesaRepository;
         this.juriRepository = juriRepository;

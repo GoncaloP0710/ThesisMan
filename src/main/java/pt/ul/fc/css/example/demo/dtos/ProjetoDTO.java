@@ -2,39 +2,26 @@ package pt.ul.fc.css.example.demo.dtos;
 
 import java.util.List;
 
-public class ProjetoDTO {
-    private Integer id;
+public class ProjetoDTO extends TeseDTO{
     private Integer docenteId;
-    private Integer candidaturaId;
-    private List<Integer> defesasId;
 
     public ProjetoDTO() {}
 
-    public ProjetoDTO(Integer id, Integer docenteId, Integer candidaturaId, List<Integer> defesasId) {
-        this.id = id;
+    public ProjetoDTO(Integer id, Integer candidaturaId, byte[]documentProposto, byte[]documentoFinal, List<Integer> defesasId, Integer docenteId) {
+        super(id, candidaturaId, documentProposto, documentoFinal, defesasId);
         this.docenteId = docenteId;
-        this.candidaturaId = candidaturaId;
-        this.defesasId = defesasId;
     }
 
     public Integer getId() {
-        return this.id;
+        return super.getId();
     }
 
     public Integer getDocenteId() {
         return this.docenteId;
     }
 
-    public Integer getCandidaturaId() {
-        return this.candidaturaId;
-    }
-
     public List<Integer> getDefesasId() {
-        return this.defesasId;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        return super.getDefesasId();
     }
 
     public void setDocenteId(Integer docenteId) {
@@ -42,11 +29,11 @@ public class ProjetoDTO {
     }
 
     public void setCandidaturaId(Integer candidaturaId) {
-        this.candidaturaId = candidaturaId;
+        super.setCandidaturaId(candidaturaId);
     }
 
     public void setDefesasId(List<Integer> defesasId) {
-        this.defesasId = defesasId;
+        super.setDefesasId(defesasId);
     }
 
 
