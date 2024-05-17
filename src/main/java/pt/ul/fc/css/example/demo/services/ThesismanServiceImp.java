@@ -103,9 +103,9 @@ public class ThesismanServiceImp implements ThesismanService{
         return loginHandler.loginUserEmpresarial(email);
     }
 
-     public void submeterTemaDocente(Integer temaId, String descricao, float remuneracaoMensal, String email) throws NotPresentException{
-         submissaoTemaDocenteHandler.submeterTema(temaId, descricao, remuneracaoMensal, email);
-    }
+    //  public void submeterTemaDocente(Integer temaId, String descricao, float remuneracaoMensal, String email) throws NotPresentException{
+    //      submissaoTemaDocenteHandler.submeterTema(temaId, descricao, remuneracaoMensal, email);
+    // }
 
 //     public void submeterTemaUtilizadorEmpresarial(Integer temaId, String descricao, float remuneracaoMensal, String email) throws NotPresentException{
 //         submissaoTemaUtilizadorEmpresarialHandler.submeterTema(temaId, descricao, remuneracaoMensal, email);
@@ -154,8 +154,6 @@ public class ThesismanServiceImp implements ThesismanService{
 //     public void getEstatisticas(){
 //         estatisticasHandler.getEstatisticas();
 //     }
-
-
 
 
 

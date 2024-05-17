@@ -12,7 +12,7 @@ import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
-import pt.ul.fc.css.example.exceptions.NotPresentException;
+import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
 
 @Component
 public class ListarTemasAlunosHandler {

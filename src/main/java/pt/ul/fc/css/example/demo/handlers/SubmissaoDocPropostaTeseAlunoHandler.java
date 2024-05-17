@@ -15,7 +15,7 @@ import pt.ul.fc.css.example.demo.entities.Tese;
 import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
-import pt.ul.fc.css.example.exceptions.NotPresentException;
+import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
 
 @Component
 public class SubmissaoDocPropostaTeseAlunoHandler {
