@@ -7,14 +7,18 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
+import pt.ul.fc.css.example.demo.dtos.TeseDTO;
+import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
 import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
 import pt.ul.fc.css.example.exceptions.IllegalCandidaturaException;
 import pt.ul.fc.css.example.exceptions.NotPresentException;
 import pt.ul.fc.css.example.services.ThesismanService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,89 +43,20 @@ public class RestThesismanController {
     @Autowired
     private ThesismanService thesismanService;
 
-    // @RequestMapping(value = "/populate", method = RequestMethod.GET)
-    // public void populate() {
-    //     thesismanService.populate();
-    // }
-
-    @PostMapping("/register")
-    ResponseEntity<?> registerUEmpresarial(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
+    @GetMapping("/listarTemas")
+    ResponseEntity<?> listarTemas(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             JsonNode jsonNode = objectMapper.readTree(json);
-            String empresa = jsonNode.get("empresa").asText();
-            String nome = jsonNode.get("nome").asText();
-            String contact = jsonNode.get("contact").asText();
-            UtilizadorEmpresarialDTO utilizadorEmpresarialDTO = thesismanService.registerUtilizadorEmpresarial(empresa, nome, contact);
-            return new ResponseEntity<>(utilizadorEmpresarialDTO, HttpStatus.OK);
+            Integer alunoId = jsonNode.get("alunoId").intValue();
+            List<TemaDTO> temas = thesismanService.listarTemasAlunos(alunoId);
+            return new ResponseEntity<>(temas, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/login/utilizadorEmpresarial")
-    ResponseEntity<?> loginUEmpresarial(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            JsonNode jsonNode = objectMapper.readTree(json);
-            String email = jsonNode.get("email").asText();
-            String password = jsonNode.get("password").asText();
-            UtilizadorEmpresarialDTO utilizadorEmpresarialDTO = thesismanService.loginUtilizadorEmpresarial(email, password);
-            return new ResponseEntity<>(utilizadorEmpresarialDTO, HttpStatus.OK);
-        }catch(NotPresentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/login/docente")
-    ResponseEntity<?> loginDocente(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            JsonNode jsonNode = objectMapper.readTree(json);
-            String email = jsonNode.get("email").asText();
-            String password = jsonNode.get("password").asText();
-            DocenteDTO docenteDTO = thesismanService.loginDocente(email, password);
-            return new ResponseEntity<>(docenteDTO, HttpStatus.OK);
-        }catch(NotPresentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PostMapping("/submeterTema/Docente")
-    ResponseEntity<?> submeterTemaDocente(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            JsonNode jsonNode = objectMapper.readTree(json);
-            String titulo = jsonNode.get("titulo").asText();
-            String descricao = jsonNode.get("descricao").asText();
-            float remuneracaoMensal = jsonNode.get("remuneracaoMensal").floatValue();
-            String email = jsonNode.get("email").asText();
-            thesismanService.submeterTemaDocente(titulo, descricao, remuneracaoMensal, email);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch(NotPresentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PostMapping("/submeterTema/UtilizadorEmpresarial")
-    ResponseEntity<?> submeterTemaUtilizadorEmpresarial(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            JsonNode jsonNode = objectMapper.readTree(json);
-            String titulo = jsonNode.get("titulo").asText();
-            String descricao = jsonNode.get("descricao").asText();
-            float remuneracaoMensal = jsonNode.get("remuneracaoMensal").floatValue();
-            String email = jsonNode.get("email").asText();
-            thesismanService.submeterTemaUtilizadorEmpresarial(titulo, descricao, remuneracaoMensal, email);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch(NotPresentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-    
-    // TODO: F. Listar os temas disponíveis neste ano lectivo, por parte dos alunos -> Falta a parte no service
-
-    @PostMapping("/create/candidatura")
+    @PostMapping("/createCandidatura")
     ResponseEntity<?> createCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException, IllegalCandidaturaException{
         ObjectMapper objectMapper = new ObjectMapper();
         try{
@@ -129,26 +64,55 @@ public class RestThesismanController {
             Date dataCandidatura = new Date();
             String estadoStr = jsonNode.get("estado").asText();
             EstadoCandidatura estado = EstadoCandidatura.valueOf(estadoStr);
-            String email = jsonNode.get("email").asText();
+            Integer alunoId = jsonNode.get("alunoId").intValue();
             Integer temaId = jsonNode.get("temaId").intValue();
-            CandidaturaDTO candidaturaDTO = thesismanService.newCandidatura(dataCandidatura, estado, email, temaId);
+            CandidaturaDTO candidaturaDTO = thesismanService.newCandidatura(dataCandidatura, estado, alunoId, temaId);
             return new ResponseEntity<>(candidaturaDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    // @PostMapping("/addTemaToCandidatura")
-    // ResponseEntity<?> addTemaToCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try{
-    //         JsonNode jsonNode = objectMapper.readTree(json);
-    //         String titulo = jsonNode.get("titulo").asText();
-    //         Integer candidaturaID = jsonNode.get("candidaturaID").intValue();
-    //         thesismanService.addTemaToCandidatura(titulo, candidaturaID);
-    //         return new ResponseEntity<>(HttpStatus.OK);
-    //     }catch(NotPresentException e) {
-    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    //     }
-    // }
+    @PostMapping("/cancelarCandidatura")
+    ResponseEntity<?> cancelarCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException, IllegalCandidaturaException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            JsonNode jsonNode = objectMapper.readTree(json);
+            Integer candidaturaId = jsonNode.get("candidaturaId").intValue();
+            thesismanService.cancelCandidatura(candidaturaId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(NotPresentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/submeterDocTese")
+    ResponseEntity<?> submeterDocTese(@RequestBody String json) throws IllegalCandidaturaException, IOException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            JsonNode jsonNode = objectMapper.readTree(json);
+            Integer candidaturaId = jsonNode.get("candidaturaId").intValue();
+            Integer alunoId = jsonNode.get("alunoId").intValue();
+            byte[] document = jsonNode.get("document").binaryValue();
+            TeseDTO teseDTO = thesismanService.submitPropostaTeseDocsAluno(candidaturaId, document, alunoId);
+            return new ResponseEntity<>(teseDTO, HttpStatus.OK);
+        }catch(NotPresentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/submeterDocFinalTese")
+    ResponseEntity<?> submeterDocFinalTese(@RequestBody String json) throws IllegalCandidaturaException, IOException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            JsonNode jsonNode = objectMapper.readTree(json);
+            Integer candidaturaId = jsonNode.get("candidaturaId").intValue();
+            Integer alunoId = jsonNode.get("alunoId").intValue();
+            byte[] document = jsonNode.get("document").binaryValue();
+            TeseDTO teseDTO = thesismanService.submeterDocFinalTeseAluno(alunoId, candidaturaId, document);
+            return new ResponseEntity<>(teseDTO, HttpStatus.OK);
+        }catch(NotPresentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
