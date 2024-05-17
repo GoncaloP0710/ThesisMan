@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt_PT">
+<head>
+    <link href="css/dashboard.css" rel="stylesheet"/>
+    <title>Thesisman Application</title>
+</head>
+
+<body>
+    <h2 id="bem-vindo" th:text="${name}"></h2>
+    <div class="main">
+        <div class="sub-main">
+            <form action="#" th:action="@{/submeterTemas}" method="get">
+                <button th:href="@{/submeterTemas}" method="GET">Submeter temas</button>
+            </form>
+            <form action="#" th:action="@{/atribuicaoTema}" method="get">
+                <button>Atribuir temas</button>
+            </form>
+            <form action="#" th:action="@{/marcarDefesaProposta}" method="get">
+                <button>Marcar defesa proposta da tese</button>
+            </form>
+            <form action="#" th:action="@{/registarNotaDefesaProposta}" method="get">
+                <button>Registar Nota da Defesa da Proposta</button>
+            </form>
+            <form action="#" th:action="@{/marcarDefesa}" method="get">
+                <button>Marcar Defesa da Tese</button>
+            </form>
+            <form action="#" th:action="@{/registoNotaDefesProposta}" method="get">
+                <button>Registar Nota Defesa Proposta</button>
+            </form>
+            <form action="#" th:action="@{/statistics}" method="get"></form>
+                <button>Ver Estatísticas</button>
+            </form>
+        </div>
+      </div>
+</body>
+</html>

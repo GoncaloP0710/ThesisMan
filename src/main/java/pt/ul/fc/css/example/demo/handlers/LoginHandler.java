@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import pt.ul.fc.css.example.demo.entities.*;
+import pt.ul.fc.css.example.demo.exceptions.*;
 import pt.ul.fc.css.example.demo.repositories.*;
 import pt.ul.fc.css.example.demo.dtos.*;
-import pt.ul.fc.css.example.exceptions.NotPresentException;
 
 @Component
 public class LoginHandler {

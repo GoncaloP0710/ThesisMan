@@ -1,4 +1,4 @@
-package pt.ul.fc.css.example.exceptions;
+package pt.ul.fc.css.example.demo.exceptions;
 
 public class ArgumentException extends Exception{
     

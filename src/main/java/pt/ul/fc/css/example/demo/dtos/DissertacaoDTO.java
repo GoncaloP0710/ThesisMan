@@ -7,6 +7,7 @@ public class DissertacaoDTO extends TeseDTO{
     private List<Integer> defesasId;
 
     public DissertacaoDTO(Integer id, Integer candidaturaId, List<Integer> defesasId) {
+        super();
         this.id = id;
         this.candidaturaId = candidaturaId;
         this.defesasId = defesasId;

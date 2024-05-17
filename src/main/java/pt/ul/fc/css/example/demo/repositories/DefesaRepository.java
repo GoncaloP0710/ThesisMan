@@ -4,6 +4,4 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pt.ul.fc.css.example.demo.entities.Defesa;
 
-public interface DefesaRepository extends JpaRepository<Defesa, Integer>{
-    Optional<Defesa> findById(Integer id);
-}
+public interface DefesaRepository extends JpaRepository<Defesa, Integer>{}

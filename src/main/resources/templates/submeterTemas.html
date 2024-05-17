@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt_PT">
+<head>
+    <link href="css/submeterTemas.css" rel="stylesheet"/>
+    <title>Thesisman Application</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+<html>
+<head>
+    <title>Theme Submission</title>
+</head>
+<body>
+    <h1>Theme Submission</h1>
+    <form th:action = "@{/submitTemaCall}" method="post">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description"></textarea><br>
+        <label for="compensation">Monthly Compensation:</label><br>
+        <input type="number" id="compensation" name="compensation" step="0.01" min="0"><br>
+        <label for="masters">Compatible Masters:</label><br>
+        <textarea id="masters" name="masters" placeholder="Enter masters, separated by commas"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+</body>
+</html>

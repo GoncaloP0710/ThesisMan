@@ -8,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 import pt.ul.fc.css.example.demo.entities.*;
 import pt.ul.fc.css.example.demo.repositories.*;
@@ -16,7 +15,6 @@ import pt.ul.fc.css.example.demo.repositories.*;
 
 
 @SpringBootApplication
-@ComponentScan({"pt.ul.fc.css.example.services", "pt.ul.fc.css.example.demo.handlers"})
 public class ThesisManApplication {
 
     private static final Logger log = LoggerFactory.getLogger(ThesisManApplication.class);
@@ -26,15 +24,8 @@ public class ThesisManApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(AlunoRepository repository, DocenteRepository repository2, 
-                                    UtilizadorEmpresarialRepository repository3,
-                                    TemaRepository repository4,
-                                    TeseRepository repository5,
-                                    CandidaturaRepository repository6,
-                                    MestradoRepository repository7,
-                                    JuriRepository repository8,
-                                    DefesaRepository repository9){
-        return (args) -> {
+    public CommandLineRunner demo(){
+        return (args) -> {};
 
         //     //------------------------Criar mestrados----------------------------------------------//
         //     Mestrado mestrado1 = new Mestrado("Engenharia Informática");
@@ -174,13 +165,6 @@ public class ThesisManApplication {
 
             // ----------------------------------------------------------------------------------//
 
-            //fectch aluno
-            log.info("Alunos encontrados com findAll():");
-            log.info("-------------------------------");
-            for(Aluno aluno : repository.findAll()){
-                log.info(aluno.toString());
-            }
-            log.info("");
-        };
     }
+
 }
