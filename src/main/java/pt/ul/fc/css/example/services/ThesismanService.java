@@ -1,6 +1,7 @@
 package pt.ul.fc.css.example.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,11 @@ import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
+import pt.ul.fc.css.example.demo.dtos.TemaDTO;
+import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
+import pt.ul.fc.css.example.demo.dtos.TeseDTO;
 import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.handlers.AtribuicaoTemaAdminHandler;
@@ -20,6 +24,7 @@ import pt.ul.fc.css.example.demo.handlers.ListarTemasAlunosHandler;
 import pt.ul.fc.css.example.demo.handlers.LoginHandler;
 import pt.ul.fc.css.example.demo.handlers.MarcacaoDefesaPropostaTeseHandler;
 import pt.ul.fc.css.example.demo.handlers.RegistoNotaPropostaTeseHandler;
+import pt.ul.fc.css.example.demo.handlers.SubmissaoDocFinalTeseAlunoHandler;
 import pt.ul.fc.css.example.demo.handlers.SubmissaoDocPropostaTeseAlunoHandler;
 import pt.ul.fc.css.example.demo.handlers.SubmissaoTemaDocenteHandler;
 import pt.ul.fc.css.example.demo.handlers.SubmissaoTemaUtilizadorEmpresarialHandler;
@@ -45,6 +50,7 @@ public class ThesismanService{
     @Autowired private MarcacaoDefesaPropostaTeseHandler marcacaoDefesaPropostaTeseHandler;
     @Autowired private RegistoNotaPropostaTeseHandler registoNotaPropostaTeseHandler;
     @Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
+    @Autowired private SubmissaoDocFinalTeseAlunoHandler submissaoDocFinalTeseAlunoHandler;
     @Autowired private SubmissaoTemaDocenteHandler submissaoTemaDocenteHandler;
     @Autowired private SubmissaoTemaUtilizadorEmpresarialHandler submissaoTemaUtilizadorEmpresarialHandler;
     @Autowired private EstatisticasHandler estatisticasHandler;
@@ -87,8 +93,8 @@ public class ThesismanService{
     
     }
 
-    public void loginAluno(String email, String password) throws NotPresentException{
-        loginHandler.loginAluno(email);
+    public AlunoDTO loginAluno(String email, String password) throws NotPresentException{
+        return loginHandler.loginAluno(email);
     }
 
     public DocenteDTO loginDocente(String email, String password) throws NotPresentException{
@@ -115,16 +121,20 @@ public class ThesismanService{
         submissaoTemaUtilizadorEmpresarialHandler.adicionarMestradoCompativel(nome, titulo, email);
     }
 
-    public void submitPropostaTeseDocsAluno(Integer candidaturaID, byte[] document, String emailAluno) throws NotPresentException{
-        submissaoDocPropostaTeseAlunoHandler.SubmitPropostaTeseDocsAluno(candidaturaID, document, emailAluno);
+    public TeseDTO submitPropostaTeseDocsAluno(Integer candidaturaID, byte[] document, Integer alunoId) throws NotPresentException{
+        return submissaoDocPropostaTeseAlunoHandler.SubmitPropostaTeseDocsAluno(candidaturaID, document, alunoId);
+    }
+
+    public TeseDTO submeterDocFinalTeseAluno(Integer alunoId, Integer candidaturaID, byte[] document) throws NotPresentException{
+        return submissaoDocFinalTeseAlunoHandler.submeterDocFinalTeseAluno(alunoId, candidaturaID, document);
     }
 
     public void atribuicaoTemaAdmin(String titulo, String emailAluno, String emailDocente) throws NotPresentException{
         atribuicaoTemaAdminHandler.atribuirTemaAdmin(titulo, emailAluno, emailDocente);
     }
 
-    public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, String email, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
-        return candidaturaHandler.newCandidatura(dataCandidatura, estado, email, temaId);
+    public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
+        return candidaturaHandler.newCandidatura(dataCandidatura, estado, alunoId, temaId);
     }
 
     // public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException{
@@ -139,8 +149,8 @@ public class ThesismanService{
         candidaturaHandler.cancelCandidatura(id);
     }
 
-    public void listarTemasAlunos(String emailAluno) throws NotPresentException{
-        listarTemasAlunosHandler.listarTemasAluno(emailAluno);
+    public List<TemaDTO> listarTemasAlunos(Integer alunoId) throws NotPresentException{
+        return listarTemasAlunosHandler.listarTemasAluno(alunoId);
     }
 
     public void marcarDefesPropostaTese(Integer teseID, String emailDocente, Integer arguenteID,Integer docenteOrientadorID, Boolean isPresencial, String sala, Integer duracao, Date data) throws NotPresentException{

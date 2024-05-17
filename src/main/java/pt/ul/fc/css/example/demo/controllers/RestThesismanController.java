@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.criteria.CriteriaBuilder.In;
+import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
 import pt.ul.fc.css.example.demo.dtos.TeseDTO;
@@ -42,6 +43,20 @@ public class RestThesismanController {
 
     @Autowired
     private ThesismanService thesismanService;
+
+    @PostMapping("/login")
+    ResponseEntity<?> login(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            JsonNode jsonNode = objectMapper.readTree(json);
+            String email = jsonNode.get("email").asText();
+            String password = jsonNode.get("password").asText();
+            AlunoDTO userDTO = thesismanService.loginAluno(email, password);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        }catch(NotPresentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/listarTemas")
     ResponseEntity<?> listarTemas(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
