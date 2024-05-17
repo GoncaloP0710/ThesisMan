@@ -24,11 +24,11 @@ public class ListarTemasAlunosHandler {
         this.alunoRepository = alunoRepository;
     }
 
-    public List<TemaDTO> listarTemasAluno(String email) throws NotPresentException {
-        if (email == null) {
-            throw new IllegalArgumentException("Email é obrigatório");
+    public List<TemaDTO> listarTemasAluno(Integer alunoId) throws NotPresentException {
+        if (alunoId == null) {
+            throw new IllegalArgumentException("Id do aluno é obrigatório");
         }
-        Optional<Aluno> optAluno = alunoRepository.findByEmail(email);
+        Optional<Aluno> optAluno = alunoRepository.findById(alunoId);
         if (optAluno.isEmpty()) {
             throw new NotPresentException("Aluno não encontrado");
         }
