@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
+// TODO: Importar as classes do lado da app
 import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
