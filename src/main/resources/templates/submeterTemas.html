@@ -13,19 +13,24 @@
 </head>
 <body>
     <h1>Theme Submission</h1>
-    <form th:action = "@{/submitTemaCall}" method="post">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title"><br>
-        <label for="description">Description:</label><br>
-        <textarea id="description" name="description"></textarea><br>
-        <label for="compensation">Monthly Compensation:</label><br>
-        <input type="number" id="compensation" name="compensation" step="0.01" min="0"><br>
-        <label for="masters">Compatible Masters:</label><br>
-        <select id="masters" name="masters">
-            <option th:each="mestrado : ${mestrados}" th:value="${mestrado.id}" th:text="${mestrado.name}"></option>
-        </select><br>
-        <input type="submit" value="Submit">
-    </form>
+    <div style="display: flex;">
+        <form th:action = "@{/submitTemaCall}" method="post">
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title"><br>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description"></textarea><br>
+            <label for="compensation">Monthly Compensation:</label><br>
+            <input type="number" id="compensation" name="compensation" step="0.01" min="0"><br>
+            <label for="masters">Compatible Masters:</label><br>
+            <select id="masters" name="masters" multiple>
+                <option th:each="mestrado : ${mestrados}" th:value="${mestrado}" th:text="${mestrado}"></option>
+            </select><br>
+            <input type="submit" value="Submit">
+        </form>
+        <p style="margin-left: 20px;">
+            To select multiple Masters, hold down the Control (on Windows) or Command (on Mac) key and click on the options.
+        </p>
+    </div>
 </body>
 </html>
 </body>

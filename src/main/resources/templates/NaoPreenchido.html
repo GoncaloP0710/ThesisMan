@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt_PT">
+<head>
+    <link href="css/style.css" rel="stylesheet"/>
+    <title>Thesisman Application</title>
+</head>
+
+<body>
+    <h1 id="tema_submetido">Campos não preenchidos</h1>
+    <p>Pelo menos um dos campos não foi prenchido</p>
+    <form th:action = "@{/atribuicaoTema}" method="GET" id="form1">
+        <button>voltar atrás</button>
+    </form>
+    <h2 id="error" th:text="${error}"></h2>
+</body>
+</html>
