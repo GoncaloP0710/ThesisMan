@@ -22,13 +22,15 @@ public class SubmissaoTemaDocenteHandler {
     private DocenteRepository docenteRepository;
     private MestradoRepository mestradoRepository;
 
-    public SubmissaoTemaDocenteHandler(TemaRepository temaRepository, DocenteRepository docenteRepository) {
+    public SubmissaoTemaDocenteHandler(TemaRepository temaRepository, DocenteRepository docenteRepository, MestradoRepository mestradoRepository) {
         this.temaRepository = temaRepository;
         this.docenteRepository = docenteRepository;
+        this.mestradoRepository = mestradoRepository;
     }
 
-    
-    public DocenteDTO submeterTema(String titulo, String descricao, float remuneracaoMensal, List<String> mestradosCompativeis, Integer docenteId) throws NotPresentException {
+     
+    public DocenteDTO submeterTema(String titulo, String descricao, float remuneracaoMensal, 
+                                    List<String> mestradosCompativeis, Integer docenteId) throws NotPresentException {
         Optional<Docente> optDocente = docenteRepository.findById(docenteId); 
         Docente docente = optDocente.get();
         Optional<Tema> optTema = temaRepository.findByTitulo(titulo);

@@ -17,6 +17,7 @@ public class LoginHandler {
     private AlunoRepository alunoRepository;
     private UtilizadorEmpresarialRepository utilizadorEmpresarialRepository;
     private DocenteRepository docenteRepository;
+    private Docente currentDocente;
 
     // Construtor
     public LoginHandler(AlunoRepository alunoRepository, UtilizadorEmpresarialRepository utilizadorEmpresarialRepository,
@@ -69,10 +70,13 @@ public class LoginHandler {
     }
 
     public DocenteDTO loginDocente(String email) throws NotPresentException {
-        Optional<Docente> currentDocente = docenteRepository.findByEmail(email);
-        if(currentDocente.isPresent()){
-            Docente docente = currentDocente.get();
-            DocenteDTO docenteDTO = new DocenteDTO(docente.getId(), docente.getName(), docente.getEmail(), docente.getDepartamento(), docente.isAdmnistrador(), getTemasIds(docente.getTemasPropostos()), getProjetosIds(docente.getProjects()));
+        Optional<Docente> optCurrentDocente = docenteRepository.findByEmail(email);
+        if(optCurrentDocente.isPresent()){
+            currentDocente = optCurrentDocente.get();
+            DocenteDTO docenteDTO = new DocenteDTO(currentDocente.getId(), currentDocente.getName(), 
+                                                    currentDocente.getEmail(), currentDocente.getDepartamento(), 
+                                                    currentDocente.isAdmnistrador(), getTemasIds(currentDocente.getTemasPropostos()), 
+                                                    getProjetosIds(currentDocente.getProjects()));
             return docenteDTO;
         } else {
             throw new NotPresentException("Docente não encontrado");

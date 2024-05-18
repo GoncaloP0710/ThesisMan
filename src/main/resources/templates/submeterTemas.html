@@ -21,7 +21,9 @@
         <label for="compensation">Monthly Compensation:</label><br>
         <input type="number" id="compensation" name="compensation" step="0.01" min="0"><br>
         <label for="masters">Compatible Masters:</label><br>
-        <textarea id="masters" name="masters" placeholder="Enter masters, separated by commas"></textarea><br>
+        <select id="masters" name="masters">
+            <option th:each="mestrado : ${mestrados}" th:value="${mestrado.id}" th:text="${mestrado.name}"></option>
+        </select><br>
         <input type="submit" value="Submit">
     </form>
 </body>

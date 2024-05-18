@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
+@SessionAttributes({"id", "name", "isAdmin", "temas propostos", "projetos orientados"})
 public class WebController {
 
     Logger logger = LoggerFactory.getLogger(WebController.class);
@@ -46,6 +48,8 @@ public class WebController {
         if(email.matches("^[a-zA-Z0-9]*@mockdocente[.]pt")){
             try{
                docente = thesismanService.loginDocente(email, "");
+               System.out.println("Docente: " + docente.getNome());
+               System.out.println("Docenteid: " + docente.getId());
             }catch(NotPresentException e){
                 logger.error("Erro no login: " + e.getMessage());
                 return "login";
@@ -65,6 +69,11 @@ public class WebController {
         model.addAttribute("isAdmin", docente.getIsAdministrador());
         model.addAttribute("temas propostos", docente.getTemasPropostos());
         model.addAttribute("projetos orientados", docente.getProjetosId());
+        return "dashboard";
+    }
+
+    @GetMapping({"/dashboard"})
+    public String dashboard(){
         return "dashboard";
     }
 
@@ -109,19 +118,20 @@ public class WebController {
     }
     
     @PostMapping("/submitTemaCall")
-    public String submitTemaCall(final Model model, @RequestBody String title,
-    @RequestBody String description, @RequestBody float compensation, @RequestBody String masters){ {
+    public String submitTemaCall(final Model model, @RequestParam String title,
+    @RequestParam String description, @RequestParam float compensation, @RequestParam String masters) {
+        System.out.println("Model id: " + model.getAttribute("id"));
         try{
-            //TODO: WEB CONTROLLER IR BUSCAR MESTRADOS
             List<String> mastersList = Arrays.asList(masters.split(","));
-            List<Integer> mastersIds = thesismanService.getMasters(mastersList);
-            thesismanService.submeterTemaDocente(title, description, compensation, userEmail);
-        }catch(){
-           
+            Integer docenteId = (Integer) model.getAttribute("id");
+            thesismanService.submeterTemaDocente(title, description, compensation, mastersList,docenteId);
+        }catch(NotPresentException e){
+            logger.error("Erro ao submeter tema: " + e.getMessage());
+            return "submeterTema";
         }
         
-        return entity;
+        return "temaSubmetido";
     }
     
- }
+ 
 }

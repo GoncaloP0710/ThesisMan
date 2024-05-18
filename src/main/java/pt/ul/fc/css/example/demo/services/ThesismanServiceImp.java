@@ -1,6 +1,7 @@
 package pt.ul.fc.css.example.demo.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import pt.ul.fc.css.example.demo.entities.Aluno;
 // import pt.ul.fc.css.example.demo.handlers.EstatisticasHandler;
 // import pt.ul.fc.css.example.demo.handlers.ListarTemasAlunosHandler;
 import pt.ul.fc.css.example.demo.handlers.LoginHandler;
+import pt.ul.fc.css.example.demo.handlers.MestradoHandler;
 // import pt.ul.fc.css.example.demo.handlers.MarcacaoDefesaPropostaTeseHandler;
 // import pt.ul.fc.css.example.demo.handlers.RegistoNotaPropostaTeseHandler;
 // import pt.ul.fc.css.example.demo.handlers.SubmissaoDocPropostaTeseAlunoHandler;
@@ -42,6 +44,7 @@ public class ThesismanServiceImp implements ThesismanService{
     // @Autowired private CandidaturaHandler candidaturaHandler;
     // @Autowired private ListarTemasAlunosHandler listarTemasAlunosHandler;
     @Autowired private LoginHandler loginHandler;
+    @Autowired private MestradoHandler mestradoHandler;
     // @Autowired private MarcacaoDefesaPropostaTeseHandler marcacaoDefesaPropostaTeseHandler;
     // @Autowired private RegistoNotaPropostaTeseHandler registoNotaPropostaTeseHandler;
     // @Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
@@ -103,9 +106,13 @@ public class ThesismanServiceImp implements ThesismanService{
         return loginHandler.loginUserEmpresarial(email);
     }
 
-    //  public void submeterTemaDocente(Integer temaId, String descricao, float remuneracaoMensal, String email) throws NotPresentException{
-    //      submissaoTemaDocenteHandler.submeterTema(temaId, descricao, remuneracaoMensal, email);
-    // }
+     public void submeterTemaDocente(String titulo, String descricao, float remuneracaoMensal, List<String> mestradosCompativeis, Integer docenteId) throws NotPresentException{
+         submissaoTemaDocenteHandler.submeterTema(titulo, descricao, remuneracaoMensal, mestradosCompativeis, docenteId);
+    }
+
+    public List<Integer> getMestradosId(List<String> mestrados){
+         return mestradoHandler.getMestradosId(mestrados);
+    }
 
 //     public void submeterTemaUtilizadorEmpresarial(Integer temaId, String descricao, float remuneracaoMensal, String email) throws NotPresentException{
 //         submissaoTemaUtilizadorEmpresarialHandler.submeterTema(temaId, descricao, remuneracaoMensal, email);
