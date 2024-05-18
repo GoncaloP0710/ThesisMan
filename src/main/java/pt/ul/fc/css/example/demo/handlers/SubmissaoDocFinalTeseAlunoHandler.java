@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.entities.Tese;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
-import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.TeseDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
