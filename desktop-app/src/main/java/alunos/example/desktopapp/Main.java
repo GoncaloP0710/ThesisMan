@@ -1,4 +1,4 @@
-package com.example.desktopapp;
+package alunos.example.desktopapp;
 
 
 import javafx.application.Application;
@@ -12,7 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 
-public class ThesisManJavafx extends  Application{
+public class Main extends  Application{
 
 	// RestThesismanController controller;
     @Override

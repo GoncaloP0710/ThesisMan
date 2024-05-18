@@ -1,4 +1,4 @@
-package com.example.desktopapp.login;
+package alunos.example.desktopapp.login;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +11,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import com.example.desktopapp.Main;
-import com.example.desktopapp.main.RestAPIClientService;
-import com.example.desktopapp.menu.MenuController;
+import alunos.example.desktopapp.Main;
+import alunos.example.desktopapp.main.RestAPIClientService;
+import alunos.example.desktopapp.menu.MenuController;
 
 public class LoginController {
 	private double height;
@@ -81,13 +81,13 @@ public class LoginController {
 
 	@FXML
 	public void loginHandler() throws Exception {
-		if(RestAPIClientService.getInstance().logIn(email.getText(), password.getText())){
-			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
-			StackPane root = loader.load();
+		// if(RestAPIClientService.getInstance().logIn(email.getText(), password.getText())){
+		// 	FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
+		// 	StackPane root = loader.load();
             // TODO: MenuController
-			MenuController controller = loader.<MenuController>getController();
-			controller.setUp(primaryStage);
-			primaryStage.getScene().setRoot(root);
-		}
+			// MenuController controller = loader.<MenuController>getController();
+			// controller.setUp(primaryStage);
+			// primaryStage.getScene().setRoot(root);
+		// }
 	}
 }

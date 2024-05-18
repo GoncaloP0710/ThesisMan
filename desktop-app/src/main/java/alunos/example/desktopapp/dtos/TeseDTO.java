@@ -1,4 +1,4 @@
-package pt.ul.fc.css.example.demo.dtos;
+package alunos.example.desktopapp.dtos;
 
 import java.util.List;
 
