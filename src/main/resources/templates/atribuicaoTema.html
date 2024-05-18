@@ -1,0 +1,23 @@
+<body>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Theme Submission</title>
+    </head>
+    <body>
+        <h1>Atribuir Temas</h1>
+        <form th:action="@{/atribuirTemaCall}" method="post">
+            <label for="tema">Theme:</label><br>
+            <select id="tema" name="tema">
+                <option th:each="tema : ${temasDisponiveis}" th:value="${tema}" th:text="${tema}"></option>
+            </select><br>
+            <label for="aluno">Student:</label><br>
+            <select id="aluno" name="aluno">
+                <option th:each="aluno : ${alunos}" th:value="${aluno}" th:text="${aluno}"></option>
+            </select><br>
+            <input type="submit" value="Atribuir">
+        </form>
+    </body>
+    </html>
+</body>
+</html>

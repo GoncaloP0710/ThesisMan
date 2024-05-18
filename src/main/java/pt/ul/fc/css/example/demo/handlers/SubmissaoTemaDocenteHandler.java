@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
+import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Mestrado;
 import pt.ul.fc.css.example.demo.entities.Projeto;
@@ -75,5 +76,32 @@ public class SubmissaoTemaDocenteHandler {
         Mestrado mestrado = optMestrado.get();
         tema.addMestradosCompativeis(mestrado);
         temaRepository.save(tema);
+    }
+
+    public List<TemaDTO> getTemas(){
+        List<Tema> temas = temaRepository.findAll();
+        List<TemaDTO> result = new ArrayList<>();
+        for (Tema t : temas) {
+            List<Integer> mestradosIds = new ArrayList<>();
+            for (Mestrado m : t.getMestrados()) {
+                mestradosIds.add(m.getId());
+            }
+            result.add(new TemaDTO(t.getId(), t.getTitulo(), t.getDescricao(), t.getRemuneracaoMensal(), t.getSubmissor().getId(), mestradosIds));
+        }
+        return result;
+        
+    }
+
+    public TemaDTO getTema(String titulo) throws NotPresentException{
+        Optional<Tema> optTema = temaRepository.findByTitulo(titulo);
+        if(optTema.isEmpty()){
+            throw new NotPresentException("Tema não encontrado");
+        }
+        Tema tema = optTema.get();
+        List<Integer> mestradosIds = new ArrayList<>();
+        for (Mestrado m : tema.getMestrados()) {
+            mestradosIds.add(m.getId());
+        }
+        return new TemaDTO(tema.getId(), tema.getTitulo(), tema.getDescricao(), tema.getRemuneracaoMensal(), tema.getSubmissor().getId(), mestradosIds);
     }
 }

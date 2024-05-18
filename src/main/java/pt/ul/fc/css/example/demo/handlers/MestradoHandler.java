@@ -24,4 +24,13 @@ public class MestradoHandler {
         }
         return mestradosId;
     }
+
+    public List<String> getMestrados(){
+        List<Mestrado> mestrados = mestradoRepository.findAll();
+        List<String> mestradosNames = new ArrayList<>();
+        for (Mestrado m : mestrados) {
+            mestradosNames.add(m.getNome());
+        }
+        return mestradosNames;
+    }
 }

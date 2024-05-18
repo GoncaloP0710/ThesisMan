@@ -1,47 +1,24 @@
 package pt.ul.fc.css.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pt.ul.fc.css.example.demo.entities.Docente;
-import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
-import pt.ul.fc.css.example.demo.entities.Mestrado;
-import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
-import pt.ul.fc.css.example.demo.exceptions.IllegalCandidaturaException;
-import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
-import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
-import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
-import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
-import pt.ul.fc.css.example.demo.entities.Aluno;
-// import pt.ul.fc.css.example.demo.handlers.AtribuicaoTemaAdminHandler;
-// import pt.ul.fc.css.example.demo.handlers.CandidaturaHandler;
-// import pt.ul.fc.css.example.demo.handlers.EstatisticasHandler;
-// import pt.ul.fc.css.example.demo.handlers.ListarTemasAlunosHandler;
-import pt.ul.fc.css.example.demo.handlers.LoginHandler;
-import pt.ul.fc.css.example.demo.handlers.MestradoHandler;
-// import pt.ul.fc.css.example.demo.handlers.MarcacaoDefesaPropostaTeseHandler;
-// import pt.ul.fc.css.example.demo.handlers.RegistoNotaPropostaTeseHandler;
-// import pt.ul.fc.css.example.demo.handlers.SubmissaoDocPropostaTeseAlunoHandler;
- import pt.ul.fc.css.example.demo.handlers.SubmissaoTemaDocenteHandler;
-// import pt.ul.fc.css.example.demo.handlers.SubmissaoTemaUtilizadorEmpresarialHandler;
-import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
-import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
-import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
-import pt.ul.fc.css.example.demo.repositories.TemaRepository;
-import pt.ul.fc.css.example.demo.repositories.TeseRepository;
-import pt.ul.fc.css.example.demo.repositories.UtilizadorEmpresarialRepository;
-import pt.ul.fc.css.example.demo.repositories.DefesaRepository;
-import pt.ul.fc.css.example.demo.repositories.JuriRepository;
-import pt.ul.fc.css.example.demo.repositories.MestradoRepository;
+import pt.ul.fc.css.example.demo.exceptions.*;
+import pt.ul.fc.css.example.demo.dtos.*;
+import pt.ul.fc.css.example.demo.entities.*;
+import pt.ul.fc.css.example.demo.handlers.*;
+import pt.ul.fc.css.example.demo.repositories.*;
+
 
 @Service
 public class ThesismanServiceImp implements ThesismanService{
 
-    // @Autowired private AtribuicaoTemaAdminHandler atribuicaoTemaAdminHandler;
-    // @Autowired private CandidaturaHandler candidaturaHandler;
+    @Autowired private AtribuicaoTemaAdminHandler atribuicaoTemaAdminHandler;
+    @Autowired private CandidaturaHandler candidaturaHandler;
     // @Autowired private ListarTemasAlunosHandler listarTemasAlunosHandler;
     @Autowired private LoginHandler loginHandler;
     @Autowired private MestradoHandler mestradoHandler;
@@ -83,16 +60,29 @@ public class ThesismanServiceImp implements ThesismanService{
         docenteRepository.save(docente1);
         docenteRepository.save(docente2);
 
+        Tema tema1 = new Tema("Tema1", "Descrição1", 1000, docente1);
+        Tema tema2 = new Tema("Tema2", "Descrição2", 2000, docente2);
+        temaRepository.save(tema1);
+        temaRepository.save(tema2);
+        docente1.addTemaPropostos(tema1);
+        docente2.addTemaPropostos(tema2);
+        docenteRepository.save(docente1);
+        docenteRepository.save(docente2);
+
         Aluno aluno1 = new Aluno(18.1, "Maria", "fc123@alunos.pt",mestrado1);
         Aluno aluno2 = new Aluno(12.5, "João","fc345@alunos.pt", mestrado2);
         alunoRepository.save(aluno1);
         alunoRepository.save(aluno2);
-    
+
+        Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno1, null);
+        Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2, null);
+        candidaturaRepository.save(candidatura1);
+        candidaturaRepository.save(candidatura2);
     }
 
-    public void loginAluno(String email, String password) throws NotPresentException{
-        loginHandler.loginAluno(email);
-    }
+    // public void loginAluno(String email, String password) throws NotPresentException{
+    //     loginHandler.loginAluno(email);
+    // }
 
     public DocenteDTO loginDocente(String email, String password) throws NotPresentException{
         return loginHandler.loginDocente(email);
@@ -114,6 +104,37 @@ public class ThesismanServiceImp implements ThesismanService{
          return mestradoHandler.getMestradosId(mestrados);
     }
 
+    public List<String> getMestrados(){
+        return mestradoHandler.getMestrados();
+    }
+
+    public List<TemaDTO> getTemas(){
+        return submissaoTemaDocenteHandler.getTemas();
+    }
+
+    public TemaDTO getTema(String titulo) throws NotPresentException{
+        return submissaoTemaDocenteHandler.getTema(titulo);
+    }
+
+    public List<AlunoDTO> getAlunos(){
+        return atribuicaoTemaAdminHandler.getAlunos();
+    }
+
+    public AlunoDTO getAluno(String nome) throws NotPresentException{
+        return atribuicaoTemaAdminHandler.getAluno(nome);
+    }
+
+    public List<CandidaturaDTO> getCandidaturas(){
+        List<Candidatura> c = candidaturaHandler.getCandidaturas();
+        List<CandidaturaDTO> result = new ArrayList<>();
+        for (Candidatura candidatura : c) {
+            result.add(new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId()));
+        }
+        return result;
+    }
+
+
+
 //     public void submeterTemaUtilizadorEmpresarial(Integer temaId, String descricao, float remuneracaoMensal, String email) throws NotPresentException{
 //         submissaoTemaUtilizadorEmpresarialHandler.submeterTema(temaId, descricao, remuneracaoMensal, email);
 //     }
@@ -126,9 +147,9 @@ public class ThesismanServiceImp implements ThesismanService{
 //         submissaoDocPropostaTeseAlunoHandler.SubmitPropostaTeseDocsAluno(candidaturaID, document, emailAluno);
 //     }
 
-//     public void atribuicaoTemaAdmin(Integer temaId, Integer alunoId, Integer docenteId) throws NotPresentException{
-//         atribuicaoTemaAdminHandler.atribuirTemaAdmin(temaId, alunoId, docenteId);
-//     }
+    public void atribuicaoTemaAdmin(Integer temaId, Integer alunoId, Integer docenteId) throws NotPresentException{
+        atribuicaoTemaAdminHandler.atribuirTemaAdmin(temaId, alunoId, docenteId);
+    }
 
 //     public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
 //         return candidaturaHandler.newCandidatura(dataCandidatura, estado, alunoId, temaId);

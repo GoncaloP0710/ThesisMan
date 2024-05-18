@@ -1,5 +1,6 @@
 package pt.ul.fc.css.example.demo.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
+import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
+import pt.ul.fc.css.example.demo.dtos.TemaDTO;
+import pt.ul.fc.css.example.demo.entities.Aluno;
+import pt.ul.fc.css.example.demo.entities.Candidatura;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
 import pt.ul.fc.css.example.demo.services.ThesismanServiceImp;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
-@SessionAttributes({"id", "name", "isAdmin", "temas propostos", "projetos orientados"})
+@SessionAttributes({"id", "name", "isAdmin", "temas propostos", "projetos orientados", "mestrados", "temasDisponiveis",
+                    "alunos", "candidaturas"})
 public class WebController {
 
     Logger logger = LoggerFactory.getLogger(WebController.class);
@@ -67,8 +74,10 @@ public class WebController {
         model.addAttribute("id", docente.getId());
         model.addAttribute("name", docente.getNome());
         model.addAttribute("isAdmin", docente.getIsAdministrador());
-        model.addAttribute("temas propostos", docente.getTemasPropostos());
+        model.addAttribute("temas propostos", thesismanService.getTemas());
         model.addAttribute("projetos orientados", docente.getProjetosId());
+        model.addAttribute("mestrados", thesismanService.getMestrados());
+        model.addAttribute("candidaturas", thesismanService.getCandidaturas());
         return "dashboard";
     }
 
@@ -88,12 +97,54 @@ public class WebController {
     }
 
     @GetMapping({"/atribuicaoTema"})
-    public String atribuicaoTema(){
-        return "atribuicaoTema";
+    public String atribuicaoTema(final Model model){
+        if((Boolean) model.getAttribute("isAdmin") == true){
+            List<TemaDTO> temas = thesismanService.getTemas();
+            List<String> temasName = new ArrayList<String>();
+            for(TemaDTO t : temas){
+                temasName.add(t.getTitulo());
+            }
+            model.addAttribute("temasDisponiveis", temasName);
+            List<AlunoDTO> alunos = thesismanService.getAlunos();
+            List<String> alunosName = new ArrayList<String>();
+            for(AlunoDTO a : alunos){
+                alunosName.add(a.getName());
+            }
+            model.addAttribute("alunos", alunosName);
+            return "atribuicaoTema";
+        }else{
+            return "notAdmin";
+        }
     }
 
+    @PostMapping({"/atribuirTemaCall"})
+    public String postMethodName(@RequestParam String aluno, @RequestParam String tema) {
+        try{
+            AlunoDTO a = thesismanService.getAluno(aluno);
+            TemaDTO t = thesismanService.getTema(tema);
+            thesismanService.atribuicaoTemaAdmin(t.getId(), a.getId(), t.getId());
+        }catch(NotPresentException e){
+            logger.error("Erro ao atribuir tema: " + e.getMessage());
+            return "NaoPreenchido";
+        }catch(IllegalArgumentException e){
+            logger.error("Erro ao atribuir tema: " + e.getMessage());
+            return "alunoNoCandidaturas";
+        }
+        return "temaAtribuido";
+    }
+    
+
     @GetMapping({"/marcarDefesaProposta"})
-    public String marcarDefesaProposta(){
+    public String marcarDefesaProposta(final Model model){
+        @SuppressWarnings("unchecked")
+        List<CandidaturaDTO> c = (List<CandidaturaDTO>) model.getAttribute("candidaturas");
+        List<Integer> candidaturasWithTese = new ArrayList<Integer>();
+        for(CandidaturaDTO candidatura : c){
+            if(candidatura.getTeseId() != null){
+                candidaturasWithTese.add(candidatura.getId());
+            }
+        }
+
         return "marcarDefesaProposta";
     }
 
