@@ -28,18 +28,18 @@ public class LoginHandler {
     }
 
     // login de aluno
-    // public AlunoDTO loginAluno(String email) throws NotPresentException {
-    //     // Procurar aluno com o username fornecido
-    //     Optional<Aluno> optAluno = alunoRepository.findByEmail(email);
-    //     // Verificar se o aluno existe
-    //     if(optAluno.isPresent()){
-    //         Aluno aluno = optAluno.get();
-    //         AlunoDTO alunoDTO = new AlunoDTO(aluno.getName(), aluno.getEmail());
-    //         return alunoDTO;
-    //     } else {
-    //         throw new NotPresentException("Aluno não encontrado");
-    //     }
-    // }
+    public AlunoDTO loginAluno(String email) throws NotPresentException {
+        // Procurar aluno com o username fornecido
+        Optional<Aluno> optAluno = alunoRepository.findByEmail(email);
+        // Verificar se o aluno existe
+        if(optAluno.isPresent()){
+            Aluno aluno = optAluno.get();
+            AlunoDTO alunoDTO = new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getId());
+            return alunoDTO;
+        } else {
+            throw new NotPresentException("Aluno não encontrado");
+        }
+    }
 
     // registo de utilizador empresarial
     public UtilizadorEmpresarialDTO registerUtilizadorEmpresarial(String empresa, String name, String email) throws NotPresentException {
