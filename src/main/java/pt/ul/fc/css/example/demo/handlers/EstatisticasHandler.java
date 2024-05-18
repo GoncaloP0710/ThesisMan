@@ -19,12 +19,16 @@
 //         this.teseRepository = teseRepository;
 //     }
 
-//     public float getEstatisticas() {
-//         List<Tese> teses = teseRepository.findAll();
-//         List<Defesa> defesas = teses.stream().map(Tese::getDefesaFinal).filter(d -> d != null).toList();
-//         Optional<Float> notasAcumuladas = defesas.stream().map(Defesa::getNota).reduce((m,n) -> m + n);
-//         if(notasAcumuladas.isEmpty())
-//             throw new IllegalArgumentException("Não foi possivel acumular as notas");
-//         return notasAcumuladas.get() / defesas.size();
-//     }
+//     public String getEstatisticas() {
+//        List<Tese> teses = teseRepository.findAll();
+//        List<Defesa> defesas = teses.stream().map(Tese::getDefesaFinal).filter(d -> d != null).toList();
+//        Optional<Float> notasAcumuladas = defesas.stream().map(Defesa::getNota).reduce((m,n) -> m + n);
+//        double numeroAprovados = defesas.stream().map(Defesa::getNota).toList().size();
+//        if(notasAcumuladas.isEmpty())
+//            throw new IllegalArgumentException("Não foi possivel acumular as notas");
+//        String s = "Estatísticas: " + System.lineSeparator() +
+//                    "Taxa de aprovação: " + Math.round(numeroAprovados / teses.size() * 10e4)  / 10e2 + "%" + System.lineSeparator() +
+//                    "Média: " + Math.round(notasAcumuladas.get() / defesas.size() * 10e2)  / 10e2 + System.lineSeparator();
+//        return s;
+//    }
 // }

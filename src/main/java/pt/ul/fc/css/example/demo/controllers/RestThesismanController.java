@@ -15,13 +15,14 @@ import pt.ul.fc.css.example.demo.dtos.TeseDTO;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
 import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
-import pt.ul.fc.css.example.exceptions.IllegalCandidaturaException;
-import pt.ul.fc.css.example.exceptions.NotPresentException;
-import pt.ul.fc.css.example.services.ThesismanService;
+import pt.ul.fc.css.example.demo.exceptions.IllegalCandidaturaException;
+import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
+import pt.ul.fc.css.example.demo.services.ThesismanService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 import javax.xml.crypto.Data;
 
@@ -59,12 +60,12 @@ public class RestThesismanController {
     }
 
     @GetMapping("/listarTemas")
-    ResponseEntity<?> listarTemas(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
+    public ResponseEntity<?> listarTemas(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             JsonNode jsonNode = objectMapper.readTree(json);
             Integer alunoId = jsonNode.get("alunoId").intValue();
-            List<TemaDTO> temas = thesismanService.listarTemasAlunos(alunoId);
+            LinkedList<TemaDTO> temas = thesismanService.listarTemasAlunos(alunoId);
             return new ResponseEntity<>(temas, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
