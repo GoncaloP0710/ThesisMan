@@ -5,15 +5,15 @@ public class AlunoDTO{
     private String name;
     private String contact;
     private Double average;
-    private String mestrado;
+    private Integer mestradoid;
     
 
-    public AlunoDTO(Integer id, String name, String contact, Double average, String mestrado) {
+    public AlunoDTO(Integer id, String name, String contact, Double average, Integer mestradoid) {
         this.id = id;
         this.name = name;
         this.contact = contact;
         this.average = average;
-        this.mestrado = mestrado;
+        this.mestradoid = mestradoid;
     }
 
     public AlunoDTO(){}
@@ -34,8 +34,8 @@ public class AlunoDTO{
         return average;
     }
 
-    public String getMestrado() {
-        return mestrado;
+    public Integer getMestradoId() {
+        return mestradoid;
     }
 
     public void setName(String name) {

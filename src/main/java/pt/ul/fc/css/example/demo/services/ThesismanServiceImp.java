@@ -19,12 +19,13 @@ public class ThesismanServiceImp implements ThesismanService{
 
     @Autowired private AtribuicaoTemaAdminHandler atribuicaoTemaAdminHandler;
     @Autowired private CandidaturaHandler candidaturaHandler;
-    // @Autowired private ListarTemasAlunosHandler listarTemasAlunosHandler;
+    @Autowired private ListarTemasAlunosHandler listarTemasAlunosHandler;
     @Autowired private LoginHandler loginHandler;
     @Autowired private MestradoHandler mestradoHandler;
     // @Autowired private MarcacaoDefesaPropostaTeseHandler marcacaoDefesaPropostaTeseHandler;
     // @Autowired private RegistoNotaPropostaTeseHandler registoNotaPropostaTeseHandler;
-    // @Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
+    @Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
+    @Autowired private SubmissaoDocFinalTeseAlunoHandler submissaoDocFinalTeseAlunoHandler;
     @Autowired private SubmissaoTemaDocenteHandler submissaoTemaDocenteHandler;
     // @Autowired private SubmissaoTemaUtilizadorEmpresarialHandler submissaoTemaUtilizadorEmpresarialHandler;
     // @Autowired private EstatisticasHandler estatisticasHandler;
@@ -79,10 +80,6 @@ public class ThesismanServiceImp implements ThesismanService{
         candidaturaRepository.save(candidatura1);
         candidaturaRepository.save(candidatura2);
     }
-
-    // public void loginAluno(String email, String password) throws NotPresentException{
-    //     loginHandler.loginAluno(email);
-    // }
 
     public DocenteDTO loginDocente(String email, String password) throws NotPresentException{
         return loginHandler.loginDocente(email);
@@ -151,24 +148,12 @@ public class ThesismanServiceImp implements ThesismanService{
         atribuicaoTemaAdminHandler.atribuirTemaAdmin(temaId, alunoId, docenteId);
     }
 
-//     public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
-//         return candidaturaHandler.newCandidatura(dataCandidatura, estado, alunoId, temaId);
-//     }
-
 //     // public void addTemaToCandidatura(String titulo, Integer candidaturaID) throws NotPresentException{
 //     //     candidaturaHandler.addTemaToCandidatura(titulo, candidaturaID);
 //     // }
 
 //     public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException{
 //         candidaturaHandler.addTeseToCandidatura(teseID, candidaturaID);
-//     }
-
-//     public void cancelCandidatura(Integer id) throws NotPresentException{
-//         candidaturaHandler.cancelCandidatura(id);
-//     }
-
-//     public void listarTemasAlunos(String emailAluno) throws NotPresentException{
-//         listarTemasAlunosHandler.listarTemasAluno(emailAluno);
 //     }
 
 //     public void marcarDefesPropostaTese(Integer teseID, String emailDocente, Integer arguenteID,Integer docenteOrientadorID, Boolean isPresencial, String sala, Integer duracao, Date data) throws NotPresentException{
@@ -183,10 +168,40 @@ public class ThesismanServiceImp implements ThesismanService{
 //         estatisticasHandler.getEstatisticas();
 //     }
 
+// [][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][]
+// [__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__]
+// [][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][]
+// [__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__]
+// [][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][]
+// [][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][]
+// [__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__]
+// [][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][]
+// [__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__]
+// [][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][]
 
 
+    public AlunoDTO loginAluno(String email, String password) throws NotPresentException{
+        return loginHandler.loginAluno(email);
+    }
 
+    public List<TemaDTO> listarTemasAlunos(Integer alunoId) throws NotPresentException{
+        return listarTemasAlunosHandler.listarTemasAluno(alunoId);
+    }
+
+    public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
+        return candidaturaHandler.newCandidatura(dataCandidatura, estado, alunoId, temaId);
+    }
     
+    public void cancelCandidatura(Integer id) throws NotPresentException{
+        candidaturaHandler.cancelCandidatura(id);
+    }
     
+    public TeseDTO submitPropostaTeseDocsAluno(Integer candidaturaID, byte[] document, Integer alunoId) throws NotPresentException{
+        return submissaoDocPropostaTeseAlunoHandler.SubmitPropostaTeseDocsAluno(candidaturaID, document, alunoId);
+    }
+
+    public TeseDTO submeterDocFinalTeseAluno(Integer alunoId, Integer candidaturaID, byte[] document) throws NotPresentException{
+        return submissaoDocFinalTeseAlunoHandler.submeterDocFinalTeseAluno(alunoId, candidaturaID, document);
+    }
 }
 
