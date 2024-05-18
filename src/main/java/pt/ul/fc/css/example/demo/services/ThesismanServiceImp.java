@@ -183,6 +183,11 @@ public class ThesismanServiceImp implements ThesismanService{
 //         estatisticasHandler.getEstatisticas();
 //     }
 
+    @Override
+    public AlunoDTO loginAluno(String email, String password) throws NotPresentException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
 
 

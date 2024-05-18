@@ -1,30 +1,24 @@
-package pt.ul.fc.css.example.demo;
+package com.example.desktopapp;
 
-import java.util.LinkedList;
-
-import org.springframework.http.ResponseEntity;
 
 import javafx.application.Application;
-import javafx.event.EventType;
-import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import pt.ul.fc.css.example.demo.controllers.RestThesismanController;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+
 
 public class ThesisManJavafx extends  Application{
 
-	RestThesismanController controller;
+	// RestThesismanController controller;
     @Override
     public void start(Stage primaryStage) throws Exception {
     	
-    	controller = new RestThesismanController();
+    	// controller = new RestThesismanController();
     	primaryStage.setResizable(false);
 
     	primaryStage.setTitle("ThesisMan");
@@ -64,23 +58,23 @@ public class ThesisManJavafx extends  Application{
         return scene;
     }
     
-    public Scene ThemePage() {
-    	BorderPane root = new BorderPane();
+    // public Scene ThemePage() {
+    // 	BorderPane root = new BorderPane();
     	
-    	Label title = new Label("Temas");
+    // 	Label title = new Label("Temas");
     	
-    	ResponseEntity<?> temas = controller.listarTemas("ola");
+    // 	ResponseEntity<?> temas = controller.listarTemas("ola");
     	
-    	LinkedList<String> stemas = temas.getBody();
+    // 	LinkedList<String> stemas = temas.getBody();
     	
-        Scene scene = new Scene(root, 800, 600);
-        return scene;
-    }
+    //     Scene scene = new Scene(root, 800, 600);
+    //     return scene;
+    // }
     
-    public Scene createCandidaturaPage() {
-    	BorderPane root = new BorderPane();
+    // public Scene createCandidaturaPage() {
+    // 	BorderPane root = new BorderPane();
     	
     	
-    }
+    // }
  
 }
