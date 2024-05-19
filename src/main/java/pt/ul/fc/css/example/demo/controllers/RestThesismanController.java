@@ -15,17 +15,18 @@ import pt.ul.fc.css.example.demo.dtos.TeseDTO;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
 import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
-import pt.ul.fc.css.example.exceptions.IllegalCandidaturaException;
-import pt.ul.fc.css.example.exceptions.NotPresentException;
-import pt.ul.fc.css.example.services.ThesismanService;
+import pt.ul.fc.css.example.demo.exceptions.IllegalCandidaturaException;
+import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
+import pt.ul.fc.css.example.demo.services.ThesismanService;
+import pt.ul.fc.css.example.demo.services.ThesismanServiceImp;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.crypto.Data;
 
-import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RestThesismanController {
 
     @Autowired
-    private ThesismanService thesismanService;
+    private ThesismanServiceImp ThesismanServiceImp;
+
+    @PostMapping("/populate")
+    public ResponseEntity<?> populate(){
+        ThesismanServiceImp.populate();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @PostMapping("/login")
     ResponseEntity<?> login(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
@@ -51,7 +58,7 @@ public class RestThesismanController {
             JsonNode jsonNode = objectMapper.readTree(json);
             String email = jsonNode.get("email").asText();
             String password = jsonNode.get("password").asText();
-            AlunoDTO userDTO = thesismanService.loginAluno(email, password);
+            AlunoDTO userDTO = ThesismanServiceImp.loginAluno(email, password);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -59,12 +66,12 @@ public class RestThesismanController {
     }
 
     @GetMapping("/listarTemas")
-    ResponseEntity<?> listarTemas(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
+    public ResponseEntity<?> listarTemas(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             JsonNode jsonNode = objectMapper.readTree(json);
             Integer alunoId = jsonNode.get("alunoId").intValue();
-            List<TemaDTO> temas = thesismanService.listarTemasAlunos(alunoId);
+            List<TemaDTO> temas = ThesismanServiceImp.listarTemasAlunos(alunoId);
             return new ResponseEntity<>(temas, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -81,7 +88,7 @@ public class RestThesismanController {
             EstadoCandidatura estado = EstadoCandidatura.valueOf(estadoStr);
             Integer alunoId = jsonNode.get("alunoId").intValue();
             Integer temaId = jsonNode.get("temaId").intValue();
-            CandidaturaDTO candidaturaDTO = thesismanService.newCandidatura(dataCandidatura, estado, alunoId, temaId);
+            CandidaturaDTO candidaturaDTO = ThesismanServiceImp.newCandidatura(dataCandidatura, estado, alunoId, temaId);
             return new ResponseEntity<>(candidaturaDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -94,7 +101,7 @@ public class RestThesismanController {
         try{
             JsonNode jsonNode = objectMapper.readTree(json);
             Integer candidaturaId = jsonNode.get("candidaturaId").intValue();
-            thesismanService.cancelCandidatura(candidaturaId);
+            ThesismanServiceImp.cancelCandidatura(candidaturaId);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -109,7 +116,7 @@ public class RestThesismanController {
             Integer candidaturaId = jsonNode.get("candidaturaId").intValue();
             Integer alunoId = jsonNode.get("alunoId").intValue();
             byte[] document = jsonNode.get("document").binaryValue();
-            TeseDTO teseDTO = thesismanService.submitPropostaTeseDocsAluno(candidaturaId, document, alunoId);
+            TeseDTO teseDTO = ThesismanServiceImp.submitPropostaTeseDocsAluno(candidaturaId, document, alunoId);
             return new ResponseEntity<>(teseDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -124,7 +131,7 @@ public class RestThesismanController {
             Integer candidaturaId = jsonNode.get("candidaturaId").intValue();
             Integer alunoId = jsonNode.get("alunoId").intValue();
             byte[] document = jsonNode.get("document").binaryValue();
-            TeseDTO teseDTO = thesismanService.submeterDocFinalTeseAluno(alunoId, candidaturaId, document);
+            TeseDTO teseDTO = ThesismanServiceImp.submeterDocFinalTeseAluno(alunoId, candidaturaId, document);
             return new ResponseEntity<>(teseDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

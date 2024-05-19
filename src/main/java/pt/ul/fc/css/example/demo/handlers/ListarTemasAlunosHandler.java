@@ -35,7 +35,7 @@ public class ListarTemasAlunosHandler {
 
         Aluno aluno = optAluno.get();
         List<TemaDTO> result = new ArrayList<>();
-        List<Tema> temas = temaRepository.findByMestrado(aluno.getMestrado().getId());
+        List<Tema> temas = temaRepository.findByMestrado(aluno.getMestrado());
 
         List<Integer> mestradosIds = new ArrayList<>();
         for (Tema t : temas) {

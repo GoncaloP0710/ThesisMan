@@ -1,4 +1,4 @@
-package pt.ul.fc.css.example.demo.controllers;
+package alunos.example.desktopapp.main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,10 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
-import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
-import pt.ul.fc.css.example.demo.dtos.TemaDTO;
-import pt.ul.fc.css.example.demo.dtos.TeseDTO;
+import alunos.example.desktopapp.dtos.AlunoDTO;
+import alunos.example.desktopapp.dtos.CandidaturaDTO;
+import alunos.example.desktopapp.dtos.TemaDTO;
+import alunos.example.desktopapp.dtos.TeseDTO;
 
 public class RestAPIClientService {
     
