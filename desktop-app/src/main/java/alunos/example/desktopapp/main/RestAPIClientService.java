@@ -126,6 +126,50 @@ public class RestAPIClientService {
         }
     }
 
+    public List<TemaDTO> listarCandidaturas() {
+        try {
+            URL url = new URL("http://localhost:8000/api/listarCandidaturas");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+
+            String requestBody = "{\"alunoId\": " + alunoId + "}";
+            OutputStream outputStream = con.getOutputStream();
+            outputStream.write(requestBody.getBytes("UTF-8"));
+            outputStream.close();
+
+            int responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer content = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<CandidaturaDTO> candidaturasDOT = objectMapper.readValue(content.toString(), new TypeReference<List<CandidaturaDTO>>() {});
+                return candidaturasDOT;
+            } else {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.getDialogPane().getStylesheets().add("/JavaFX.css");
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao listar candidaturas");
+                alert.show();
+                return null;
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.getDialogPane().getStylesheets().add("/JavaFX.css");
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao estabelecer conexao com o servidor");
+            alert.show();
+            return null;
+        }
+    }
+
     public CandidaturaDTO createCandidatura(Integer temaId, String estado) {
         try {
             URL url = new URL("http://localhost:8000/api/createCandidatura");

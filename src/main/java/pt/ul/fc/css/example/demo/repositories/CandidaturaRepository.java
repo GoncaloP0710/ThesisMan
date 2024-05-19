@@ -13,6 +13,7 @@ public interface CandidaturaRepository extends JpaRepository<Candidatura, Intege
     //Optional<Candidatura> findByTema(Integer temaId);
     @Query("SELECT c FROM Candidatura c WHERE c.aluno.id = ?1")
     List<Candidatura> findAllByAlunoId(Integer alunoId);
+    
     List<Candidatura> findAllByAlunoEmail(String email);
 
 }

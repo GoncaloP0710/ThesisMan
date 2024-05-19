@@ -15,6 +15,8 @@ public class TableRow {
 
 	private String col6;
 
+	private String col7;
+
 
 	public String getCol1() {
 		return col1;
@@ -62,6 +64,14 @@ public class TableRow {
 
 	public void setCol6(String col6) {
 		this.col6 = col6;
+	}
+
+	public String getCol7() {
+		return col7;
+	}
+
+	public void setCol7(String col7) {
+		this.col7 = col7;
 	}
 
 }

@@ -47,6 +47,36 @@ public class MenuController {
 	@FXML
 	private Button cancelarCandidatura;
 
+    public void setUp(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+
+		height = Screen.getPrimary().getBounds().getHeight();
+		width = Screen.getPrimary().getBounds().getWidth();
+
+		setUpGrid();
+		setUpButtons();
+		setUpTopHbox();
+	}
+
+    private void setUpTopHbox() {
+		StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
+		HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
+		HBox.setMargin(moreOptions, new Insets(0, 0, 0, width * 0.02));
+	}
+
+	private void setUpGrid() {
+		StackPane.setMargin(menuGrid, new Insets(height * 0.11, 0, 0, 0));
+		menuGrid.setPadding(new Insets(height / 8, width * 0.15, height / 5, width * 0.15));
+		menuGrid.setHgap(width * 0.005);
+		menuGrid.setVgap(width * 0.005);
+	}
+
+	private void setUpButtons() {
+		logOut.setPrefSize(width / 20, height / 20);
+		listTemas.setPrefSize(width / 4, height / 5);
+		createCandidatura.setPrefSize(width / 4, height / 5);
+	}
+
     @FXML
 	public void listTemas() throws Exception {
 		FXMLLoader loader = new FXMLLoader(Main.class.getResource("/list_temas.fxml"));

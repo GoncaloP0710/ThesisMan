@@ -97,7 +97,6 @@ public class ListTemasController {
 	public void goBack() throws Exception {
 		FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
 		StackPane root = loader.load();
-        // TODO: MenuController
 		MenuController controller = loader.<MenuController>getController();
 		controller.setUp(primaryStage);
 		primaryStage.getScene().setRoot(root);

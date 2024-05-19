@@ -7,16 +7,16 @@ public class AlunoDTO{
     private String name;
     private String contact;
     private Double average;
-    private String mestrado;
+    private Integer mestradoId;
     private List<Integer> candidaturaId;
     
-
-    public AlunoDTO(Integer id, String name, String contact, Double average, String mestrado, List<Integer> candidaturaId) {
+          //AlunoDTO(Integer, String, String, Double, Integer, List<Integer>)
+    public AlunoDTO(Integer id, String name, String contact, Double average, Integer mestradoId, List<Integer> candidaturaId) {
         this.id = id;
         this.name = name;
         this.contact = contact;
         this.average = average;
-        this.mestrado = mestrado;
+        this.mestradoId = mestradoId;
         this.candidaturaId = candidaturaId;
     }
 
@@ -38,8 +38,8 @@ public class AlunoDTO{
         return average;
     }
 
-    public String getMestrado() {
-        return mestrado;
+    public Integer getMestrado() {
+        return mestradoId;
     }
     
     public List<Integer> getCandidaturaId() {

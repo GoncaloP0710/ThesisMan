@@ -88,4 +88,17 @@ public class CandidaturaHandler {
     public List<Candidatura> getCandidaturas(){
         return candidaturaRepository.findAll();
     }
+
+    public List<CandidaturaDTO> listarCandidaturasAluno(Integer alunoID) throws NotPresentException {
+        Optional<Aluno> optAluno = alunoRepository.findById(alunoID);
+        if(optAluno.isEmpty()){
+            throw new NotPresentException("Aluno não encontrado");
+        }
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoId(alunoID);
+        List<CandidaturaDTO> candidaturasDTO = new ArrayList<>();
+        for(Candidatura c : candidaturas){
+            candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), c.getTese().getId(), c.getAluno().getId()));
+        }
+        return candidaturasDTO;
+    }
 }

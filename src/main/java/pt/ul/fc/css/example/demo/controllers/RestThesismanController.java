@@ -78,6 +78,19 @@ public class RestThesismanController {
         }
     }
 
+    @GetMapping("/listarCandidaturas")
+    public ResponseEntity<?> listarCandidaturas(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            JsonNode jsonNode = objectMapper.readTree(json);
+            Integer alunoId = jsonNode.get("alunoId").intValue();
+            List<CandidaturaDTO> candidaturas = ThesismanServiceImp.listarCandidaturasAlunos(alunoId);
+            return new ResponseEntity<>(candidaturas, HttpStatus.OK);
+        }catch(NotPresentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/createCandidatura")
     ResponseEntity<?> createCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException, IllegalCandidaturaException{
         ObjectMapper objectMapper = new ObjectMapper();

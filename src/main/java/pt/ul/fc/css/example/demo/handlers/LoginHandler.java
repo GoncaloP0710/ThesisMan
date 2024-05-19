@@ -34,7 +34,8 @@ public class LoginHandler {
         // Verificar se o aluno existe
         if(optAluno.isPresent()){
             Aluno aluno = optAluno.get();
-            AlunoDTO alunoDTO = new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getId());
+            List<Integer> candidaturaIds = getCandidaturasIds(aluno.getCandidatura());
+            AlunoDTO alunoDTO = new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getId(), candidaturaIds);
             return alunoDTO;
         } else {
             throw new NotPresentException("Aluno não encontrado");
@@ -95,6 +96,14 @@ public class LoginHandler {
         List<Integer> result = new ArrayList<Integer>();
         for (Projeto p : projetos) {
             result.add(p.getId());
+        }
+        return result;
+    }
+
+    private List<Integer> getCandidaturasIds(List<Candidatura> candidaturas) {
+        List<Integer> result = new ArrayList<Integer>();
+        for (Candidatura c : candidaturas) {
+            result.add(c.getId());
         }
         return result;
     }

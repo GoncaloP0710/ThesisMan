@@ -12,6 +12,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import com.example.desktopapp.Main;
+import com.example.desktopapp.main.RestAPIClientService;
+import com.example.desktopapp.menu.MenuController;
+
 public class LoginController {
     private double height;
     private double width;
@@ -81,7 +85,6 @@ public class LoginController {
 		if(RestAPIClientService.getInstance().logIn(email.getText(), password.getText())){
 			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
 			StackPane root = loader.load();
-            // TODO: MenuController
 			MenuController controller = loader.<MenuController>getController();
 			controller.setUp(primaryStage);
 			primaryStage.getScene().setRoot(root);

@@ -205,5 +205,9 @@ public class ThesismanServiceImp implements ThesismanService{
     public TeseDTO submeterDocFinalTeseAluno(Integer alunoId, Integer candidaturaID, byte[] document) throws NotPresentException{
         return submissaoDocFinalTeseAlunoHandler.submeterDocFinalTeseAluno(alunoId, candidaturaID, document);
     }
+
+    public List<CandidaturaDTO> listarCandidaturasAlunos(Integer alunoId) throws NotPresentException{
+        return candidaturaHandler.listarCandidaturasAluno(alunoId);
+    }
 }
 
