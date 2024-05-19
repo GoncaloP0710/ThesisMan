@@ -1,79 +1,76 @@
 package alunos.example.desktopapp.login;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import alunos.example.desktopapp.Main;
-import alunos.example.desktopapp.main.RestAPIClientService;
-import alunos.example.desktopapp.menu.MenuController;
 
 public class LoginController {
-	private double height;
-	private double width;
-	private Stage primaryStage;
-
-	@FXML
-	private StackPane pane;
-
-	@FXML
-	private HBox topHbox;
-
-	@FXML
-	private Label title;
-
-	@FXML
-	private VBox mainVbox;
-
-	@FXML
-	private Label loginLabel;
-
-	@FXML
-	private TextField email;
+    private double height;
+    private double width;
+    private Stage primaryStage;
 
     @FXML
-    private TextField password;
+    private BorderPane pane;
 
-	@FXML
-	private Button loginButton;
+    @FXML
+    private HBox topHbox;
 
-	public void setUp(Stage primaryStage) {
-		this.primaryStage = primaryStage;
+    @FXML
+    private Label title;
 
-		height = Screen.getPrimary().getBounds().getHeight();
-		width = Screen.getPrimary().getBounds().getWidth();
+    @FXML
+    private VBox mainVbox;
 
-		setUpTopHbox();
-		setUpLoginButton();
-		setUpMainVbox();
-		setUpPassword();
+    @FXML
+    private Label loginLabel;
+
+    @FXML
+    private TextField email;
+
+    @FXML
+    private PasswordField password;
+
+    @FXML
+    private Button loginButton;
+
+    public void setUp(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+
+        height = Screen.getPrimary().getBounds().getHeight();
+        width = Screen.getPrimary().getBounds().getWidth();
+
+        setUpTopHbox();
+        setUpLoginButton();
+        setUpMainVbox();
+        setUpPassword();
         setUpEmail();
-	}
+    }
 
-	private void setUpTopHbox() {
-		StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-		HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
-	}
+    private void setUpTopHbox() {
+        BorderPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
+        HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
+    }
 
-	private void setUpLoginButton() {
-		loginButton.setPrefSize(width / 20, height / 20);
-	}
+    private void setUpLoginButton() {
+        loginButton.setPrefSize(width / 20, height / 20);
+    }
 
-	private void setUpMainVbox() {
-		mainVbox.setMaxHeight(height / 5); // para nao interferir com botao de voltar
-		mainVbox.setSpacing(height * 0.02);
-	}
+    private void setUpMainVbox() {
+        mainVbox.setMaxHeight(height / 5); // to not interfere with back button
+        mainVbox.setSpacing(height * 0.02);
+    }
 
-	private void setUpPassword() {
-		password.setMaxWidth(width * 0.2);
-	}
+    private void setUpPassword() {
+        password.setMaxWidth(width * 0.2);
+    }
 
     private void setUpEmail() {
         email.setMaxWidth(width * 0.2);
