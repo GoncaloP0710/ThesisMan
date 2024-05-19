@@ -1,10 +1,11 @@
-package alunos.example.desktopapp.create_candidatura;
+package alunos.example.desktopapp.cancelar_candidatura;
 
 import alunos.example.desktopapp.Main;
 import alunos.example.desktopapp.TableRow;
-import alunos.example.desktopapp.dtos.TemaDTO;
+import alunos.example.desktopapp.dtos.CandidaturaDTO;
 import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,12 +22,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class CreateCandidaturaController {
-
+public class CancelarCandidaturaController {
   private double height;
   private double width;
   private Stage primaryStage;
-  private TableRow currentTema;
+  private TableRow currentCandidatura;
 
   @FXML private StackPane pane;
 
@@ -34,11 +34,11 @@ public class CreateCandidaturaController {
 
   @FXML private Button goBack;
 
-  @FXML private Button createCandidatura;
-
   @FXML private Label title;
 
   @FXML private TableView<TableRow> table;
+
+  @FXML private Button cancelarCandidatura;
 
   public void setUp(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -47,7 +47,7 @@ public class CreateCandidaturaController {
     width = Screen.getPrimary().getBounds().getWidth();
 
     setUpTopHbox();
-    setUpCreateButton();
+    setUpDeleteButton();
     setUpGoBackButton();
     setUpTable();
   }
@@ -57,8 +57,8 @@ public class CreateCandidaturaController {
     HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
   }
 
-  private void setUpCreateButton() {
-    createCandidatura.setPrefSize(width / 20, height / 20);
+  private void setUpDeleteButton() {
+    cancelarCandidatura.setPrefSize(width / 20, height / 20);
   }
 
   private void setUpGoBackButton() {
@@ -71,25 +71,36 @@ public class CreateCandidaturaController {
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     TableColumn<TableRow, String> tc1 = new TableColumn<>("id");
-    TableColumn<TableRow, String> tc2 = new TableColumn<>("titulo");
-    TableColumn<TableRow, String> tc3 = new TableColumn<>("descricao");
-    TableColumn<TableRow, String> tc4 = new TableColumn<>("selecionado");
+    TableColumn<TableRow, String> tc2 = new TableColumn<>("temaId");
+    TableColumn<TableRow, String> tc3 = new TableColumn<>("dataCandidatura");
+    TableColumn<TableRow, String> tc4 = new TableColumn<>("estado");
+    TableColumn<TableRow, String> tc5 = new TableColumn<>("teseId");
+    TableColumn<TableRow, String> tc6 = new TableColumn<>("alunoId");
+    TableColumn<TableRow, String> tc7 = new TableColumn<>("selected");
 
     tc1.setCellValueFactory(new PropertyValueFactory<>("col1"));
     tc2.setCellValueFactory(new PropertyValueFactory<>("col2"));
     tc3.setCellValueFactory(new PropertyValueFactory<>("col3"));
     tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
+    tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
+    tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
+    tc7.setCellValueFactory(new PropertyValueFactory<>("col7"));
 
-    table.getColumns().addAll(tc1, tc2, tc3, tc4);
+    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6, tc7);
 
-    List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
+    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
-    for (TemaDTO tema : temas) {
+    for (CandidaturaDTO candidatura : candidaturas) {
       TableRow t = new TableRow();
-      t.setCol1(String.valueOf(tema.getId()));
-      t.setCol2(tema.getTitulo());
-      t.setCol3(tema.getDescricao());
-      t.setCol4("");
+      t.setCol1(String.valueOf(candidatura.getId()));
+      t.setCol2(String.valueOf(candidatura.getTemaId()));
+      SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+      String dateString = formatter.format(candidatura.getDataCandidatura());
+      t.setCol3(dateString);
+      t.setCol4(candidatura.getEstado());
+      t.setCol5(String.valueOf(candidatura.getTeseId()));
+      t.setCol6(String.valueOf(candidatura.getAlunoId()));
+      t.setCol7("");
 
       table.getItems().add(t);
     }
@@ -97,11 +108,11 @@ public class CreateCandidaturaController {
     table.setOnMouseClicked(
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
-            currentTema = table.getSelectionModel().getSelectedItem();
+            currentCandidatura = table.getSelectionModel().getSelectedItem();
             for (TableRow row : table.getItems()) {
-              row.setCol4("");
+              row.setCol7("");
             }
-            table.getSelectionModel().getSelectedItem().setCol4("X");
+            table.getSelectionModel().getSelectedItem().setCol7("X");
           }
         });
   }
@@ -116,8 +127,8 @@ public class CreateCandidaturaController {
   }
 
   @FXML
-  public void createCandidatura() throws Exception {
-    if (currentTema == null) {
+  public void deleteCandidatura() throws Exception {
+    if (currentCandidatura == null) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
       alert.setHeaderText("Tema não selecionado");
@@ -127,12 +138,11 @@ public class CreateCandidaturaController {
     }
 
     if (RestAPIClientService.getInstance()
-            .createCandidatura(Integer.valueOf(currentTema.getCol1()), null)
-        != null) {
+        .cancelarCandidatura(Integer.valueOf(currentCandidatura.getCol1()))) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
-      alert.setHeaderText("Erro ao criar candidatura");
+      alert.setHeaderText("Erro ao cancelar candidatura");
       alert.showAndWait();
     }
   }
