@@ -1,4 +1,4 @@
-package alunos.example.desktopapp.list_temas;
+package alunos.example.desktopapp.create_candidatura;
 
 import java.util.List;
 
@@ -11,18 +11,20 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class ListTemasController {
-    private double height;
+public class CreateCandidaturaController {
+    
+	private double height;
 	private double width;
 	private Stage primaryStage;
+	private TableRow currentTema;
 
 	@FXML
 	private StackPane pane;
@@ -32,6 +34,9 @@ public class ListTemasController {
 
 	@FXML
 	private Button goBack;
+
+	@FXML
+	private Button createCandidatura;
 
 	@FXML
 	private Label title;
@@ -46,6 +51,7 @@ public class ListTemasController {
 		width = Screen.getPrimary().getBounds().getWidth();
 
 		setUpTopHbox();
+		setUpCreateButton();
 		setUpGoBackButton();
 		setUpTable();
 	}
@@ -54,6 +60,10 @@ public class ListTemasController {
 		StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
 		HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
 	}
+
+	private void setUpCreateButton() {
+        createCandidatura.setPrefSize(width / 20, height / 20);
+    }
 
 	private void setUpGoBackButton() {
 		goBack.setPrefSize(width / 20, height / 20);
@@ -66,17 +76,14 @@ public class ListTemasController {
 		TableColumn<TableRow, String> tc1 = new TableColumn<>("id");
 		TableColumn<TableRow, String> tc2 = new TableColumn<>("titulo");
 		TableColumn<TableRow, String> tc3 = new TableColumn<>("descricao");
-		TableColumn<TableRow, String> tc4 = new TableColumn<>("remuneracaoMensal");
-		TableColumn<TableRow, String> tc5 = new TableColumn<>("submissorId");
-        TableColumn<TableRow, String> tc6 = new TableColumn<>("mestradosCompativeisId");
+		TableColumn<TableRow, String> tc4 = new TableColumn<>("selecionado");
+
 		tc1.setCellValueFactory(new PropertyValueFactory<>("col1"));
 		tc2.setCellValueFactory(new PropertyValueFactory<>("col2"));
 		tc3.setCellValueFactory(new PropertyValueFactory<>("col3"));
 		tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
-		tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
-        tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
 
-		table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
+		table.getColumns().addAll(tc1, tc2, tc3, tc4);
 
 		List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
 
@@ -85,22 +92,51 @@ public class ListTemasController {
 			t.setCol1(String.valueOf(tema.getId()));
             t.setCol2(tema.getTitulo());
             t.setCol3(tema.getDescricao());
-            t.setCol4(String.valueOf(tema.getRemuneracaoMensal()));
-            t.setCol5(String.valueOf(tema.getSubmissorId()));
-            t.setCol6(tema.getMestradosCompativeisId().toString());
+			t.setCol4("");
 
 			table.getItems().add(t);
 		}
+
+		table.setOnMouseClicked(event -> {
+			if (event.getButton() == MouseButton.PRIMARY) {
+				currentTema = table.getSelectionModel().getSelectedItem();
+				for (TableRow row : table.getItems()) {
+					row.setCol4("");
+				}
+				table.getSelectionModel().getSelectedItem().setCol4("X");
+			}
+		});
 	}
 
-    @FXML
+	@FXML
 	public void goBack() throws Exception {
 		FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
 		StackPane root = loader.load();
-        // TODO: MenuController
 		MenuController controller = loader.<MenuController>getController();
 		controller.setUp(primaryStage);
 		primaryStage.getScene().setRoot(root);
 	}
+
+
+	@FXML
+	public void createCandidatura() throws Exception {
+		if(currentTema == null) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Erro");
+			alert.setHeaderText("Tema não selecionado");
+			alert.setContentText("Por favor selecione um tema");
+			alert.showAndWait();
+			return;
+		}
+
+		if(RestAPIClientService.getInstance().createCandidatura(Integer.valueOf(currentTema.getCol1()), null)) {
+		} else {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Erro");
+			alert.setHeaderText("Erro ao criar candidatura");
+			alert.showAndWait();
+		}
+	}
+
 
 }

@@ -78,13 +78,13 @@ public class LoginController {
 
 	@FXML
 	public void loginHandler() throws Exception {
-		// if(RestAPIClientService.getInstance().logIn(email.getText(), password.getText())){
-		// 	FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
-		// 	StackPane root = loader.load();
+		if(RestAPIClientService.getInstance().logIn(email.getText(), password.getText())){
+			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
+			StackPane root = loader.load();
             // TODO: MenuController
-			// MenuController controller = loader.<MenuController>getController();
-			// controller.setUp(primaryStage);
-			// primaryStage.getScene().setRoot(root);
-		// }
+			MenuController controller = loader.<MenuController>getController();
+			controller.setUp(primaryStage);
+			primaryStage.getScene().setRoot(root);
+		}
 	}
 }

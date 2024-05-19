@@ -41,6 +41,11 @@ public class CandidaturaHandler {
             if(candidaturas.size() >= 5){
                 throw new IllegalCandidaturaException("O aluno já tem 5 candidaturas ativas");
             }
+            for (Candidatura c : candidaturas) {
+                if (c.getTema().getId() == temaId){
+                    throw new IllegalCandidaturaException("O aluno já tem uma candidatura a esse tema");
+                }
+            }
         }
         Aluno aluno = optAluno.get();
         Optional<Tema> optTema = temaRepository.findById(temaId);
