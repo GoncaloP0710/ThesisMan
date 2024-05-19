@@ -1,7 +1,6 @@
 package alunos.example.desktopapp.login;
 
 import alunos.example.desktopapp.Main;
-import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,11 +74,16 @@ public class LoginController {
 
   @FXML
   public void loginHandler() throws Exception {
-    if (RestAPIClientService.getInstance().logIn(email.getText(), password.getText()) != null) {
+
+    // if (RestAPIClientService.getInstance().logIn(email.getText(), password.getText()) != null) {
+    if (true) {
       FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
       StackPane root = loader.load();
       MenuController controller = loader.<MenuController>getController();
       controller.setUp(primaryStage);
+      // Set the width and height of the Stage
+      primaryStage.setHeight(600);
+      primaryStage.setWidth(600);
       primaryStage.getScene().setRoot(root);
     }
   }

@@ -253,7 +253,7 @@ public class RestAPIClientService {
     }
   }
 
-  public TeseDTO submeterDocTese(Integer candidaturaId, Integer alunoId, byte[] document) {
+  public TeseDTO submeterDocTese(Integer candidaturaId, byte[] document) {
     try {
       URL url = new URL("http://localhost:8000/api/submeterDocTese");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -305,7 +305,7 @@ public class RestAPIClientService {
     }
   }
 
-  public TeseDTO submeterDocFinalTese(Integer candidaturaId, Integer alunoId, byte[] document) {
+  public TeseDTO submeterDocFinalTese(Integer candidaturaId, byte[] document) {
     try {
       URL url = new URL("http://localhost:8000/api/submeterDocFinalTese");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();

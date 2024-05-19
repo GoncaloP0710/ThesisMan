@@ -3,8 +3,8 @@ package alunos.example.desktopapp.list_temas;
 import alunos.example.desktopapp.Main;
 import alunos.example.desktopapp.TableRow;
 import alunos.example.desktopapp.dtos.TemaDTO;
-import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.*;
 import javafx.geometry.Insets;
@@ -73,7 +73,18 @@ public class ListTemasController {
 
     table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
-    List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
+    // TODO: descomentar quando a rest api estiver ligada
+    // List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
+
+    List<TemaDTO> temas = new ArrayList<>();
+    // TemaDTO(Integer id, String titulo, String descricao, float remuneracaoMensal, Integer
+    // submissorId, List<Integer> mestradosCompativeisId)
+    TemaDTO tema1 = new TemaDTO(1, "Tema 1", "Descrição do tema 1", 1000, 1, List.of(1, 2));
+    TemaDTO tema2 = new TemaDTO(2, "Tema 2", "Descrição do tema 2", 2000, 2, List.of(2, 3));
+    TemaDTO tema3 = new TemaDTO(3, "Tema 3", "Descrição do tema 3", 3000, 3, List.of(3, 4));
+    temas.add(tema1);
+    temas.add(tema2);
+    temas.add(tema3);
 
     for (TemaDTO tema : temas) {
       TableRow t = new TableRow();

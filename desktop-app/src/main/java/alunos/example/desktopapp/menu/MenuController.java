@@ -21,7 +21,7 @@ public class MenuController {
 
   @FXML private StackPane pane;
 
-  @FXML private HBox topHbox;
+  @FXML private HBox bottomHbox;
 
   @FXML private Button logOut;
 
@@ -43,13 +43,12 @@ public class MenuController {
 
     setUpGrid();
     setUpButtons();
-    setUpTopHbox();
+    setUpbottomHbox();
   }
 
-  private void setUpTopHbox() {
-    StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
+  private void setUpbottomHbox() {
+    StackPane.setMargin(bottomHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
     HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
-    // HBox.setMargin(moreOptions, new Insets(0, 0, 0, width * 0.02));
   }
 
   private void setUpGrid() {
@@ -60,9 +59,9 @@ public class MenuController {
   }
 
   private void setUpButtons() {
-    logOut.setPrefSize(width / 20, height / 20);
-    listTemas.setPrefSize(width / 4, height / 5);
-    createCandidatura.setPrefSize(width / 4, height / 5);
+    // logOut.setPrefSize(width / 20, height / 20);
+    // listTemas.setPrefSize(width / 4, height / 5);
+    // createCandidatura.setPrefSize(width / 4, height / 5);
   }
 
   @FXML
