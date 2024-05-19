@@ -87,8 +87,12 @@ public class AtribuicaoTemaAdminHandler {
     public List<AlunoDTO> getAlunos(){
         List<Aluno> alunos = alunoRepository.findAll();
         List<AlunoDTO> result = new ArrayList<>();
+        List<Integer> candidaturasIds = new ArrayList<>();
         for(Aluno a : alunos){
-            result.add(new AlunoDTO(a.getId(), a.getName(), a.getEmail(), a.getAverage(), a.getMestrado().getNome()));
+            for(Candidatura c : a.getCandidatura()){
+                candidaturasIds.add(c.getId());
+            }
+            result.add(new AlunoDTO(a.getId(), a.getName(), a.getEmail(), a.getAverage(), a.getMestrado().getNome(), candidaturasIds));
         }
         return result;
     }
@@ -99,6 +103,10 @@ public class AtribuicaoTemaAdminHandler {
             throw new NotPresentException("Aluno não encontrado");
         }
         Aluno aluno = a.get();
-        return new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getNome());
+        List<Integer> candidaturasIds = new ArrayList<>();
+        for(Candidatura c : aluno.getCandidatura()){
+            candidaturasIds.add(c.getId());
+        }
+        return new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getNome(), candidaturasIds);
     }
 }

@@ -12,37 +12,14 @@
     <title>Marca Defesa Proposta de Tese</title>
 </head>
 <body>
-    <h1>Theme Submission</h1>
-    <h2>Teses em curso</h2>
+    <h1>Teses em curso</h1>
     <table>
         <tr>
-            <th>Nome</th>
-            <th>Proposta</th>
+            <th th:each="candidaturaWithTese: ${c}"></th>
+            <th th:text="Tese number: ' + ${c.teseId}"></th>
             <th>Estado</th>
         </tr>
-        <tr>
-            <td>João</td>
-            <td>Proposta 1</td>
-            <td>Em curso</td>
-        </tr>
-        <tr>
-            <td>Maria</td>
-            <td>Proposta 2</td>
-            <td>Em curso</td>
-        </tr>
-
-    <form th:action = "@{/marcarDefesaProposta}" method="POST" id="form1">
-        <label for="tema">Tema:</label><br>
-        <input type="text" id="tema" name="tema" required><br>
-        <label for="proposta">Proposta:</label><br>
-        <input type="text" id="proposta" name="proposta" required><br>
-        <label for="data">Data:</label><br>
-        <input type="date" id="data" name="data" required><br>
-        <label for="hora">Hora:</label><br>
-        <input type="time" id="hora" name="hora" required><br>
-        <label for="local">Local:</label><br>
-        <input type="text" id="local" name="local" required><br>
-        <button type="submit">Submit</button>
+    </table>
 </body>
 </html>
 </body>

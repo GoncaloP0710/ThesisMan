@@ -6,8 +6,8 @@
 </head>
 
 <body>
-    <h2 id="bem-vindo" th:text="${name}"></h2>
-    <h2 id="bem-vindo" th:text="${id}"></h2>
+    <h2 id="bem-vindo" th:text="Bem Vindo ${name}"></h2>
+    <h2 id="bem-vindo" th:text="ID: ${id}"></h2>
     <div class="main">
         <div class="sub-main">
             <form action="#" th:action="@{/submeterTemas}" method="get">

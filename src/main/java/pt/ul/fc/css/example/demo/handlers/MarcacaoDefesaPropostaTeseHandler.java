@@ -16,7 +16,7 @@
 // import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
 // import pt.ul.fc.css.example.demo.repositories.JuriRepository;
 // import pt.ul.fc.css.example.demo.repositories.TeseRepository;
-// import pt.ul.fc.css.example.exceptions.NotPresentException;
+// import pt.ul.fc.css.example.demo.exceptions.*;
 
 // @Component
 // public class MarcacaoDefesaPropostaTeseHandler {

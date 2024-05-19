@@ -1,19 +1,23 @@
 package pt.ul.fc.css.example.demo.dtos;
 
+import java.util.List;
+
 public class AlunoDTO{
     private Integer id;
     private String name;
     private String contact;
     private Double average;
     private String mestrado;
+    private List<Integer> candidaturaId;
     
 
-    public AlunoDTO(Integer id, String name, String contact, Double average, String mestrado) {
+    public AlunoDTO(Integer id, String name, String contact, Double average, String mestrado, List<Integer> candidaturaId) {
         this.id = id;
         this.name = name;
         this.contact = contact;
         this.average = average;
         this.mestrado = mestrado;
+        this.candidaturaId = candidaturaId;
     }
 
     public AlunoDTO(){}
@@ -36,6 +40,10 @@ public class AlunoDTO{
 
     public String getMestrado() {
         return mestrado;
+    }
+    
+    public List<Integer> getCandidaturaId() {
+        return candidaturaId;
     }
 
     public void setName(String name) {

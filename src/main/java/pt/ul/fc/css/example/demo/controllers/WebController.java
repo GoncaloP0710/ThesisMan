@@ -20,6 +20,7 @@ import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
+import pt.ul.fc.css.example.demo.dtos.TeseDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
@@ -77,7 +78,7 @@ public class WebController {
         model.addAttribute("temas propostos", thesismanService.getTemas());
         model.addAttribute("projetos orientados", docente.getProjetosId());
         model.addAttribute("mestrados", thesismanService.getMestrados());
-        model.addAttribute("candidaturas", thesismanService.getCandidaturas());
+        model.addAttribute("candidaturas", thesismanService.getCandidaturasWithTeses());
         return "dashboard";
     }
 
@@ -138,13 +139,20 @@ public class WebController {
     public String marcarDefesaProposta(final Model model){
         @SuppressWarnings("unchecked")
         List<CandidaturaDTO> c = (List<CandidaturaDTO>) model.getAttribute("candidaturas");
+        List<TeseDTO> teses = new ArrayList<TeseDTO>();
+        for(CandidaturaDTO candidatura : c){
+            if(candidatura.getTeseId() != null){
+                teses.add(new TeseDTO(candidatura.getTeseId(), candidatura.getId(), null, null, null));
+            }
+        }
+        model.addAttribute("teses", teses);
         List<Integer> candidaturasWithTese = new ArrayList<Integer>();
         for(CandidaturaDTO candidatura : c){
             if(candidatura.getTeseId() != null){
                 candidaturasWithTese.add(candidatura.getId());
             }
         }
-
+        model.addAttribute("candidaturasWithTese", candidaturasWithTese);
         return "marcarDefesaProposta";
     }
 

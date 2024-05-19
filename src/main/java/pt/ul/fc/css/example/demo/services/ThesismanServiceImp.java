@@ -124,11 +124,13 @@ public class ThesismanServiceImp implements ThesismanService{
         return atribuicaoTemaAdminHandler.getAluno(nome);
     }
 
-    public List<CandidaturaDTO> getCandidaturas(){
+    public List<CandidaturaDTO> getCandidaturasWithTeses(){
         List<Candidatura> c = candidaturaHandler.getCandidaturas();
         List<CandidaturaDTO> result = new ArrayList<>();
         for (Candidatura candidatura : c) {
-            result.add(new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId()));
+            if(candidatura.getTese() != null){
+                result.add(new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId()));
+            }
         }
         return result;
     }
