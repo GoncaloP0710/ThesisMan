@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="alunos.example.desktopapp.submeterDocTese.SubmeterDocTeseController">
+   <top>
+      <HBox fx:id="topHbox" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="goBack" mnemonicParsing="false" onMouseClicked="#goBack" text="Back" translateX="20.0" translateY="20.0" />
+            <Label fx:id="title" scaleX="2.0" scaleY="2.0" text="ThesisMan" translateX="200.0" translateY="50.0" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox fx:id="middleVBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="choseFileButton" mnemonicParsing="false" text="Selecionar Documento" />
+            <Button fx:id="submeterDocTese" mnemonicParsing="false" onMouseClicked="#submeterDocTese" text="Submeter Documento" />
+            <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

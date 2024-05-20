@@ -3,10 +3,12 @@ package alunos.example.desktopapp.menu;
 import alunos.example.desktopapp.Main;
 import alunos.example.desktopapp.create_candidatura.CreateCandidaturaController;
 import alunos.example.desktopapp.list_temas.ListTemasController;
+import alunos.example.desktopapp.submeterDocTese.SubmeterDocTeseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -33,6 +35,8 @@ public class MenuController {
   @FXML private Button createCandidatura;
 
   @FXML private Button cancelarCandidatura;
+
+  @FXML private Button submeterDoc;
 
   public void setUp(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -81,5 +85,16 @@ public class MenuController {
     CreateCandidaturaController controller = loader.<CreateCandidaturaController>getController();
     controller.setUp(primaryStage);
     primaryStage.getScene().setRoot(createCandidatura);
+  }
+
+  @FXML
+  public void submeterDoc() throws Exception {
+    FXMLLoader loader = new FXMLLoader(Main.class.getResource("/submeter_doc.fxml"));
+    BorderPane submeterDoc = loader.load();
+    SubmeterDocTeseController controller = loader.<SubmeterDocTeseController>getController();
+    controller.setUp(primaryStage);
+    primaryStage.setWidth(600);
+    primaryStage.setX(primaryStage.getX() - 150);
+    primaryStage.getScene().setRoot(submeterDoc);
   }
 }
