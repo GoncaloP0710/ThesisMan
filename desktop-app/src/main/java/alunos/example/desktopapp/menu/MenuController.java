@@ -5,7 +5,6 @@ import alunos.example.desktopapp.create_candidatura.CreateCandidaturaController;
 import alunos.example.desktopapp.list_temas.ListTemasController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -47,15 +46,15 @@ public class MenuController {
   }
 
   private void setUpbottomHbox() {
-    StackPane.setMargin(bottomHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-    HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
+    // StackPane.setMargin(bottomHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
+    // HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
   }
 
   private void setUpGrid() {
-    StackPane.setMargin(menuGrid, new Insets(height * 0.11, 0, 0, 0));
-    menuGrid.setPadding(new Insets(height / 8, width * 0.15, height / 5, width * 0.15));
-    menuGrid.setHgap(width * 0.005);
-    menuGrid.setVgap(width * 0.005);
+    // StackPane.setMargin(menuGrid, new Insets(height * 0.11, 0, 0, 0));
+    // menuGrid.setPadding(new Insets(height / 8, width * 0.15, height / 5, width * 0.15));
+    // menuGrid.setHgap(width * 0.005);
+    // menuGrid.setVgap(width * 0.005);
   }
 
   private void setUpButtons() {

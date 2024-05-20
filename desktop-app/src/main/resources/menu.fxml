@@ -22,16 +22,18 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-      </GridPane>
-      <HBox fx:id="bottomHbox" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="listTemas" onMouseClicked="#listTemas" mnemonicParsing="false" text="listTemas" translateX="250.0" translateY="200.0" />
 
-            <Button fx:id="createCandidatura" mnemonicParsing="false" onMouseClicked="#createCandidatura" text="Criar Candidatura" translateX="250.0" translateY="200.0" />
-            <Button fx:id="logOut" mnemonicParsing="false" prefWidth="75.0" text="Log Out" translateX="400.0" translateY="350.0" />
-            <Button fx:id="cancelarCandidatura" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Cancelar Candidatura" translateX="200.0" translateY="350.0" />
-            <Label fx:id="title"  text="Menu" />
+                        <Button fx:id="createCandidatura" mnemonicParsing="false" onMouseClicked="#createCandidatura" text="Criar Candidatura" translateX="162.0" GridPane.rowIndex="1" />
+            <Label fx:id="title" text="Menu" translateX="286.0" />
+            <Button fx:id="listTemas" mnemonicParsing="false" onMouseClicked="#listTemas" text="listTemas" translateX="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <HBox fx:id="bottomHbox" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="cancelarCandidatura" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Cancelar Candidatura" translateX="25.0" translateY="150.0" />
+                  <Button fx:id="logOut" mnemonicParsing="false" prefWidth="75.0" text="Log Out" translateX="50.0" translateY="150.0" />
+               </children>
+            </HBox>
          </children>
-      </HBox>
+      </GridPane>
    </children>
 </StackPane>
