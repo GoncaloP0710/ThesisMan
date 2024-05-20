@@ -20,15 +20,15 @@ public class ThesismanServiceImp implements ThesismanService{
 
     @Autowired private AtribuicaoTemaAdminHandler atribuicaoTemaAdminHandler;
     @Autowired private CandidaturaHandler candidaturaHandler;
-    //@Autowired private ListarTemasAlunosHandler listarTemasAlunosHandler;
+    @Autowired private ListarTemasAlunosHandler listarTemasAlunosHandler;
     @Autowired private LoginHandler loginHandler;
     @Autowired private MestradoHandler mestradoHandler;
     @Autowired private DocenteHandler docenteHandler;
     @Autowired private MarcacaoDefesaTeseHandler marcacaoDefesaTeseHandler;
     @Autowired private RegistoNotaPropostaTeseHandler registoNotaPropostaTeseHandler;
     @Autowired private RegistoNotaFinalHandler registoNotaFinalTeseHandler;
-    //@Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
-    //@Autowired private SubmissaoDocFinalTeseAlunoHandler submissaoDocFinalTeseAlunoHandler;
+    @Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
+    @Autowired private SubmissaoDocFinalTeseAlunoHandler submissaoDocFinalTeseAlunoHandler;
     @Autowired private SubmissaoTemaDocenteHandler submissaoTemaDocenteHandler;
     // @Autowired private SubmissaoTemaUtilizadorEmpresarialHandler submissaoTemaUtilizadorEmpresarialHandler;
     // @Autowired private EstatisticasHandler estatisticasHandler;
@@ -47,10 +47,10 @@ public class ThesismanServiceImp implements ThesismanService{
     public void populate(){
         temaRepository.deleteAll();
         teseRepository.deleteAll();
+        defesaRepository.deleteAll();
         candidaturaRepository.deleteAll();
         utilizadorEmpresarialRepository.deleteAll();
         docenteRepository.deleteAll();
-        defesaRepository.deleteAll();
         mestradoRepository.deleteAll();
         alunoRepository.deleteAll();
         juriRepository.deleteAll();
@@ -275,37 +275,32 @@ public class ThesismanServiceImp implements ThesismanService{
 // [][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][][][__][__][__][__][]
 
 
-//     public AlunoDTO loginAluno(String email, String password) throws NotPresentException{
-//         return loginHandler.loginAluno(email);
-//     }
+    public AlunoDTO loginAluno(String email, String password) throws NotPresentException{
+        return loginHandler.loginAluno(email);
+    }
 
-//     public List<TemaDTO> listarTemasAlunos(Integer alunoId) throws NotPresentException{
-//         return listarTemasAlunosHandler.listarTemasAluno(alunoId);
-//     }
+    public List<TemaDTO> listarTemasAlunos(Integer alunoId) throws NotPresentException{
+        return listarTemasAlunosHandler.listarTemasAluno(alunoId);
+    }
 
-//     public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
-//         return candidaturaHandler.newCandidatura(dataCandidatura, estado, alunoId, temaId);
-//     }
+    public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException{
+        return candidaturaHandler.newCandidatura(dataCandidatura, estado, alunoId, temaId);
+    }
     
-//     public void cancelCandidatura(Integer id) throws NotPresentException{
-//         candidaturaHandler.cancelCandidatura(id);
-//     }
+    public void cancelCandidatura(Integer id) throws NotPresentException{
+        candidaturaHandler.cancelCandidatura(id);
+    }
     
-//     public TeseDTO submitPropostaTeseDocsAluno(Integer candidaturaID, byte[] document, Integer alunoId) throws NotPresentException{
-//         return submissaoDocPropostaTeseAlunoHandler.SubmitPropostaTeseDocsAluno(candidaturaID, document, alunoId);
-//     }
+    public TeseDTO submitPropostaTeseDocsAluno(Integer candidaturaID, byte[] document, Integer alunoId) throws NotPresentException{
+        return submissaoDocPropostaTeseAlunoHandler.SubmitPropostaTeseDocsAluno(candidaturaID, document, alunoId);
+    }
 
-//     public TeseDTO submeterDocFinalTeseAluno(Integer alunoId, Integer candidaturaID, byte[] document) throws NotPresentException{
-//         return submissaoDocFinalTeseAlunoHandler.submeterDocFinalTeseAluno(alunoId, candidaturaID, document);
-//     }
-// }
+    public TeseDTO submeterDocFinalTeseAluno(Integer alunoId, Integer candidaturaID, byte[] document) throws NotPresentException{
+        return submissaoDocFinalTeseAlunoHandler.submeterDocFinalTeseAluno(alunoId, candidaturaID, document);
+    }
 
-//     public TeseDTO submeterDocFinalTeseAluno(Integer alunoId, Integer candidaturaID, byte[] document) throws NotPresentException{
-//         return submissaoDocFinalTeseAlunoHandler.submeterDocFinalTeseAluno(alunoId, candidaturaID, document);
-//     }
+    public List<CandidaturaDTO> listarCandidaturasAlunos(Integer alunoId) throws NotPresentException{
+        return candidaturaHandler.listarCandidaturasAluno(alunoId);
+    }
 
-//     public List<CandidaturaDTO> listarCandidaturasAlunos(Integer alunoId) throws NotPresentException{
-//         return candidaturaHandler.listarCandidaturasAluno(alunoId);
-//     }
-// }
-
+}

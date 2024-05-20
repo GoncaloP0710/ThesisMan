@@ -29,68 +29,98 @@ public class RestAPIClientService {
     return instance;
   }
 
-  public AlunoDTO logIn(String email, String password) {
+  public boolean logIn(String email, String password) {
     try {
-      URL url = new URL("http://localhost:8000/api/login");
+      System.out.println("email: " + email + " password: " + password);
+      URL url = new URL("http://localhost:8080/api/login");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-Type", "application/json");
       con.setDoOutput(true);
-
       String requestBody = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
+
+      System.out.println("7");
       OutputStream outputStream = con.getOutputStream();
+      System.out.println("8");
       outputStream.write(requestBody.getBytes("UTF-8"));
+      System.out.println("9");
       outputStream.close();
+      System.out.println("10");
 
       int responseCode = con.getResponseCode();
+      System.out.println("11");
+      System.out.println("responseCode: " + responseCode);
       if (responseCode == HttpURLConnection.HTTP_OK) {
+        System.out.println("12");
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        System.out.println("13");
         String inputLine;
+        System.out.println("14");
         StringBuffer content = new StringBuffer();
+        System.out.println("15");
         while ((inputLine = in.readLine()) != null) {
           content.append(inputLine);
         }
+        System.out.println("16");
         in.close();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println("17");
         AlunoDTO aluno = objectMapper.readValue(content.toString(), AlunoDTO.class);
-        // TODO: O AlunoDTO nao tem atributo do id. Devemos adicionar ou usar o email como era
-        // dantes?
+        //System.out.println("Aluno: "aluno.getName());
+        
+        System.out.println("18");
+
+
         alunoId = aluno.getId();
-        return aluno;
+        System.out.println("19");
+        return true;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
         alert.getDialogPane().getStylesheets().add("/JavaFX.css");
         alert.setTitle("Erro");
         alert.setHeaderText("Aluno nao existe");
         alert.show();
-        return null;
+        return false;
       }
     } catch (Exception e) {
+      e.printStackTrace();
       Alert alert = new Alert(AlertType.ERROR);
       alert.getDialogPane().getStylesheets().add("/JavaFX.css");
       alert.setTitle("Erro");
       alert.setHeaderText("Erro ao estabelecer conexao com o servidor");
       alert.show();
-      return null;
+      return false;
     }
   }
 
   public List<TemaDTO> listarTemas() {
     try {
+      System.out.println(1);
       URL url = new URL("http://localhost:8000/api/listarTemas");
+      System.out.println(2);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      System.out.println(3);
       con.setRequestMethod("GET");
+      System.out.println(4);
       con.setRequestProperty("Content-Type", "application/json");
+      System.out.println(5);
       con.setDoOutput(true);
 
+      System.out.println(6);
       String requestBody = "{\"alunoId\": " + alunoId + "}";
+      System.out.println(7);
       OutputStream outputStream = con.getOutputStream();
+      System.out.println(8);
       outputStream.write(requestBody.getBytes("UTF-8"));
+      System.out.println(9);
       outputStream.close();
+      System.out.println(10);
 
       int responseCode = con.getResponseCode();
+      System.out.println(11);
       if (responseCode == HttpURLConnection.HTTP_OK) {
+        System.out.println(12);
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer content = new StringBuffer();

@@ -1,19 +1,23 @@
 package alunos.example.desktopapp.dtos;
 
+import java.util.List;
+
 public class AlunoDTO{
     private Integer id;
     private String name;
     private String contact;
     private Double average;
-    private Integer mestradoid;
+    private Integer mestrado;
+    private List<Integer> candidaturaId;
     
-
-    public AlunoDTO(Integer id, String name, String contact, Double average, Integer mestradoid) {
+          //AlunoDTO(Integer, String, String, Double, Integer, List<Integer>)
+    public AlunoDTO(Integer id, String name, String contact, Double average, Integer mestradoId, List<Integer> candidaturaId) {
         this.id = id;
         this.name = name;
         this.contact = contact;
         this.average = average;
-        this.mestradoid = mestradoid;
+        this.mestrado = mestradoId;
+        this.candidaturaId = candidaturaId;
     }
 
     public AlunoDTO(){}
@@ -34,8 +38,12 @@ public class AlunoDTO{
         return average;
     }
 
-    public Integer getMestradoId() {
-        return mestradoid;
+    public Integer getMestrado() {
+        return mestrado;
+    }
+    
+    public List<Integer> getCandidaturaId() {
+        return candidaturaId;
     }
 
     public void setName(String name) {

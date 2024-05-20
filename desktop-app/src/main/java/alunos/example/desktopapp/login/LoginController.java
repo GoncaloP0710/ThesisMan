@@ -15,6 +15,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import alunos.example.desktopapp.main.RestAPIClientService;
+import alunos.example.desktopapp.dtos.*;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.http.HttpStatus;
+
 
 public class LoginController {
   private double height;
@@ -75,8 +80,7 @@ public class LoginController {
   @FXML
   public void loginHandler() throws Exception {
 
-    // if (RestAPIClientService.getInstance().logIn(email.getText(), password.getText()) != null) {
-    if (true) {
+   if (RestAPIClientService.getInstance().logIn(email.getText(), password.getText())) {
       FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
       StackPane root = loader.load();
       MenuController controller = loader.<MenuController>getController();

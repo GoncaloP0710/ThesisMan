@@ -53,12 +53,24 @@ public class RestThesismanController {
 
     @PostMapping("/login")
     ResponseEntity<?> login(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
+        System.out.println("before populate");
+        // ================== Populate the database ================================
+        ThesismanServiceImp.populate();
+        // =========================================================================
+        System.out.println("after populate");
         ObjectMapper objectMapper = new ObjectMapper();
+        
         try{
             JsonNode jsonNode = objectMapper.readTree(json);
+            System.out.println("1");
             String email = jsonNode.get("email").asText();
+            System.out.println("2");
             String password = jsonNode.get("password").asText();
+            System.out.println("3");
             AlunoDTO userDTO = ThesismanServiceImp.loginAluno(email, password);
+            System.out.println("4");
+            System.out.println("userDTO: " + userDTO.getName());
+            System.out.println("5");
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
