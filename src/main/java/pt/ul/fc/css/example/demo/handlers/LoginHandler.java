@@ -98,4 +98,12 @@ public class LoginHandler {
         }
         return result;
     }
+
+    private List<Integer> getCandidaturasIds(List<Candidatura> candidaturas) {
+        List<Integer> result = new ArrayList<Integer>();
+        for (Candidatura c : candidaturas) {
+            result.add(c.getId());
+        }
+        return result;
+    }
 }

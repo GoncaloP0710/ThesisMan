@@ -1,33 +1,40 @@
-package alunos.example.desktopapp.list_temas;
+package alunos.example.desktopapp.create_candidatura;
 
 import alunos.example.desktopapp.Main;
 import alunos.example.desktopapp.TableRow;
 import alunos.example.desktopapp.dtos.TemaDTO;
+import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
-import java.util.ArrayList;
 import java.util.List;
-import javafx.fxml.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class ListTemasController {
+public class CreateCandidaturaController {
+
   private double height;
   private double width;
   private Stage primaryStage;
+  private TableRow currentTema;
 
   @FXML private StackPane pane;
 
   @FXML private HBox topHbox;
 
   @FXML private Button goBack;
+
+  @FXML private Button createCandidatura;
 
   @FXML private Label title;
 
@@ -40,6 +47,7 @@ public class ListTemasController {
     width = Screen.getPrimary().getBounds().getWidth();
 
     setUpTopHbox();
+    setUpCreateButton();
     setUpGoBackButton();
     setUpTable();
   }
@@ -47,6 +55,10 @@ public class ListTemasController {
   private void setUpTopHbox() {
     StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
     HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
+  }
+
+  private void setUpCreateButton() {
+    createCandidatura.setPrefSize(width / 20, height / 20);
   }
 
   private void setUpGoBackButton() {
@@ -61,42 +73,37 @@ public class ListTemasController {
     TableColumn<TableRow, String> tc1 = new TableColumn<>("id");
     TableColumn<TableRow, String> tc2 = new TableColumn<>("titulo");
     TableColumn<TableRow, String> tc3 = new TableColumn<>("descricao");
-    TableColumn<TableRow, String> tc4 = new TableColumn<>("remuneracaoMensal");
-    TableColumn<TableRow, String> tc5 = new TableColumn<>("submissorId");
-    TableColumn<TableRow, String> tc6 = new TableColumn<>("mestradosCompativeisId");
+    TableColumn<TableRow, String> tc4 = new TableColumn<>("selecionado");
+
     tc1.setCellValueFactory(new PropertyValueFactory<>("col1"));
     tc2.setCellValueFactory(new PropertyValueFactory<>("col2"));
     tc3.setCellValueFactory(new PropertyValueFactory<>("col3"));
     tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
-    tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
-    tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
 
-    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
+    table.getColumns().addAll(tc1, tc2, tc3, tc4);
 
-    // TODO: descomentar quando a rest api estiver ligada
-    // List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
-
-    List<TemaDTO> temas = new ArrayList<>();
-    // TemaDTO(Integer id, String titulo, String descricao, float remuneracaoMensal, Integer
-    // submissorId, List<Integer> mestradosCompativeisId)
-    TemaDTO tema1 = new TemaDTO(1, "Tema 1", "Descrição do tema 1", 1000, 1, List.of(1, 2));
-    TemaDTO tema2 = new TemaDTO(2, "Tema 2", "Descrição do tema 2", 2000, 2, List.of(2, 3));
-    TemaDTO tema3 = new TemaDTO(3, "Tema 3", "Descrição do tema 3", 3000, 3, List.of(3, 4));
-    temas.add(tema1);
-    temas.add(tema2);
-    temas.add(tema3);
+    List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
 
     for (TemaDTO tema : temas) {
       TableRow t = new TableRow();
       t.setCol1(String.valueOf(tema.getId()));
       t.setCol2(tema.getTitulo());
       t.setCol3(tema.getDescricao());
-      t.setCol4(String.valueOf(tema.getRemuneracaoMensal()));
-      t.setCol5(String.valueOf(tema.getSubmissorId()));
-      t.setCol6(tema.getMestradosCompativeisId().toString());
+      t.setCol4("");
 
       table.getItems().add(t);
     }
+
+    table.setOnMouseClicked(
+        event -> {
+          if (event.getButton() == MouseButton.PRIMARY) {
+            currentTema = table.getSelectionModel().getSelectedItem();
+            for (TableRow row : table.getItems()) {
+              row.setCol4("");
+            }
+            table.getSelectionModel().getSelectedItem().setCol4("X");
+          }
+        });
   }
 
   @FXML
@@ -106,5 +113,27 @@ public class ListTemasController {
     MenuController controller = loader.<MenuController>getController();
     controller.setUp(primaryStage);
     primaryStage.getScene().setRoot(root);
+  }
+
+  @FXML
+  public void createCandidatura() throws Exception {
+    if (currentTema == null) {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Erro");
+      alert.setHeaderText("Tema não selecionado");
+      alert.setContentText("Por favor selecione um tema");
+      alert.showAndWait();
+      return;
+    }
+
+    if (RestAPIClientService.getInstance()
+            .createCandidatura(Integer.valueOf(currentTema.getCol1()), null)
+        != null) {
+    } else {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Erro");
+      alert.setHeaderText("Erro ao criar candidatura");
+      alert.showAndWait();
+    }
   }
 }

@@ -10,6 +10,7 @@ import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 import pt.ul.fc.css.example.demo.exceptions.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,17 @@ public class CandidaturaHandler {
         if (candidaturas != null) {
             if(candidaturas.size() >= 5){
                 throw new IllegalCandidaturaException("O aluno já tem 5 candidaturas ativas");
+            }
+            for (Candidatura c : candidaturas) {
+                Date date1 = c.getDataCandidatura();
+                Calendar cal1 = Calendar.getInstance();
+                Calendar cal2 = Calendar.getInstance();
+                cal1.setTime(date1);
+                cal2.setTime(dataCandidatura);
+
+                if (c.getTema().getId() == temaId && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)){
+                    throw new IllegalCandidaturaException("O aluno já tem uma candidatura a esse tema");
+                }
             }
         }
         Aluno aluno = optAluno.get();
