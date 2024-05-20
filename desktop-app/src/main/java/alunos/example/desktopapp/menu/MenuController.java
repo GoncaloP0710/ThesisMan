@@ -112,7 +112,7 @@ public class MenuController {
   public void cancelCandidatura() throws Exception {
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cancel_candidatura.fxml"));
     StackPane cancelCandidatura = loader.load();
-    CancelarCandidaturaController controller = loader.<CancelCandidaturaController>getController();
+    CancelarCandidaturaController controller = loader.<CancelarCandidaturaController>getController();
     controller.setUp(primaryStage);
     primaryStage.getScene().setRoot(cancelCandidatura);
   }

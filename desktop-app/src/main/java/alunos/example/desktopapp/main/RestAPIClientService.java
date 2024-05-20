@@ -302,7 +302,7 @@ public class RestAPIClientService {
     }
   }
 
-  private void setAlunoIdNull () {
+  protected void setAlunoIdNull () {
     this.alunoId = null;
   }
 }

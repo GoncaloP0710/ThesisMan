@@ -16,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import alunos.example.desktopapp.dtos.*;
+import alunos.example.desktopapp.main.RestAPIClientService;
+
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.http.HttpStatus;
 

@@ -19,6 +19,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import alunos.example.desktopapp.main.RestAPIClientService;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 
 public class ListTemasController {
