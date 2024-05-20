@@ -83,7 +83,7 @@ public class LoginController {
       controller.setUp(primaryStage);
       // Set the width and height of the Stage
       primaryStage.setHeight(600);
-      primaryStage.setWidth(600);
+      primaryStage.setWidth(300);
       primaryStage.getScene().setRoot(root);
     }
   }
