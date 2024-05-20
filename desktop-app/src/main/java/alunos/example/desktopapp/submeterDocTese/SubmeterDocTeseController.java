@@ -1,14 +1,16 @@
 package alunos.example.desktopapp.submeterDocTese;
 
-import alunos.example.desktopapp.Main;
+import alunos.example.desktopapp.Main; // Add this line
 import alunos.example.desktopapp.TableRow;
 import alunos.example.desktopapp.dtos.CandidaturaDTO;
 import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
-import java.io.File; // Add this line
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,8 +22,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -31,8 +35,6 @@ public class SubmeterDocTeseController {
   private double width;
   private Stage primaryStage;
   private TableRow currentCandidatura;
-
-  @FXML private StackPane pane;
 
   @FXML private HBox topHbox;
 
@@ -45,6 +47,8 @@ public class SubmeterDocTeseController {
   @FXML private Button submeterDocTese;
 
   @FXML private Button choseFileButton;
+
+  @FXML private VBox middleVBox;
 
   private byte[] fileBytes;
 
@@ -62,7 +66,7 @@ public class SubmeterDocTeseController {
   }
 
   private void setUpTopHbox() {
-    StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
+    BorderPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
     HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
   }
 
@@ -75,7 +79,7 @@ public class SubmeterDocTeseController {
   }
 
   private void setUpChoseFileButton() {
-    choseFileButton.setPrefSize(width / 20, height / 20);
+    // choseFileButton.setPrefSize(width / 20, height / 20);
 
     choseFileButton.setOnAction(
         e -> {
@@ -98,7 +102,7 @@ public class SubmeterDocTeseController {
   }
 
   private void setUpTable() {
-    StackPane.setMargin(
+    BorderPane.setMargin(
         table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -118,9 +122,14 @@ public class SubmeterDocTeseController {
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
     tc7.setCellValueFactory(new PropertyValueFactory<>("col7"));
 
-    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6, tc7);
+    // List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
-    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
+    List<CandidaturaDTO> candidaturas = new ArrayList<>();
+    candidaturas.add(new CandidaturaDTO(1, 1, new Date(), "EMPROCESSAMENTO", 1, 1));
+    candidaturas.add(new CandidaturaDTO(2, 2, new Date(), "EMPROCESSAMENTO", 2, 2));
+    candidaturas.add(new CandidaturaDTO(3, 3, new Date(), "EMPROCESSAMENTO", 3, 3));
+
+    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6, tc7);
 
     for (CandidaturaDTO candidatura : candidaturas) {
       TableRow t = new TableRow();
@@ -155,6 +164,8 @@ public class SubmeterDocTeseController {
     StackPane root = loader.load();
     MenuController controller = loader.<MenuController>getController();
     controller.setUp(primaryStage);
+    primaryStage.setWidth(300);
+    primaryStage.setX(primaryStage.getX() + 150);
     primaryStage.getScene().setRoot(root);
   }
 

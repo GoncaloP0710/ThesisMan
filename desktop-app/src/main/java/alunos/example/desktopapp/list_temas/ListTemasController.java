@@ -6,7 +6,8 @@ import alunos.example.desktopapp.dtos.TemaDTO;
 import alunos.example.desktopapp.menu.MenuController;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.fxml.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -105,6 +106,8 @@ public class ListTemasController {
     StackPane root = loader.load();
     MenuController controller = loader.<MenuController>getController();
     controller.setUp(primaryStage);
+    primaryStage.setWidth(300);
+    primaryStage.setX(primaryStage.getX() + 150);
     primaryStage.getScene().setRoot(root);
   }
 }
