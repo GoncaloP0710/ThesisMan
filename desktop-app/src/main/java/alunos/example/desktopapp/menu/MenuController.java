@@ -69,6 +69,8 @@ public class MenuController {
     StackPane listTemas = loader.load();
     ListTemasController controller = loader.<ListTemasController>getController();
     controller.setUp(primaryStage);
+    primaryStage.setWidth(600);
+    primaryStage.setX(primaryStage.getX() - 150);
     primaryStage.getScene().setRoot(listTemas);
   }
 
