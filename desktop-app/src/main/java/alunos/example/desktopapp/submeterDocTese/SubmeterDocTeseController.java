@@ -160,11 +160,11 @@ public class SubmeterDocTeseController {
 
   @FXML
   public void submeterDocTese() throws Exception {
-    if (currentCandidatura == null) {
+    if (currentCandidatura == null || fileBytes == null) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
-      alert.setHeaderText("Tema não selecionado");
-      alert.setContentText("Por favor selecione um tema");
+      alert.setHeaderText("Erro ao submeter documento de tese");
+      alert.setContentText("Por favor selecione uma candidatura e um ficheiro");
       alert.showAndWait();
       return;
     }
@@ -175,7 +175,7 @@ public class SubmeterDocTeseController {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
-      alert.setHeaderText("Erro ao cancelar candidatura");
+      alert.setHeaderText("Erro ao submeter um documento na candidatura");
       alert.showAndWait();
     }
   }

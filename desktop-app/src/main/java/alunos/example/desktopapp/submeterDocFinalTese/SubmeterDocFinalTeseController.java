@@ -1,10 +1,13 @@
-package alunos.example.desktopapp.cancelar_candidatura;
+package alunos.example.desktopapp.submeterDocFinalTese;
 
 import alunos.example.desktopapp.Main;
 import alunos.example.desktopapp.TableRow;
 import alunos.example.desktopapp.dtos.CandidaturaDTO;
 import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
+import java.io.File; // Add this line
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -19,10 +22,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class CancelarCandidaturaController {
+public class SubmeterDocFinalTeseController {
   private double height;
   private double width;
   private Stage primaryStage;
@@ -38,7 +42,11 @@ public class CancelarCandidaturaController {
 
   @FXML private TableView<TableRow> table;
 
-  @FXML private Button cancelarCandidatura;
+  @FXML private Button submeterDocFinalTese;
+
+  @FXML private Button choseFileButton;
+
+  private byte[] fileBytes;
 
   public void setUp(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -47,8 +55,9 @@ public class CancelarCandidaturaController {
     width = Screen.getPrimary().getBounds().getWidth();
 
     setUpTopHbox();
-    setUpDeleteButton();
+    setUpsubmeterDocFinalTeseButton();
     setUpGoBackButton();
+    setUpChoseFileButton();
     setUpTable();
   }
 
@@ -57,12 +66,35 @@ public class CancelarCandidaturaController {
     HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
   }
 
-  private void setUpDeleteButton() {
-    cancelarCandidatura.setPrefSize(width / 20, height / 20);
+  private void setUpsubmeterDocFinalTeseButton() {
+    submeterDocFinalTese.setPrefSize(width / 20, height / 20);
   }
 
   private void setUpGoBackButton() {
     goBack.setPrefSize(width / 20, height / 20);
+  }
+
+  private void setUpChoseFileButton() {
+    choseFileButton.setPrefSize(width / 20, height / 20);
+
+    choseFileButton.setOnAction(
+        e -> {
+          // Create a FileChooser
+          FileChooser fileChooser = new FileChooser();
+
+          // Show open file dialog
+          File file = fileChooser.showOpenDialog(null);
+
+          if (file != null) {
+            try {
+              // Read file to byte array and assign to fileBytes
+              fileBytes = Files.readAllBytes(file.toPath());
+            } catch (IOException ex) {
+              // Handle exception
+              System.out.println("Error reading file: " + ex.getMessage());
+            }
+          }
+        });
   }
 
   private void setUpTable() {
@@ -127,22 +159,23 @@ public class CancelarCandidaturaController {
   }
 
   @FXML
-  public void deleteCandidatura() throws Exception {
-    if (currentCandidatura == null) {
+  public void submeterDocFinalTese() throws Exception {
+    if (currentCandidatura == null || fileBytes == null) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
-      alert.setHeaderText("Candidatura não selecionada");
-      alert.setContentText("Por favor selecione uma candidatura");
+      alert.setHeaderText("Erro ao submeter documento final de tese");
+      alert.setContentText("Por favor selecione uma candidatura e um ficheiro");
       alert.showAndWait();
       return;
     }
 
     if (RestAPIClientService.getInstance()
-        .cancelarCandidatura(Integer.valueOf(currentCandidatura.getCol1()))) {
+            .submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)
+        != null) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
-      alert.setHeaderText("Erro ao cancelar candidatura");
+      alert.setHeaderText("Erro ao submeter um documento final na candidatura");
       alert.showAndWait();
     }
   }
