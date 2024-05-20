@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -32,7 +34,7 @@ public class SubmeterDocFinalTeseController {
   private Stage primaryStage;
   private TableRow currentCandidatura;
 
-  @FXML private StackPane pane;
+  @FXML private BorderPane pane;
 
   @FXML private HBox topHbox;
 
@@ -45,6 +47,8 @@ public class SubmeterDocFinalTeseController {
   @FXML private Button submeterDocFinalTese;
 
   @FXML private Button choseFileButton;
+
+  @FXML private VBox middleVbox;
 
   private byte[] fileBytes;
 
@@ -108,7 +112,6 @@ public class SubmeterDocFinalTeseController {
     TableColumn<TableRow, String> tc4 = new TableColumn<>("estado");
     TableColumn<TableRow, String> tc5 = new TableColumn<>("teseId");
     TableColumn<TableRow, String> tc6 = new TableColumn<>("alunoId");
-    TableColumn<TableRow, String> tc7 = new TableColumn<>("selected");
 
     tc1.setCellValueFactory(new PropertyValueFactory<>("col1"));
     tc2.setCellValueFactory(new PropertyValueFactory<>("col2"));
@@ -116,9 +119,8 @@ public class SubmeterDocFinalTeseController {
     tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
     tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
-    tc7.setCellValueFactory(new PropertyValueFactory<>("col7"));
 
-    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6, tc7);
+    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
     List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
@@ -132,7 +134,6 @@ public class SubmeterDocFinalTeseController {
       t.setCol4(candidatura.getEstado());
       t.setCol5(String.valueOf(candidatura.getTeseId()));
       t.setCol6(String.valueOf(candidatura.getAlunoId()));
-      t.setCol7("");
 
       table.getItems().add(t);
     }
@@ -141,10 +142,6 @@ public class SubmeterDocFinalTeseController {
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
             currentCandidatura = table.getSelectionModel().getSelectedItem();
-            for (TableRow row : table.getItems()) {
-              row.setCol7("");
-            }
-            table.getSelectionModel().getSelectedItem().setCol7("X");
           }
         });
   }
@@ -169,9 +166,7 @@ public class SubmeterDocFinalTeseController {
       return;
     }
 
-    if (RestAPIClientService.getInstance()
-            .submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)
-        != null) {
+    if (RestAPIClientService.getInstance().submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

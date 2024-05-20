@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
+import pt.ul.fc.css.example.demo.dtos.DefesaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.TeseDTO;
@@ -59,7 +60,7 @@ public class WebController {
     }
 
     @PostMapping("/dashboard")
-    public String login(final Model model, @RequestParam("email")String email){
+    public String login(Model model, @RequestParam("email")String email){
         DocenteDTO docente = null;
         if(email.matches("^[a-zA-Z0-9]*@mockdocente[.]pt")){
             try{
@@ -106,8 +107,24 @@ public class WebController {
         return "submeterTemas";
     }
 
+    @PostMapping("/submitTemaCall")
+    public String submitTemaCall(final Model model, @RequestParam String title,
+    @RequestParam String description, @RequestParam float compensation, @RequestParam String masters) {
+        System.out.println("Model id: " + model.getAttribute("id"));
+        try{
+            List<String> mastersList = Arrays.asList(masters.split(","));
+            Integer docenteId = (Integer) model.getAttribute("id");
+            thesismanService.submeterTemaDocente(title, description, compensation, mastersList,docenteId);
+        }catch(NotPresentException e){
+            logger.error("Erro ao submeter tema: " + e.getMessage());
+            return "submeterTema";
+        }
+        
+        return "temaSubmetido";
+    }
+
     @GetMapping({"/atribuicaoTema"})
-    public String atribuicaoTema(final Model model){
+    public String atribuicaoTema(Model model){
         if((Boolean) model.getAttribute("isAdmin") == true){
             List<TemaDTO> temas = thesismanService.getTemas();
             List<String> temasName = new ArrayList<String>();
@@ -145,7 +162,7 @@ public class WebController {
     
 
     @GetMapping({"/marcarDefesaProposta"})
-    public String marcarDefesaProposta(final Model model){
+    public String marcarDefesaProposta(Model model){
         try{
          List<CandidaturaDTO> c = thesismanService.getCandidaturasAceites();
          Map<CandidaturaDTO, TemaDTO> candidaturas = new HashMap<CandidaturaDTO, TemaDTO>();
@@ -167,7 +184,7 @@ public class WebController {
     }
 
     @PostMapping("/marcarDefesaPropostaCall")
-    public String postMethodName(final Model model, @RequestParam Integer teseId, @RequestParam String data, @RequestParam(required = false) String online, @RequestParam(required = false) String room, @RequestParam Integer arguente){
+    public String marcarDefesaPropostaCall(Model model, @RequestParam Integer teseId, @RequestParam String data, @RequestParam(required = false) String online, @RequestParam(required = false) String room, @RequestParam Integer arguente){
         Boolean onlineBool = false;
         if(online.equals("on")){onlineBool = true;}
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -190,10 +207,29 @@ public class WebController {
     
 
     @GetMapping({"/registarNotaDefesaProposta"})
-    public String registarNotaDefesaProposta(final Model model){
-        List<CandidaturaDTO> d = thesismanService.getCandidaturaWithTeseWithDefesaPropostaWithoutNota();
-        model.addAttribute("candidaturaWithDefesaPropostaWithoutNota", d);
+    public String registarNotaDefesaProposta(Model model){
+        Map<CandidaturaDTO, TeseDTO> candidaturas = thesismanService.getCandidaturaWithTeseWithDefesaPropostaWithoutNota();
+        model.addAttribute("candidaturaWithDefesaPropostaWithoutNota", candidaturas);
         return "registarNotaDefesaProposta";
+    }
+
+    @PostMapping({"/registarNotaDefesaPropostaCall"})
+    public String registarNotaDefesaPropostaCall(Model model, @RequestParam Integer defesaId, @RequestParam Integer nota) throws NotPresentException{
+        thesismanService.registarNotaPropostaTese(defesaId,(Integer)model.getAttribute("id"), nota);
+        return "registarNotaCall";
+    }
+
+    @GetMapping({"/registarNotaDefesaFinal"})
+    public String registarNotaDefesaFinal(Model model){
+        Map<CandidaturaDTO, TeseDTO> candidaturas = thesismanService.getCandidaturaWithTeseWithDefesaFinalWithoutNota();
+        model.addAttribute("candidaturaWithDefesaFinalWithoutNota", candidaturas);
+        return "registarNotaDefesaFinal";
+    }
+
+    @PostMapping({"/registarNotaDefesaFinalCall"})
+    public String registarNotaDefesaFinalCall(Model model, @RequestParam Integer defesaId, @RequestParam Integer nota) throws NotPresentException{
+        thesismanService.registarNotaFinalTese(defesaId, (Integer)model.getAttribute("id"), nota);
+        return "registarNotaCall";
     }
 
     @GetMapping({"/marcarDefesaFinal"})
@@ -248,32 +284,11 @@ public class WebController {
         return "marcarDefesaFinalCall";
     }
 
-    @GetMapping({"/registoNotaDefesaProposta"})
-    public String registoNotaDefesaProposta(){
-        return "registoNotaDefesaProposta";
+    @GetMapping({"/estatisticas"})
+    public String estatisticas(Model model){
+        model.addAttribute("estatisticas", thesismanService.getEstatisticas());
+        return "estatisticas";
     }
-
-    @GetMapping({"/statistics"})
-    public String statistics(){
-        return "statistics";
-    }
-    
-    @PostMapping("/submitTemaCall")
-    public String submitTemaCall(final Model model, @RequestParam String title,
-    @RequestParam String description, @RequestParam float compensation, @RequestParam String masters) {
-        System.out.println("Model id: " + model.getAttribute("id"));
-        try{
-            List<String> mastersList = Arrays.asList(masters.split(","));
-            Integer docenteId = (Integer) model.getAttribute("id");
-            thesismanService.submeterTemaDocente(title, description, compensation, mastersList,docenteId);
-        }catch(NotPresentException e){
-            logger.error("Erro ao submeter tema: " + e.getMessage());
-            return "submeterTema";
-        }
-        
-        return "temaSubmetido";
-    }
-
 
 }
 

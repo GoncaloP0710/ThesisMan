@@ -33,6 +33,7 @@
                </children>
             </HBox>
             <Button fx:id="submeterDoc" mnemonicParsing="false" onMouseClicked="#submeterDoc" text="Submeter Documento" translateX="90.0" translateY="50.0" GridPane.rowIndex="1" />
+            <Button fx:id="submeterDocFinal" mnemonicParsing="false" onMouseClicked="#submeterDocFinal" text="Submeter Documento Final" translateX="70.0" translateY="90.0" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

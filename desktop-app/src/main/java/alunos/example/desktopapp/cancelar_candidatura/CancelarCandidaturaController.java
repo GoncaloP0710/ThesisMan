@@ -137,8 +137,8 @@ public class CancelarCandidaturaController {
       return;
     }
 
-    if (RestAPIClientService.getInstance()
-        .cancelarCandidatura(Integer.valueOf(currentCandidatura.getCol1()))) {
+    if (RestAPIClientService.getInstance().cancelarCandidatura(Integer.valueOf(currentCandidatura.getCol1()))) {
+      setUpTable();
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

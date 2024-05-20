@@ -28,10 +28,14 @@
             <form action="#" th:action="@{/registarNotaDefesaProposta}" method="get">
                 <button>Registar Nota Defesa Proposta</button>
             </form>
-            <form action="#" th:action="@{/statistics}" method="get"></form>
+            <form action="#" th:action="@{/estatisticas}" method="get">
                 <button>Ver Estatísticas</button>
+            </form>
             </form>
         </div>
       </div>
+      <form th:action = "@{/logout}" method="GET" id="form1">
+        <button>Logout</button>
+    </form>
 </body>
 </html>

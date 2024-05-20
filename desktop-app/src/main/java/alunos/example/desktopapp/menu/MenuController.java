@@ -3,7 +3,14 @@ package alunos.example.desktopapp.menu;
 import alunos.example.desktopapp.Main;
 import alunos.example.desktopapp.create_candidatura.CreateCandidaturaController;
 import alunos.example.desktopapp.list_temas.ListTemasController;
+
 import alunos.example.desktopapp.submeterDocTese.SubmeterDocTeseController;
+import alunos.example.desktopapp.submeterDocFinalTese.SubmeterDocFinalTeseController;
+
+import alunos.example.desktopapp.login.LoginController;
+import alunos.example.desktopapp.main.RestAPIClientService;
+import alunos.example.desktopapp.cancelar_candidatura.CancelarCandidaturaController;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -38,6 +45,8 @@ public class MenuController {
 
   @FXML private Button submeterDoc;
 
+  @FXML private Button submeterDocFinal;
+
   public void setUp(Stage primaryStage) {
     this.primaryStage = primaryStage;
 
@@ -68,6 +77,18 @@ public class MenuController {
   }
 
   @FXML
+  public void logOut() throws Exception {
+    RestAPIClientService.getInstance().setAlunoIdNull();
+    FXMLLoader loader = new FXMLLoader(Main.class.getResource("/login.fxml"));
+    StackPane login = loader.load();
+    LoginController controller = loader.<LoginController>getController();
+    controller.setUp(primaryStage);
+    primaryStage.setWidth(600);
+    primaryStage.setX(primaryStage.getX() - 150);
+    primaryStage.getScene().setRoot(login);
+  }
+
+  @FXML
   public void listTemas() throws Exception {
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/list_temas.fxml"));
     StackPane listTemas = loader.load();
@@ -88,6 +109,15 @@ public class MenuController {
   }
 
   @FXML
+  public void cancelCandidatura() throws Exception {
+    FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cancel_candidatura.fxml"));
+    StackPane cancelCandidatura = loader.load();
+    CancelarCandidaturaController controller = loader.<CancelCandidaturaController>getController();
+    controller.setUp(primaryStage);
+    primaryStage.getScene().setRoot(cancelCandidatura);
+  }
+
+  @FXML
   public void submeterDoc() throws Exception {
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/submeter_doc.fxml"));
     BorderPane submeterDoc = loader.load();
@@ -96,5 +126,16 @@ public class MenuController {
     primaryStage.setWidth(600);
     primaryStage.setX(primaryStage.getX() - 150);
     primaryStage.getScene().setRoot(submeterDoc);
+  }
+
+  @FXML
+  public void submeterDocFinal() throws Exception {
+    FXMLLoader loader = new FXMLLoader(Main.class.getResource("/submeter_doc_final.fxml"));
+    BorderPane submeterDocFinal = loader.load();
+    SubmeterDocFinalTeseController controller = loader.<SubmeterDocFinalTeseController>getController();
+    controller.setUp(primaryStage);
+    primaryStage.setWidth(600);
+    primaryStage.setX(primaryStage.getX() - 150);
+    primaryStage.getScene().setRoot(submeterDocFinal);
   }
 }

@@ -112,7 +112,6 @@ public class SubmeterDocTeseController {
     TableColumn<TableRow, String> tc4 = new TableColumn<>("estado");
     TableColumn<TableRow, String> tc5 = new TableColumn<>("teseId");
     TableColumn<TableRow, String> tc6 = new TableColumn<>("alunoId");
-    TableColumn<TableRow, String> tc7 = new TableColumn<>("selected");
 
     tc1.setCellValueFactory(new PropertyValueFactory<>("col1"));
     tc2.setCellValueFactory(new PropertyValueFactory<>("col2"));
@@ -120,16 +119,10 @@ public class SubmeterDocTeseController {
     tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
     tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
-    tc7.setCellValueFactory(new PropertyValueFactory<>("col7"));
 
-    // List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
+    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
-    List<CandidaturaDTO> candidaturas = new ArrayList<>();
-    candidaturas.add(new CandidaturaDTO(1, 1, new Date(), "EMPROCESSAMENTO", 1, 1));
-    candidaturas.add(new CandidaturaDTO(2, 2, new Date(), "EMPROCESSAMENTO", 2, 2));
-    candidaturas.add(new CandidaturaDTO(3, 3, new Date(), "EMPROCESSAMENTO", 3, 3));
-
-    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6, tc7);
+    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
     for (CandidaturaDTO candidatura : candidaturas) {
       TableRow t = new TableRow();
@@ -141,7 +134,6 @@ public class SubmeterDocTeseController {
       t.setCol4(candidatura.getEstado());
       t.setCol5(String.valueOf(candidatura.getTeseId()));
       t.setCol6(String.valueOf(candidatura.getAlunoId()));
-      t.setCol7("");
 
       table.getItems().add(t);
     }
@@ -150,10 +142,6 @@ public class SubmeterDocTeseController {
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
             currentCandidatura = table.getSelectionModel().getSelectedItem();
-            for (TableRow row : table.getItems()) {
-              row.setCol7("");
-            }
-            table.getSelectionModel().getSelectedItem().setCol7("X");
           }
         });
   }
@@ -180,9 +168,7 @@ public class SubmeterDocTeseController {
       return;
     }
 
-    if (RestAPIClientService.getInstance()
-            .submeterDocTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)
-        != null) {
+    if (RestAPIClientService.getInstance().submeterDocTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

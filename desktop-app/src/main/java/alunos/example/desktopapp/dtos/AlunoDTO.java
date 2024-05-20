@@ -10,7 +10,6 @@ public class AlunoDTO{
     private Integer mestrado;
     private List<Integer> candidaturaId;
     
-          //AlunoDTO(Integer, String, String, Double, Integer, List<Integer>)
     public AlunoDTO(Integer id, String name, String contact, Double average, Integer mestradoId, List<Integer> candidaturaId) {
         this.id = id;
         this.name = name;

@@ -29,6 +29,9 @@
             <option th:each="docente : ${docentes}" th:value="${docente.id}" th:text="${docente.nome}"></option>
         <input type="submit" value="Submit">
     </form>
+    <form th:action = "@{/dashboard}" method="GET" id="form1">
+        <button>voltar ao dashboard</button>
+    </form>
 </body>
 </html>
 </body>

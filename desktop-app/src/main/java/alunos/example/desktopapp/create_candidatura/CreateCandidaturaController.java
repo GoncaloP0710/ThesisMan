@@ -73,23 +73,28 @@ public class CreateCandidaturaController {
     TableColumn<TableRow, String> tc1 = new TableColumn<>("id");
     TableColumn<TableRow, String> tc2 = new TableColumn<>("titulo");
     TableColumn<TableRow, String> tc3 = new TableColumn<>("descricao");
-    TableColumn<TableRow, String> tc4 = new TableColumn<>("selecionado");
 
     tc1.setCellValueFactory(new PropertyValueFactory<>("col1"));
     tc2.setCellValueFactory(new PropertyValueFactory<>("col2"));
     tc3.setCellValueFactory(new PropertyValueFactory<>("col3"));
-    tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
 
-    table.getColumns().addAll(tc1, tc2, tc3, tc4);
+    table.getColumns().addAll(tc1, tc2, tc3);
 
     List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
+
+    if (temas == null) {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Erro");
+      alert.setHeaderText("Erro ao obter lista de temas");
+      alert.showAndWait();
+      return;
+    }
 
     for (TemaDTO tema : temas) {
       TableRow t = new TableRow();
       t.setCol1(String.valueOf(tema.getId()));
       t.setCol2(tema.getTitulo());
       t.setCol3(tema.getDescricao());
-      t.setCol4("");
 
       table.getItems().add(t);
     }
@@ -98,10 +103,6 @@ public class CreateCandidaturaController {
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
             currentTema = table.getSelectionModel().getSelectedItem();
-            for (TableRow row : table.getItems()) {
-              row.setCol4("");
-            }
-            table.getSelectionModel().getSelectedItem().setCol4("X");
           }
         });
   }
@@ -126,9 +127,7 @@ public class CreateCandidaturaController {
       return;
     }
 
-    if (RestAPIClientService.getInstance()
-            .createCandidatura(Integer.valueOf(currentTema.getCol1()), null)
-        != null) {
+    if (RestAPIClientService.getInstance().createCandidatura(Integer.valueOf(currentTema.getCol1()), null)) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

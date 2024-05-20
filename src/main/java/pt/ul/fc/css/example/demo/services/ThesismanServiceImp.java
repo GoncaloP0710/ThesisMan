@@ -2,8 +2,11 @@ package pt.ul.fc.css.example.demo.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +34,7 @@ public class ThesismanServiceImp implements ThesismanService{
     @Autowired private SubmissaoDocFinalTeseAlunoHandler submissaoDocFinalTeseAlunoHandler;
     @Autowired private SubmissaoTemaDocenteHandler submissaoTemaDocenteHandler;
     // @Autowired private SubmissaoTemaUtilizadorEmpresarialHandler submissaoTemaUtilizadorEmpresarialHandler;
-    // @Autowired private EstatisticasHandler estatisticasHandler;
+    @Autowired private EstatisticasHandler estatisticasHandler;
 
     @Autowired private AlunoRepository alunoRepository;
     @Autowired private CandidaturaRepository candidaturaRepository;
@@ -229,24 +232,44 @@ public class ThesismanServiceImp implements ThesismanService{
         registoNotaFinalTeseHandler.registarNotaFinal(teseID, docenteId, nota);
     }
 
-    public List<CandidaturaDTO> getCandidaturaWithTeseWithDefesaPropostaWithoutNota(){
-        List<Candidatura> c = candidaturaHandler.getCandidaturasWithDefesaPropostaWithoutNota();
-        List<CandidaturaDTO> result = new ArrayList<>();
-        for (Candidatura candidatura : c) {
-            result.add(new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId()));
-        }   
+    public Map<CandidaturaDTO, TeseDTO> getCandidaturaWithTeseWithDefesaPropostaWithoutNota(){
+        Map<CandidaturaDTO, TeseDTO> result = new HashMap<>();
+        List<Candidatura> candidaturas = candidaturaRepository.findAll();
+        for (Candidatura candidatura : candidaturas) {
+            Tese tese = candidatura.getTese();
+            if (tese != null) {
+                Defesa d = tese.getDefesaProposta();
+                if (d != null && d.getNota() != -1) {
+                    CandidaturaDTO candidaturaDTO = new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+                    TeseDTO teseDTO = new TeseDTO(tese.getId(), tese.getCandidatura().getId(), tese.getDocumentProposto(), tese.getDocumentFinal(), tese.getDefesas().stream().map(Defesa::getId).collect(Collectors.toList()));
+                    result.put(candidaturaDTO, teseDTO);
+                }
+            }
+        }
         return result;
     }
 
-    public List<CandidaturaDTO> getCandidaturaWithTeseWithDefesaFinalWithoutNota(){
-        List<Candidatura> c = candidaturaHandler.getCandidaturasWithDefesaFinalWithoutNota();
-        List<CandidaturaDTO> result = new ArrayList<>();
-        for (Candidatura candidatura : c) {
-            result.add(new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId()));
-        }   
-        return result;
-    }
+    public Map<CandidaturaDTO, TeseDTO> getCandidaturaWithTeseWithDefesaFinalWithoutNota(){
+        Map<CandidaturaDTO, TeseDTO> result = new HashMap<>();
+        List<Candidatura> candidaturas = candidaturaRepository.findAll();
+        for (Candidatura candidatura : candidaturas) {
+            Tese tese = candidatura.getTese();
+            if (tese != null) {
+                Defesa d = tese.getDefesaFinal();
+                if (d != null && d.getNota() != -1) {
+                    CandidaturaDTO candidaturaDTO = new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+                    TeseDTO teseDTO = new TeseDTO(tese.getId(), tese.getCandidatura().getId(), tese.getDocumentProposto(), tese.getDocumentFinal(), tese.getDefesas().stream().map(Defesa::getId).collect(Collectors.toList()));
+                    result.put(candidaturaDTO, teseDTO);
+                }
+            }
+        }
 
+        return result;
+        }
+
+    public String getEstatisticas(){
+        return estatisticasHandler.getEstatisticas();
+    }
 
 
 
