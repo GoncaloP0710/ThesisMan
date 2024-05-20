@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 import org.springframework.stereotype.Component;
 
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
@@ -103,5 +105,19 @@ public class SubmissaoTemaDocenteHandler {
             mestradosIds.add(m.getId());
         }
         return new TemaDTO(tema.getId(), tema.getTitulo(), tema.getDescricao(), tema.getRemuneracaoMensal(), tema.getSubmissor().getId(), mestradosIds);
+    }
+
+    public TemaDTO getTema(Integer id) throws NotPresentException{
+        Optional<Tema> optTema = temaRepository.findById(id);
+        if(optTema.isEmpty()){
+            throw new NotPresentException("Tema não encontrado");
+        }
+        Tema tema = optTema.get();
+        List<Integer> mestradosIds = new ArrayList<>();
+        for (Mestrado m : tema.getMestrados()) {
+            mestradosIds.add(m.getId());
+        }
+        return new TemaDTO(tema.getId(), tema.getTitulo(), tema.getDescricao(), tema.getRemuneracaoMensal(), tema.getSubmissor().getId(), mestradosIds);
+
     }
 }

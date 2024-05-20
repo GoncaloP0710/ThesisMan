@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import pt.ul.fc.css.example.demo.entities.Candidatura;
+import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
 
 @Repository
 public interface CandidaturaRepository extends JpaRepository<Candidatura, Integer>{
@@ -14,5 +15,6 @@ public interface CandidaturaRepository extends JpaRepository<Candidatura, Intege
     @Query("SELECT c FROM Candidatura c WHERE c.aluno.id = ?1")
     List<Candidatura> findAllByAlunoId(Integer alunoId);
     List<Candidatura> findAllByAlunoEmail(String email);
+    List<Candidatura> findAllByEstado(EstadoCandidatura estado);
 
 }

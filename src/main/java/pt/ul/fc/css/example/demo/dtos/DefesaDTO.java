@@ -8,14 +8,14 @@ public class DefesaDTO {
     private Boolean isPresencial;
     private Date data;
     private Integer duracao;
-    private float nota;
+    private Integer nota;
     private Integer teseId;
     private String sala;
     private Integer juriId;
 
     public DefesaDTO() {}
 
-    public DefesaDTO(Integer id, Boolean isFinal, Boolean isPresencial, Date data, Integer duracao, float nota, Integer teseId, String sala, Integer juriId) {
+    public DefesaDTO(Integer id, Boolean isFinal, Boolean isPresencial, Date data, Integer duracao, Integer nota, Integer teseId, String sala, Integer juriId) {
         this.id = id;
         this.isFinal = isFinal;
         this.isPresencial = isPresencial;
@@ -47,7 +47,7 @@ public class DefesaDTO {
         return this.duracao;
     }
 
-    public float getNota() {
+    public Integer getNota() {
         return this.nota;
     }
 
@@ -83,7 +83,7 @@ public class DefesaDTO {
         this.duracao = duracao;
     }
 
-    public void setNota(float nota) {
+    public void setNota(Integer nota) {
         this.nota = nota;
     }
 

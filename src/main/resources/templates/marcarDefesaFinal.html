@@ -13,10 +13,10 @@
 </head>
 <body>
     <h1>Marcar Tese</h1>
-    <form action="#" th:action="@{/marcarDefesaPropostaCall}" method="post">
+    <form action="#" th:action="@{/marcarDefesaFinalCall}" method="post">
         <label>Teses em curso</label>
         <select th:name="teseId">
-            <option th:each="entry : ${candidaturasAceites}" th:value="${entry.key.teseId}" th:text="${entry.value.titulo}"></option>
+            <option th:each="entry : ${candidaturasWithDefesasPropostasDone}" th:value="${entry.key.teseId}" th:text="${entry.value.titulo}"></option>
         </select>
         <label for="data">Data:</label>
         <input type="date" id="data" name="data">
@@ -26,6 +26,10 @@
         <input type="text" id="room" name="room">
         <label for="arguente">Arguente:</label>
         <select th:name="arguente" id="arguente">
+            <option th:each="docente : ${docentes}" th:value="${docente.id}" th:text="${docente.nome}"></option>
+        <input type="submit" value="Submit">
+        <label for="presidente" id="presidente">Presidente:</label>
+        <select th:name="presidente" id="presidente">
             <option th:each="docente : ${docentes}" th:value="${docente.id}" th:text="${docente.nome}"></option>
         <input type="submit" value="Submit">
     </form>

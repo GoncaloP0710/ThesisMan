@@ -7,7 +7,7 @@ import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
 
 public interface ThesismanService {
 	
-    public AlunoDTO loginAluno(String email, String password) throws NotPresentException;
+    //public AlunoDTO loginAluno(String email, String password) throws NotPresentException;
 
     public DocenteDTO loginDocente(String email, String password) throws NotPresentException;
 

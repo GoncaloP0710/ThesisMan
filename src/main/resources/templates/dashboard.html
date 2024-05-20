@@ -6,8 +6,8 @@
 </head>
 
 <body>
-    <h2 id="bem-vindo" th:text="Bem Vindo ${name}"></h2>
-    <h2 id="bem-vindo" th:text="ID: ${id}"></h2>
+    <p th:text="'Bem Vindo ' + ${name}"></p>
+    <p id="bem-vindo" th:text="'ID:' + ${id}"></p>
     <div class="main">
         <div class="sub-main">
             <form action="#" th:action="@{/submeterTemas}" method="get">
@@ -22,10 +22,10 @@
             <form action="#" th:action="@{/registarNotaDefesaProposta}" method="get">
                 <button>Registar Nota da Defesa da Proposta</button>
             </form>
-            <form action="#" th:action="@{/marcarDefesa}" method="get">
+            <form action="#" th:action="@{/marcarDefesaFinal}" method="get">
                 <button>Marcar Defesa da Tese</button>
             </form>
-            <form action="#" th:action="@{/registoNotaDefesProposta}" method="get">
+            <form action="#" th:action="@{/registarNotaDefesaProposta}" method="get">
                 <button>Registar Nota Defesa Proposta</button>
             </form>
             <form action="#" th:action="@{/statistics}" method="get"></form>

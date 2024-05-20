@@ -1,12 +1,19 @@
 package pt.ul.fc.css.example.demo.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
+import org.aspectj.weaver.ast.Not;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +30,7 @@ import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.TeseDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
+import pt.ul.fc.css.example.demo.exceptions.NoProperStateException;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
 import pt.ul.fc.css.example.demo.services.ThesismanServiceImp;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @SessionAttributes({"id", "name", "isAdmin", "temas propostos", "projetos orientados", "mestrados", "temasDisponiveis",
-                    "alunos", "candidaturas"})
+                    "alunos", "candidaturas", "docentes"})
 public class WebController {
 
     Logger logger = LoggerFactory.getLogger(WebController.class);
@@ -79,6 +87,7 @@ public class WebController {
         model.addAttribute("projetos orientados", docente.getProjetosId());
         model.addAttribute("mestrados", thesismanService.getMestrados());
         model.addAttribute("candidaturas", thesismanService.getCandidaturasWithTeses());
+        model.addAttribute("docentes", thesismanService.getDocentes());
         return "dashboard";
     }
 
@@ -137,33 +146,106 @@ public class WebController {
 
     @GetMapping({"/marcarDefesaProposta"})
     public String marcarDefesaProposta(final Model model){
-        @SuppressWarnings("unchecked")
-        List<CandidaturaDTO> c = (List<CandidaturaDTO>) model.getAttribute("candidaturas");
-        List<TeseDTO> teses = new ArrayList<TeseDTO>();
-        for(CandidaturaDTO candidatura : c){
-            if(candidatura.getTeseId() != null){
-                teses.add(new TeseDTO(candidatura.getTeseId(), candidatura.getId(), null, null, null));
-            }
+        try{
+         List<CandidaturaDTO> c = thesismanService.getCandidaturasAceites();
+         Map<CandidaturaDTO, TemaDTO> candidaturas = new HashMap<CandidaturaDTO, TemaDTO>();
+         for(CandidaturaDTO candidatura : c){
+            TeseDTO t = thesismanService.getTese(candidatura.getTeseId());
+            TemaDTO tema = thesismanService.getTema(t.getId());
+            candidaturas.put(candidatura, tema);
+            //Assumimos que o submissor do tema é o orientador da tese
+            // if(tema.getSubmissorId() == (Integer) model.getAttribute("id")){
+            //     model.addAttribute("candidaturasAceites", candidaturas);
+            // }
+            model.addAttribute("candidaturasAceites", candidaturas);
         }
-        model.addAttribute("teses", teses);
-        List<Integer> candidaturasWithTese = new ArrayList<Integer>();
-        for(CandidaturaDTO candidatura : c){
-            if(candidatura.getTeseId() != null){
-                candidaturasWithTese.add(candidatura.getId());
-            }
+        }catch(NotPresentException e){
+            logger.error("Erro ao verificar candidaturas: " + e.getMessage());
+            return "dashboard";
         }
-        model.addAttribute("candidaturasWithTese", candidaturasWithTese);
         return "marcarDefesaProposta";
     }
 
+    @PostMapping("/marcarDefesaPropostaCall")
+    public String postMethodName(final Model model, @RequestParam Integer teseId, @RequestParam String data, @RequestParam(required = false) String online, @RequestParam(required = false) String room, @RequestParam Integer arguente){
+        Boolean onlineBool = false;
+        if(online.equals("on")){onlineBool = true;}
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date dateObj = null;
+        try {
+            dateObj = formatter.parse(data);
+        } catch (ParseException e) {
+            logger.error("Invalid date format. Expected format is dd-MM-yyyy.");
+            return "marcarDefesaProposta";
+        }
+
+        try{
+            thesismanService.marcarDefesaPropostaTese((Integer)model.getAttribute("id"), teseId, dateObj, onlineBool, room, arguente);
+        }catch(NotPresentException e){
+            logger.error("Erro ao marcar defesa: " + e.getMessage());
+            return "marcarDefesaProposta";
+        }
+        return "marcarDefesaPropostaCall";
+    }
+    
+
     @GetMapping({"/registarNotaDefesaProposta"})
-    public String registarNotaDefesaProposta(){
+    public String registarNotaDefesaProposta(final Model model){
+        List<CandidaturaDTO> d = thesismanService.getCandidaturaWithTeseWithDefesaPropostaWithoutNota();
+        model.addAttribute("candidaturaWithDefesaPropostaWithoutNota", d);
         return "registarNotaDefesaProposta";
     }
 
-    @GetMapping({"/marcarDefesa"})
-    public String marcarDefesa(){
-        return "marcarDefesa";
+    @GetMapping({"/marcarDefesaFinal"})
+    public String marcarDefesa(final Model model){
+        try{
+            List<CandidaturaDTO> c = thesismanService.getCandidaturawithDefesaPropostaDone();
+            Map<CandidaturaDTO, TemaDTO> candidaturas = new HashMap<CandidaturaDTO, TemaDTO>();
+            for(CandidaturaDTO candidatura : c){
+                TeseDTO t = thesismanService.getTese(candidatura.getTeseId());
+                TemaDTO tema = thesismanService.getTema(t.getId());
+                candidaturas.put(candidatura, tema);
+                //Assumimos que o submissor do tema é o orientador da tese
+                // if(tema.getSubmissorId() == (Integer) model.getAttribute("id")){
+                //     model.addAttribute("candidaturasAceites", candidaturas);
+                // }
+                model.addAttribute("candidaturasWithDefesasPropostasDone", candidaturas);
+            }
+        return "marcarDefesaFinal";
+
+    }catch(NotPresentException e){
+        logger.error("Erro ao verificar candidaturas: " + e.getMessage());
+        return "dashboard";
+
+    }catch(NoProperStateException e){
+        logger.error("Erro ao verificar candidaturas: " + e.getMessage());
+        return "dashboard";
+    }
+}
+
+    @PostMapping("/marcarDefesaFinalCall")
+    public String marcarDefesaFinalCall(final Model model, @RequestParam Integer teseId, @RequestParam String data, @RequestParam(required = false) String online, @RequestParam(required = false) String room, @RequestParam Integer arguente, @RequestParam Integer presidente){
+        Boolean onlineBool = false;
+        if(online.equals("on")){onlineBool = true;}
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date dateObj = null;
+        try {
+            dateObj = formatter.parse(data);
+        } catch (ParseException e) {
+            logger.error("Invalid date format. Expected format is dd-MM-yyyy.");
+            return "marcarDefesaFinal";
+        }
+        
+        try{
+            thesismanService.marcarDefesaFinalTese((Integer)model.getAttribute("id"), teseId, dateObj, onlineBool, room, arguente, presidente);
+        }catch(NotPresentException e){
+            logger.error("Erro ao marcar defesa: " + e.getMessage());
+            return "marcarDefesaFinal";
+        }catch(NoProperStateException e){
+            logger.error("Erro ao marcar defesa: " + e.getMessage());
+            return "marcarDefesaFinal";
+        }
+        return "marcarDefesaFinalCall";
     }
 
     @GetMapping({"/registoNotaDefesaProposta"})
@@ -191,6 +273,9 @@ public class WebController {
         
         return "temaSubmetido";
     }
-    
- 
+
+
 }
+
+
+

@@ -25,10 +25,11 @@ public class CandidaturaHandler {
     private TeseRepository teseRepository;
 
     public CandidaturaHandler(CandidaturaRepository candidaturaRepository, AlunoRepository alunoRepository,
-                                 TemaRepository temaRepository) {
+                                 TemaRepository temaRepository, TeseRepository teseRepository) {
         this.candidaturaRepository = candidaturaRepository;
         this.alunoRepository = alunoRepository;
         this.temaRepository = temaRepository;
+        this.teseRepository = teseRepository;
     }
 
     public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException {
@@ -82,5 +83,60 @@ public class CandidaturaHandler {
 
     public List<Candidatura> getCandidaturas(){
         return candidaturaRepository.findAll();
+    }
+
+    public List<Candidatura> getCandidaturasAceites(){
+        return candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+    }
+
+    public Tese getTese(Integer id){
+        return teseRepository.findById(id).get();
+    }
+
+    public List<Candidatura> getCandidaturasWithDefesaPropostaDone() throws NoProperStateException{
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+        List<Candidatura> candidaturasWithDefesaPropostaDone = new ArrayList<Candidatura>();
+        for(Candidatura c : candidaturas){
+            if(c.getTese().getDocumentProposto() != null && c.getTese().getDefesas().size() > 0){
+                for(Defesa d : c.getTese().getDefesas()){
+                    if(!d.isFinal() && d.getNota() > 10){
+                        candidaturasWithDefesaPropostaDone.add(c);
+                    }else{
+                        throw new NoProperStateException("Aluno não tem defesa de proposta aprovada");
+                    }
+                }
+            }
+        }
+        return candidaturasWithDefesaPropostaDone;
+    }
+
+    public List<Candidatura> getCandidaturasWithDefesaPropostaWithoutNota(){
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+        List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
+        for(Candidatura c : candidaturas){
+            if(c.getTese().getDefesas().size() > 0){
+                for(Defesa d : c.getTese().getDefesas()){
+                    if(!d.isFinal() && d.getNota() == -1){
+                        candidaturasWithDefesaWithoutNota.add(c);
+                    }
+                }
+            }
+        }
+        return candidaturasWithDefesaWithoutNota;
+    }
+
+    public List<Candidatura> getCandidaturasWithDefesaFinalWithoutNota(){
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+        List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
+        for(Candidatura c : candidaturas){
+            if(c.getTese().getDefesas().size() > 0){
+                for(Defesa d : c.getTese().getDefesas()){
+                    if(d.isFinal() && d.getNota() == -1){
+                        candidaturasWithDefesaWithoutNota.add(c);
+                    }
+                }
+            }
+        }
+        return candidaturasWithDefesaWithoutNota;
     }
 }

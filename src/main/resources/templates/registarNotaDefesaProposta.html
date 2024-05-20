@@ -1,0 +1,27 @@
+<h1>Registar Nota Defesa Proposta</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Candidatura ID</th>
+            <th>Tese ID</th>
+            <th>Defesa IDs</th>
+            <th>Is Final</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="candidatura : ${candidaturas}">
+            <td th:text="${candidatura.id}"></td>
+            <td th:text="${candidatura.tese.id}"></td>
+            <td>
+                <ul>
+                    <li th:each="defesa : ${candidatura.tese.defesas}" th:text="${defesa.id}"></li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="defesa : ${candidatura.tese.defesas}" th:text="${defesa.isFinal ? 'Yes' : 'No'}"></li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>

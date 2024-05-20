@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import org.springframework.lang.NonNull;
 
@@ -30,7 +29,7 @@ public final class Defesa{
     @NonNull
     Integer duracao;
 
-    float nota;
+    Integer nota;
 
     @ManyToOne
     @JoinColumn(name="tese_id")
@@ -175,7 +174,7 @@ public final class Defesa{
      *
      * @param nota the grade to set
      */
-    public void setNota(float nota) {
+    public void setNota(Integer nota) {
         this.nota = nota;
     }
 
