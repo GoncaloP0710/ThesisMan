@@ -11,7 +11,6 @@ import alunos.example.desktopapp.submeterDocTese.SubmeterDocTeseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,8 +29,6 @@ public class MenuController {
 
   @FXML private Button logOut;
 
-  @FXML private Label title;
-
   @FXML private GridPane menuGrid;
 
   @FXML private Button listTemas;
@@ -49,28 +46,6 @@ public class MenuController {
 
     height = Screen.getPrimary().getBounds().getHeight();
     width = Screen.getPrimary().getBounds().getWidth();
-
-    setUpGrid();
-    setUpButtons();
-    setUpbottomHbox();
-  }
-
-  private void setUpbottomHbox() {
-    // StackPane.setMargin(bottomHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-    // HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
-  }
-
-  private void setUpGrid() {
-    // StackPane.setMargin(menuGrid, new Insets(height * 0.11, 0, 0, 0));
-    // menuGrid.setPadding(new Insets(height / 8, width * 0.15, height / 5, width * 0.15));
-    // menuGrid.setHgap(width * 0.005);
-    // menuGrid.setVgap(width * 0.005);
-  }
-
-  private void setUpButtons() {
-    // logOut.setPrefSize(width / 20, height / 20);
-    // listTemas.setPrefSize(width / 4, height / 5);
-    // createCandidatura.setPrefSize(width / 4, height / 5);
   }
 
   @FXML

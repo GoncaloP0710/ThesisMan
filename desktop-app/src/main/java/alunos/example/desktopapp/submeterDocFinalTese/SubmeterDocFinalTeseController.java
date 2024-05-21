@@ -12,18 +12,17 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -39,8 +38,6 @@ public class SubmeterDocFinalTeseController {
   @FXML private HBox topHbox;
 
   @FXML private Button goBack;
-
-  @FXML private Label title;
 
   @FXML private TableView<TableRow> table;
 
@@ -58,28 +55,11 @@ public class SubmeterDocFinalTeseController {
     height = Screen.getPrimary().getBounds().getHeight();
     width = Screen.getPrimary().getBounds().getWidth();
 
-    setUpTopHbox();
-    setUpsubmeterDocFinalTeseButton();
-    setUpGoBackButton();
     setUpChoseFileButton();
     setUpTable();
   }
 
-  private void setUpTopHbox() {
-    StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-    HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
-  }
-
-  private void setUpsubmeterDocFinalTeseButton() {
-    submeterDocFinalTese.setPrefSize(width / 20, height / 20);
-  }
-
-  private void setUpGoBackButton() {
-    goBack.setPrefSize(width / 20, height / 20);
-  }
-
   private void setUpChoseFileButton() {
-    choseFileButton.setPrefSize(width / 20, height / 20);
 
     choseFileButton.setOnAction(
         e -> {
@@ -168,7 +148,8 @@ public class SubmeterDocFinalTeseController {
       return;
     }
 
-    if (RestAPIClientService.getInstance().submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
+    if (RestAPIClientService.getInstance()
+        .submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

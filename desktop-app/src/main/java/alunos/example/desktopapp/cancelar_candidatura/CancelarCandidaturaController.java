@@ -12,13 +12,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -35,8 +34,6 @@ public class CancelarCandidaturaController {
 
   @FXML private Button goBack;
 
-  @FXML private Label title;
-
   @FXML private TableView<TableRow> table;
 
   @FXML private Button cancelarCandidatura;
@@ -47,23 +44,7 @@ public class CancelarCandidaturaController {
     height = Screen.getPrimary().getBounds().getHeight();
     width = Screen.getPrimary().getBounds().getWidth();
 
-    setUpTopHbox();
-    setUpDeleteButton();
-    setUpGoBackButton();
     setUpTable();
-  }
-
-  private void setUpTopHbox() {
-    BorderPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-    HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
-  }
-
-  private void setUpDeleteButton() {
-    cancelarCandidatura.setPrefSize(width / 20, height / 20);
-  }
-
-  private void setUpGoBackButton() {
-    goBack.setPrefSize(width / 20, height / 20);
   }
 
   private void setUpTable() {
@@ -140,10 +121,12 @@ public class CancelarCandidaturaController {
       return;
     }
 
-    if (RestAPIClientService.getInstance().cancelarCandidatura(Integer.valueOf(currentCandidatura.getCol1()))) {
+    if (RestAPIClientService.getInstance()
+        .cancelarCandidatura(Integer.valueOf(currentCandidatura.getCol1()))) {
       FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cancel_candidatura.fxml"));
       BorderPane cancelCandidatura = loader.load();
-      CancelarCandidaturaController controller = loader.<CancelarCandidaturaController>getController();
+      CancelarCandidaturaController controller =
+          loader.<CancelarCandidaturaController>getController();
       controller.setUp(primaryStage);
       primaryStage.getScene().setRoot(cancelCandidatura);
     } else {

@@ -3,14 +3,14 @@ package alunos.example.desktopapp.list_temas;
 import alunos.example.desktopapp.Main;
 import alunos.example.desktopapp.TableRow;
 import alunos.example.desktopapp.dtos.TemaDTO;
+import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,10 +18,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import alunos.example.desktopapp.main.RestAPIClientService;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
 
 public class ListTemasController {
   private double height;
@@ -34,8 +30,6 @@ public class ListTemasController {
 
   @FXML private Button goBack;
 
-  @FXML private Label title;
-
   @FXML private TableView<TableRow> table;
 
   public void setUp(Stage primaryStage) {
@@ -44,18 +38,7 @@ public class ListTemasController {
     height = Screen.getPrimary().getBounds().getHeight();
     width = Screen.getPrimary().getBounds().getWidth();
 
-    setUpTopHbox();
-    setUpGoBackButton();
     setUpTable();
-  }
-
-  private void setUpTopHbox() {
-    StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-    HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
-  }
-
-  private void setUpGoBackButton() {
-    goBack.setPrefSize(width / 20, height / 20);
   }
 
   private void setUpTable() {

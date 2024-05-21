@@ -9,15 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -40,8 +37,6 @@ public class SubmeterDocTeseController {
 
   @FXML private Button goBack;
 
-  @FXML private Label title;
-
   @FXML private TableView<TableRow> table;
 
   @FXML private Button submeterDocTese;
@@ -58,28 +53,11 @@ public class SubmeterDocTeseController {
     height = Screen.getPrimary().getBounds().getHeight();
     width = Screen.getPrimary().getBounds().getWidth();
 
-    setUpTopHbox();
-    setUpSubmeterDocTeseButton();
-    setUpGoBackButton();
     setUpChoseFileButton();
     setUpTable();
   }
 
-  private void setUpTopHbox() {
-    BorderPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-    HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
-  }
-
-  private void setUpSubmeterDocTeseButton() {
-    submeterDocTese.setPrefSize(width / 20, height / 20);
-  }
-
-  private void setUpGoBackButton() {
-    goBack.setPrefSize(width / 20, height / 20);
-  }
-
   private void setUpChoseFileButton() {
-    // choseFileButton.setPrefSize(width / 20, height / 20);
 
     choseFileButton.setOnAction(
         e -> {
@@ -171,7 +149,8 @@ public class SubmeterDocTeseController {
       return;
     }
 
-    if (RestAPIClientService.getInstance().submeterDocTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
+    if (RestAPIClientService.getInstance()
+        .submeterDocTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
