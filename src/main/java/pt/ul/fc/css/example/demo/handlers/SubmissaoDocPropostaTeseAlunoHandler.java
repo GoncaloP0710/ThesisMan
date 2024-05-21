@@ -44,7 +44,15 @@ public class SubmissaoDocPropostaTeseAlunoHandler {
         Aluno aluno = optAluno.get();
         Candidatura candidatura = optCandidatura.get();
 
-        Tese tese = candidatura.getTese();
+        Tese tese = null;
+        try {
+            tese = candidatura.getTese();
+            if (tese == null) {
+                throw new NotPresentException("Tese não encontrado");
+            }
+        } catch (Exception e) {
+            throw new NotPresentException("Tese não encontrado");
+        }
         tese.setDocumentProposto(document);
         teseRepository.save(tese);
         // TODO: Verificar se é necessário guardar a candidatura e o aluno

@@ -110,7 +110,7 @@ public class ListTemasController {
     MenuController controller = loader.<MenuController>getController();
     controller.setUp(primaryStage);
     primaryStage.setWidth(300);
-    primaryStage.setX(primaryStage.getX() + 150);
+    primaryStage.setX(primaryStage.getX() + 250);
     primaryStage.getScene().setRoot(root);
   }
 }

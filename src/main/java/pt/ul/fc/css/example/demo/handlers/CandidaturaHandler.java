@@ -56,21 +56,34 @@ public class CandidaturaHandler {
                 }
             }
         }
+
         Aluno aluno = optAluno.get();
+        System.out.println("aluno id: " + aluno.getId());
         Optional<Tema> optTema = temaRepository.findById(temaId);
         if (!optTema.isPresent()) {
             throw new NotPresentException("Tema não encontrado");
         }
         Tema tema = optTema.get();
+        System.out.println("tema id: " + tema.getId());
         Candidatura new_candidatura;
-        if(estado == null){
-            new_candidatura = new Candidatura(dataCandidatura, EstadoCandidatura.EMPROCESSAMENTO, aluno, tema);
+        if(estado != null){
+            System.out.println("| 1 |");
+            new_candidatura = new Candidatura(dataCandidatura, estado, aluno, tema);
+            System.out.println("| 2 |");
+            candidaturaRepository.save(new_candidatura);
+            System.out.println("| 3 |");
+            System.out.println("new_candidatura id: " + new_candidatura.getId());
         }else{
+            System.out.println("| 4 |");
             throw new NotPresentException("Estado não presente (null)");
         }
         aluno.addCandidatura(new_candidatura);
-        candidaturaRepository.save(new_candidatura);
+        System.out.println("aluno candidaturas size: " + aluno.getCandidatura().size());
         alunoRepository.save(aluno);
+
+        System.out.println("============================");
+        System.out.println("new_candidatura id: " + new_candidatura.getId());
+        System.out.println("============================");
 
         return new CandidaturaDTO(new_candidatura.getId(), new_candidatura.getTema().getId(),new_candidatura.getDataCandidatura(), new_candidatura.getEstado().name(), -1, new_candidatura.getAluno().getId());
     }
@@ -90,11 +103,23 @@ public class CandidaturaHandler {
         candidaturaRepository.save(c);
     }
 
-    public void cancelCandidatura(Integer candidaturaID) {
+    public void cancelCandidatura(Integer candidaturaID) throws NotPresentException {
+        System.out.println("========== cancelCandidatura =========");
+        Optional<Candidatura> cand = candidaturaRepository.findById(candidaturaID);
+
+        if (cand.isEmpty()) {
+            throw new NotPresentException("Candidatura não encontrada");
+        }
+        System.out.println("cancelCandidaturaId: " + candidaturaID);
         candidaturaRepository.deleteById(candidaturaID);
+
+        System.out.println("candidatura deleted");
+        System.out.println("==========  =========");
     }
 
     public List<Candidatura> getCandidaturas(){
+        System.out.println("========== getCandidaturas =========");
+        System.out.println("==========  =========");
         return candidaturaRepository.findAll();
     }
 
@@ -166,6 +191,11 @@ public class CandidaturaHandler {
         }
         System.out.println("before query");
         List<Candidatura> candidaturas = candidaturaRepository.findAll();
+
+        for (Candidatura c : candidaturas) {
+            System.out.println(c.getId());
+        }
+
         List<Candidatura> candidaturas2 = new ArrayList<>();
         for (Candidatura c : candidaturas) {
             System.out.println(c.getId());
@@ -177,8 +207,12 @@ public class CandidaturaHandler {
 
         List<CandidaturaDTO> candidaturasDTO = new ArrayList<>();
         for(Candidatura c : candidaturas2){
-            if (c.getTema() != null) {
+            if (c.getTema() != null && c.getTese() != null) {
                 candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), c.getTese().getId(), c.getAluno().getId()));
+            } else if (c.getTema() != null) {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), -1, c.getAluno().getId()));
+            } else {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), -1, c.getDataCandidatura(), c.getEstado().name(), -1, c.getAluno().getId()));
             }
         }
         return candidaturasDTO;

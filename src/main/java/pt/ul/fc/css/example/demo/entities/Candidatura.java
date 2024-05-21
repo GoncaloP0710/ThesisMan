@@ -1,15 +1,6 @@
 package pt.ul.fc.css.example.demo.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,7 +23,7 @@ public class Candidatura {
     @Enumerated(EnumType.STRING)
     private EstadoCandidatura estado;
 
-    @OneToOne(mappedBy = "candidatura")
+    @OneToOne(mappedBy = "candidatura", cascade = CascadeType.REMOVE)
     private Tese tese;
 
     @NonNull

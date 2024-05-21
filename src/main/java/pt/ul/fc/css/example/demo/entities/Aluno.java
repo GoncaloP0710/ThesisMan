@@ -19,7 +19,7 @@ public class Aluno extends Utilizador{
     @NonNull
     private Double average;
 
-    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Candidatura> candidaturas;
 
     @ManyToOne

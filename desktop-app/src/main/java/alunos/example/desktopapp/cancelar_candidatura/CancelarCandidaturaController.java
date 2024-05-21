@@ -124,6 +124,8 @@ public class CancelarCandidaturaController {
     StackPane root = loader.load();
     MenuController controller = loader.<MenuController>getController();
     controller.setUp(primaryStage);
+    primaryStage.setWidth(300);
+    primaryStage.setX(primaryStage.getX() + 250);
     primaryStage.getScene().setRoot(root);
   }
 
@@ -139,7 +141,11 @@ public class CancelarCandidaturaController {
     }
 
     if (RestAPIClientService.getInstance().cancelarCandidatura(Integer.valueOf(currentCandidatura.getCol1()))) {
-      setUpTable();
+      FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cancel_candidatura.fxml"));
+      BorderPane cancelCandidatura = loader.load();
+      CancelarCandidaturaController controller = loader.<CancelarCandidaturaController>getController();
+      controller.setUp(primaryStage);
+      primaryStage.getScene().setRoot(cancelCandidatura);
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
