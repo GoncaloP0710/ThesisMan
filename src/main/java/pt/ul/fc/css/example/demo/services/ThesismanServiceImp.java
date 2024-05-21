@@ -48,14 +48,17 @@ public class ThesismanServiceImp implements ThesismanService{
 
 
     public void populate(){
+        candidaturaRepository.deleteAll();
         temaRepository.deleteAll();
         teseRepository.deleteAll();
         defesaRepository.deleteAll();
-        candidaturaRepository.deleteAll();
+
         utilizadorEmpresarialRepository.deleteAll();
         docenteRepository.deleteAll();
-        mestradoRepository.deleteAll();
+
         alunoRepository.deleteAll();
+        mestradoRepository.deleteAll();
+
         juriRepository.deleteAll();
 
         Mestrado mestrado1 = new Mestrado("Engenharia Informática");
