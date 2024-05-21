@@ -16,8 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -114,6 +114,8 @@ public class CreateCandidaturaController {
     StackPane root = loader.load();
     MenuController controller = loader.<MenuController>getController();
     controller.setUp(primaryStage);
+    primaryStage.setWidth(300);
+    primaryStage.setX(primaryStage.getX() + 250);
     primaryStage.getScene().setRoot(root);
   }
 
@@ -128,7 +130,8 @@ public class CreateCandidaturaController {
       return;
     }
 
-    if (RestAPIClientService.getInstance().createCandidatura(Integer.valueOf(currentTema.getCol1()), "EMPROCESSAMENTO")) {
+    if (RestAPIClientService.getInstance()
+        .createCandidatura(Integer.valueOf(currentTema.getCol1()), "EMPROCESSAMENTO")) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

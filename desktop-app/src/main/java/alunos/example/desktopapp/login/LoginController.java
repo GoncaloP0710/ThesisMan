@@ -1,26 +1,22 @@
 package alunos.example.desktopapp.login;
 
 import alunos.example.desktopapp.Main;
+import alunos.example.desktopapp.main.RestAPIClientService;
 import alunos.example.desktopapp.menu.MenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import alunos.example.desktopapp.dtos.*;
-import alunos.example.desktopapp.main.RestAPIClientService;
 
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.http.HttpStatus;
-
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.http.HttpStatus;
 
 public class LoginController {
   private double height;
@@ -28,10 +24,6 @@ public class LoginController {
   private Stage primaryStage;
 
   @FXML private BorderPane pane;
-
-  @FXML private HBox topHbox;
-
-  @FXML private Label title;
 
   @FXML private VBox mainVbox;
 
@@ -51,16 +43,10 @@ public class LoginController {
     height = Screen.getPrimary().getBounds().getHeight();
     width = Screen.getPrimary().getBounds().getWidth();
 
-    setUpTopHbox();
     setUpLoginButton();
     setUpMainVbox();
     setUpPassword();
     setUpEmail();
-  }
-
-  private void setUpTopHbox() {
-    BorderPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
-    HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
   }
 
   private void setUpLoginButton() {
@@ -83,7 +69,8 @@ public class LoginController {
   @FXML
   public void loginHandler() throws Exception {
 
-   if (RestAPIClientService.getInstance().logIn(email.getText(), password.getText(), getWasLogout())) {
+    if (RestAPIClientService.getInstance()
+        .logIn(email.getText(), password.getText(), getWasLogout())) {
       FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
       StackPane root = loader.load();
       MenuController controller = loader.<MenuController>getController();

@@ -10,11 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alunos.example.desktopapp.login.LoginController">
-    <top>
-        <HBox fx:id="topHbox" alignment="center">
-            <Label fx:id="title" style="-fx-font-size: 20px;" text="ThesisMan" />
-        </HBox>
-    </top>
+
     <center>
         <VBox fx:id="mainVbox" alignment="center" spacing="10">
             <Label fx:id="loginLabel" text="Login" />

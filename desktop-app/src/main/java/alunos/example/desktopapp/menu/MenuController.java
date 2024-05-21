@@ -1,16 +1,13 @@
 package alunos.example.desktopapp.menu;
 
 import alunos.example.desktopapp.Main;
+import alunos.example.desktopapp.cancelar_candidatura.CancelarCandidaturaController;
 import alunos.example.desktopapp.create_candidatura.CreateCandidaturaController;
 import alunos.example.desktopapp.list_temas.ListTemasController;
-
-import alunos.example.desktopapp.submeterDocTese.SubmeterDocTeseController;
-import alunos.example.desktopapp.submeterDocFinalTese.SubmeterDocFinalTeseController;
-
 import alunos.example.desktopapp.login.LoginController;
 import alunos.example.desktopapp.main.RestAPIClientService;
-import alunos.example.desktopapp.cancelar_candidatura.CancelarCandidaturaController;
-
+import alunos.example.desktopapp.submeterDocFinalTese.SubmeterDocFinalTeseController;
+import alunos.example.desktopapp.submeterDocTese.SubmeterDocTeseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -89,9 +86,8 @@ public class MenuController {
     System.out.println("5");
     controller.setUp(primaryStage);
     System.out.println("6");
-    primaryStage.setWidth(600);
+    primaryStage.setHeight(300);
     System.out.println("7");
-    primaryStage.setX(primaryStage.getX() - 150);
     System.out.println("8");
     controller.setWasLogout();
     System.out.println("9");
@@ -105,8 +101,8 @@ public class MenuController {
     StackPane listTemas = loader.load();
     ListTemasController controller = loader.<ListTemasController>getController();
     controller.setUp(primaryStage);
-    primaryStage.setWidth(600);
-    primaryStage.setX(primaryStage.getX() - 150);
+    primaryStage.setWidth(800);
+    primaryStage.setX(primaryStage.getX() - 250);
     primaryStage.getScene().setRoot(listTemas);
   }
 
@@ -120,6 +116,8 @@ public class MenuController {
     CreateCandidaturaController controller = loader.<CreateCandidaturaController>getController();
     System.out.println("4");
     controller.setUp(primaryStage);
+    primaryStage.setWidth(800);
+    primaryStage.setX(primaryStage.getX() - 250);
     System.out.println("5");
     primaryStage.getScene().setRoot(createCandidatura);
   }
@@ -128,7 +126,10 @@ public class MenuController {
   public void cancelCandidatura() throws Exception {
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cancel_candidatura.fxml"));
     BorderPane cancelCandidatura = loader.load();
-    CancelarCandidaturaController controller = loader.<CancelarCandidaturaController>getController();
+    CancelarCandidaturaController controller =
+        loader.<CancelarCandidaturaController>getController();
+    primaryStage.setWidth(800);
+    primaryStage.setX(primaryStage.getX() - 250);
     controller.setUp(primaryStage);
     primaryStage.getScene().setRoot(cancelCandidatura);
   }
@@ -140,8 +141,8 @@ public class MenuController {
     BorderPane submeterDoc = loader.load();
     SubmeterDocTeseController controller = loader.<SubmeterDocTeseController>getController();
     controller.setUp(primaryStage);
-    primaryStage.setWidth(600);
-    primaryStage.setX(primaryStage.getX() - 150);
+    primaryStage.setWidth(800);
+    primaryStage.setX(primaryStage.getX() - 250);
     primaryStage.getScene().setRoot(submeterDoc);
   }
 
@@ -149,10 +150,11 @@ public class MenuController {
   public void submeterDocFinal() throws Exception {
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/submeter_doc_final.fxml"));
     BorderPane submeterDocFinal = loader.load();
-    SubmeterDocFinalTeseController controller = loader.<SubmeterDocFinalTeseController>getController();
+    SubmeterDocFinalTeseController controller =
+        loader.<SubmeterDocFinalTeseController>getController();
     controller.setUp(primaryStage);
-    primaryStage.setWidth(600);
-    primaryStage.setX(primaryStage.getX() - 150);
+    primaryStage.setWidth(800);
+    primaryStage.setX(primaryStage.getX() - 250);
     primaryStage.getScene().setRoot(submeterDocFinal);
   }
 }
