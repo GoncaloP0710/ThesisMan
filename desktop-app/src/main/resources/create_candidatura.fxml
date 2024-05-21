@@ -11,7 +11,7 @@
       <HBox fx:id="topHbox" prefHeight="75.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="goBack" mnemonicParsing="false" onMouseClicked="#goBack" text="Go Back" translateX="20.0" translateY="20.0" />
-            <Button fx:id="createCandidatura" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#createCandidatura" text="Escolher Candidatura" translateX="360.0" translateY="20.0">
+            <Button fx:id="createCandidatura" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#createCandidatura" text="Criar Candidatura" translateX="360.0" translateY="20.0">
                <HBox.margin>
                   <Insets />
                </HBox.margin>

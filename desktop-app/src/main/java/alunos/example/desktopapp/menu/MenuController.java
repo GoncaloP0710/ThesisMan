@@ -11,6 +11,7 @@ import alunos.example.desktopapp.submeterDocTese.SubmeterDocTeseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -23,8 +24,6 @@ public class MenuController {
   private double width;
   private Stage primaryStage;
 
-  @FXML private StackPane pane;
-
   @FXML private HBox bottomHbox;
 
   @FXML private Button logOut;
@@ -32,6 +31,8 @@ public class MenuController {
   @FXML private GridPane menuGrid;
 
   @FXML private Button listTemas;
+
+  @FXML private Label title;
 
   @FXML private Button createCandidatura;
 
