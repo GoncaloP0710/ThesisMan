@@ -120,6 +120,9 @@ public class SubmeterDocTeseController {
     tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
 
+    System.out.println("asdasdasjdnasjin");
+    System.out.println("6199864189841987498418949841984179841987");
+
     List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
     table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);

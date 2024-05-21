@@ -85,7 +85,7 @@ public class ThesismanServiceImp implements ThesismanService{
         alunoRepository.save(aluno2);
 
         Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema1);
-        Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2, null);
+        Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2, tema2);
         candidaturaRepository.save(candidatura1);
         candidaturaRepository.save(candidatura2);
 
@@ -93,7 +93,16 @@ public class ThesismanServiceImp implements ThesismanService{
         teseRepository.save(tese1);
 
         candidatura1.setTese(tese1);
+        candidatura2.setTese(tese1);
         candidaturaRepository.save(candidatura1);
+        candidaturaRepository.save(candidatura2);
+
+        tema1.addMestradosCompativeis(mestrado1);
+        tema2.addMestradosCompativeis(mestrado1);
+        temaRepository.save(tema1);
+        temaRepository.save(tema2);
+        mestradoRepository.save(mestrado1);
+
 
     }
 

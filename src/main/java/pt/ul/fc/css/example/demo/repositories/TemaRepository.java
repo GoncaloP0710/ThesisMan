@@ -19,4 +19,5 @@ public interface TemaRepository extends JpaRepository<Tema, Integer>{
 
     @Query("SELECT t FROM Tema t WHERE :mestrado MEMBER OF t.mestrados")
     List<Tema> findByMestrado(Mestrado mestrado);
+
 }

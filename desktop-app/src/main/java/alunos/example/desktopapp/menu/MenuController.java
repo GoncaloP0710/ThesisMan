@@ -78,14 +78,25 @@ public class MenuController {
 
   @FXML
   public void logOut() throws Exception {
+    System.out.println("1");
     RestAPIClientService.getInstance().setAlunoIdNull();
+    System.out.println("2");
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/login.fxml"));
-    StackPane login = loader.load();
+    System.out.println("3");
+    BorderPane login = loader.load();
+    System.out.println("4");
     LoginController controller = loader.<LoginController>getController();
+    System.out.println("5");
     controller.setUp(primaryStage);
+    System.out.println("6");
     primaryStage.setWidth(600);
+    System.out.println("7");
     primaryStage.setX(primaryStage.getX() - 150);
+    System.out.println("8");
+    controller.setWasLogout();
+    System.out.println("9");
     primaryStage.getScene().setRoot(login);
+    System.out.println("10");
   }
 
   @FXML
@@ -101,17 +112,22 @@ public class MenuController {
 
   @FXML
   public void createCandidatura() throws Exception {
+    System.out.println("1");
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/create_candidatura.fxml"));
-    StackPane createCandidatura = loader.load();
+    System.out.println("2");
+    BorderPane createCandidatura = loader.load();
+    System.out.println("3");
     CreateCandidaturaController controller = loader.<CreateCandidaturaController>getController();
+    System.out.println("4");
     controller.setUp(primaryStage);
+    System.out.println("5");
     primaryStage.getScene().setRoot(createCandidatura);
   }
 
   @FXML
   public void cancelCandidatura() throws Exception {
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cancel_candidatura.fxml"));
-    StackPane cancelCandidatura = loader.load();
+    BorderPane cancelCandidatura = loader.load();
     CancelarCandidaturaController controller = loader.<CancelarCandidaturaController>getController();
     controller.setUp(primaryStage);
     primaryStage.getScene().setRoot(cancelCandidatura);
@@ -119,6 +135,7 @@ public class MenuController {
 
   @FXML
   public void submeterDoc() throws Exception {
+
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/submeter_doc.fxml"));
     BorderPane submeterDoc = loader.load();
     SubmeterDocTeseController controller = loader.<SubmeterDocTeseController>getController();

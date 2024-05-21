@@ -10,7 +10,7 @@
 
 <BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
  prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
- fx:controller="alunos.example.desktopapp.submeterDocFinalTese.SubmeterDocFinalTese">
+ fx:controller="alunos.example.desktopapp.submeterDocFinalTese.SubmeterDocFinalTeseController">
    <top>
       <HBox fx:id="topHbox" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -22,7 +22,7 @@
    <center>
       <VBox fx:id="middleVbox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="choseFileButton" mnemonicParsing="false" onMouseClicked="#choseFileButton" text="Selecionar Documento" />
+            <Button fx:id="choseFileButton" mnemonicParsing="false" text="Selecionar Documento" />
             <Button fx:id="submeterDocFinalTese" mnemonicParsing="false" onMouseClicked="#submeterDocFinalTese" text="Submeter Documento" />
             <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" />
          </children>

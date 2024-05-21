@@ -39,6 +39,7 @@ public class CandidaturaHandler {
             throw new NotPresentException("Aluno não encontrado");
         }
         List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoId(alunoId);
+        System.out.println("candidaturas size: " + candidaturas.size());
         if (candidaturas != null) {
             if(candidaturas.size() >= 5){
                 throw new IllegalCandidaturaException("O aluno já tem 5 candidaturas ativas");
@@ -65,13 +66,13 @@ public class CandidaturaHandler {
         if(estado == null){
             new_candidatura = new Candidatura(dataCandidatura, EstadoCandidatura.EMPROCESSAMENTO, aluno, tema);
         }else{
-            new_candidatura = new Candidatura(dataCandidatura, estado, aluno, tema);
+            throw new NotPresentException("Estado não presente (null)");
         }
         aluno.addCandidatura(new_candidatura);
         candidaturaRepository.save(new_candidatura);
         alunoRepository.save(aluno);
 
-        return new CandidaturaDTO(new_candidatura.getId(), new_candidatura.getTema().getId(),new_candidatura.getDataCandidatura(), new_candidatura.getEstado().name(), new_candidatura.getTese().getId(), new_candidatura.getAluno().getId());
+        return new CandidaturaDTO(new_candidatura.getId(), new_candidatura.getTema().getId(),new_candidatura.getDataCandidatura(), new_candidatura.getEstado().name(), -1, new_candidatura.getAluno().getId());
     }
 
     public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException {
@@ -153,14 +154,32 @@ public class CandidaturaHandler {
     }
 
     public List<CandidaturaDTO> listarCandidaturasAluno(Integer alunoID) throws NotPresentException {
+        System.out.println("============================");
+        System.out.println("alunoId: " + alunoID);
+        System.out.println("============================");
+        if (alunoID == null) {
+            throw new IllegalArgumentException("Id do aluno é obrigatório");
+        }
         Optional<Aluno> optAluno = alunoRepository.findById(alunoID);
         if(optAluno.isEmpty()){
             throw new NotPresentException("Aluno não encontrado");
         }
-        List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoId(alunoID);
+        System.out.println("before query");
+        List<Candidatura> candidaturas = candidaturaRepository.findAll();
+        List<Candidatura> candidaturas2 = new ArrayList<>();
+        for (Candidatura c : candidaturas) {
+            System.out.println(c.getId());
+            if(c.getAluno().getId() == alunoID){
+                candidaturas2.add(c);
+                System.out.println("added candidatura: " + c.getId());
+            }
+        }
+
         List<CandidaturaDTO> candidaturasDTO = new ArrayList<>();
-        for(Candidatura c : candidaturas){
-            candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), c.getTese().getId(), c.getAluno().getId()));
+        for(Candidatura c : candidaturas2){
+            if (c.getTema() != null) {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), c.getTese().getId(), c.getAluno().getId()));
+            }
         }
         return candidaturasDTO;
     }

@@ -35,13 +35,24 @@ public class ListarTemasAlunosHandler {
 
         Aluno aluno = optAluno.get();
         List<TemaDTO> result = new ArrayList<>();
-        List<Tema> temas = temaRepository.findByMestrado(aluno.getMestrado());
+        System.out.println(aluno.getMestrado().getNome());
+        System.out.println("before query");
+        List<Tema> temas = temaRepository.findAll();
+        List<Tema> temasCompativeisAluno = new ArrayList<>();
+        for (Tema t : temas) {
+            System.out.println(t.getTitulo());
+            if (t.getMestrados().contains(aluno.getMestrado())) {
+                temasCompativeisAluno.add(t);
+            }
+        }
+        System.out.println("after query");
+        System.out.println(temasCompativeisAluno.size());
 
         List<Integer> mestradosIds = new ArrayList<>();
-        for (Tema t : temas) {
+        for (Tema t : temasCompativeisAluno) {
             mestradosIds = getMestradosIds(t.getMestrados());
-            result.add(new TemaDTO(t.getId(), t.getTitulo(), t.getDescricao(), 
-                        t.getRemuneracaoMensal(), t.getSubmissor().getId(), mestradosIds));
+            result.add(new TemaDTO(t.getId(), t.getTitulo(), t.getDescricao(),
+                    t.getRemuneracaoMensal(), t.getSubmissor().getId(), mestradosIds));
         }
         return result;
     }

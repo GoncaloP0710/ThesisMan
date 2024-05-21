@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,7 +29,7 @@ public class CreateCandidaturaController {
   private Stage primaryStage;
   private TableRow currentTema;
 
-  @FXML private StackPane pane;
+  @FXML private BorderPane pane;
 
   @FXML private HBox topHbox;
 
@@ -53,7 +54,7 @@ public class CreateCandidaturaController {
   }
 
   private void setUpTopHbox() {
-    StackPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
+    BorderPane.setMargin(topHbox, new Insets(height * 0.06, 0, 0, width * 0.04));
     HBox.setMargin(title, new Insets(0, 0, 0, width * 0.04));
   }
 
@@ -66,7 +67,7 @@ public class CreateCandidaturaController {
   }
 
   private void setUpTable() {
-    StackPane.setMargin(
+    BorderPane.setMargin(
         table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -127,7 +128,7 @@ public class CreateCandidaturaController {
       return;
     }
 
-    if (RestAPIClientService.getInstance().createCandidatura(Integer.valueOf(currentTema.getCol1()), null)) {
+    if (RestAPIClientService.getInstance().createCandidatura(Integer.valueOf(currentTema.getCol1()), "EMPROCESSAMENTO")) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

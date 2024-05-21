@@ -28,8 +28,8 @@
             <Button fx:id="listTemas" mnemonicParsing="false" onMouseClicked="#listTemas" text="listTemas" translateX="120.0" translateY="-30.0" GridPane.rowIndex="1" />
             <HBox fx:id="bottomHbox" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="cancelarCandidatura" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Cancelar Candidatura" translateX="25.0" translateY="150.0" />
-                  <Button fx:id="logOut" mnemonicParsing="false" prefWidth="75.0" text="Log Out" translateX="50.0" translateY="150.0" />
+                  <Button fx:id="cancelarCandidatura" onMouseClicked="#cancelCandidatura" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Cancelar Candidatura" translateX="25.0" translateY="150.0" />
+                  <Button fx:id="logOut" mnemonicParsing="false" onMouseClicked="#logOut" prefWidth="75.0" text="Log Out" translateX="50.0" translateY="150.0" />
                </children>
             </HBox>
             <Button fx:id="submeterDoc" mnemonicParsing="false" onMouseClicked="#submeterDoc" text="Submeter Documento" translateX="90.0" translateY="50.0" GridPane.rowIndex="1" />

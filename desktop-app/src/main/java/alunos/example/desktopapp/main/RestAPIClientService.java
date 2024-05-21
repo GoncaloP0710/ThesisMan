@@ -16,6 +16,8 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.io.InputStream;
+
 public class RestAPIClientService {
 
   private Integer alunoId;
@@ -29,7 +31,7 @@ public class RestAPIClientService {
     return instance;
   }
 
-  public boolean logIn(String email, String password) {
+  public boolean logIn(String email, String password, boolean wasLoggedOut) {
     try {
       System.out.println("email: " + email + " password: " + password);
       URL url = new URL("http://localhost:8080/api/login");
@@ -37,7 +39,7 @@ public class RestAPIClientService {
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-Type", "application/json");
       con.setDoOutput(true);
-      String requestBody = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
+      String requestBody = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\", \"wasLoggedOut\": \"" + wasLoggedOut + "\"}";
 
       OutputStream outputStream = con.getOutputStream();
       outputStream.write(requestBody.getBytes("UTF-8"));
@@ -46,6 +48,19 @@ public class RestAPIClientService {
       int responseCode = con.getResponseCode();
       System.out.println("responseCode: " + responseCode);
       if (responseCode == HttpURLConnection.HTTP_OK) {
+        InputStream inputStream = con.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder responseBody = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+          responseBody.append(line);
+        }
+        reader.close();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        AlunoDTO alunoDTO = objectMapper.readValue(responseBody.toString(), AlunoDTO.class);
+        alunoId = alunoDTO.getId();
+        System.out.println("alunoId: " + alunoId);
         return true;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
@@ -66,17 +81,11 @@ public class RestAPIClientService {
 
   public List<TemaDTO> listarTemas() {
     try {
-      URL url = new URL("http://localhost:8080/api/listarTemas");
+      System.out.println(alunoId.toString());
+      URL url = new URL("http://localhost:8080/api/listarTemas?alunoId=" + alunoId);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
       con.setRequestProperty("Content-Type", "application/json");
-      con.setDoOutput(true);
-
-      String requestBody = "{\"alunoId\": " + alunoId + "}";
-      OutputStream outputStream = con.getOutputStream();
-      outputStream.write(requestBody.getBytes("UTF-8"));
-      outputStream.close();
-
       int responseCode = con.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -86,10 +95,9 @@ public class RestAPIClientService {
           content.append(inputLine);
         }
         in.close();
-
         ObjectMapper objectMapper = new ObjectMapper();
-        List<TemaDTO> temasDOT =
-            objectMapper.readValue(content.toString(), new TypeReference<List<TemaDTO>>() {});
+        List<TemaDTO> temasDOT = objectMapper.readValue(content.toString(), new TypeReference<List<TemaDTO>>() {});
+        System.out.println(temasDOT);
         return temasDOT;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
@@ -109,17 +117,10 @@ public class RestAPIClientService {
 
   public List<CandidaturaDTO> listarCandidaturas() {
     try {
-      URL url = new URL("http://localhost:8080/api/listarCandidaturas");
+      URL url = new URL("http://localhost:8080/api/listarCandidaturas?alunoId=" + alunoId);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
       con.setRequestProperty("Content-Type", "application/json");
-      con.setDoOutput(true);
-
-      String requestBody = "{\"alunoId\": " + alunoId + "}";
-      OutputStream outputStream = con.getOutputStream();
-      outputStream.write(requestBody.getBytes("UTF-8"));
-      outputStream.close();
-
       int responseCode = con.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -224,6 +225,7 @@ public class RestAPIClientService {
 
   public Boolean submeterDocTese(Integer candidaturaId, byte[] document) {
     try {
+      System.out.println("alunoId: " + alunoId);
       URL url = new URL("http://localhost:8080/api/submeterDocTese");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("POST");
@@ -302,7 +304,7 @@ public class RestAPIClientService {
     }
   }
 
-  protected void setAlunoIdNull () {
+  public void setAlunoIdNull () {
     this.alunoId = null;
   }
 }

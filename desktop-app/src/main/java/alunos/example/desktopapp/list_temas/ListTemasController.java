@@ -59,6 +59,7 @@ public class ListTemasController {
   }
 
   private void setUpTable() {
+    System.out.println("0");
     StackPane.setMargin(
         table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -77,6 +78,7 @@ public class ListTemasController {
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
 
     table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
+    System.out.println("1");
 
     List<TemaDTO> temas = RestAPIClientService.getInstance().listarTemas();
 

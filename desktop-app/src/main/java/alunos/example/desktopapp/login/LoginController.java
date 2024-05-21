@@ -43,6 +43,8 @@ public class LoginController {
 
   @FXML private Button loginButton;
 
+  private boolean wasLoggedOut = false;
+
   public void setUp(Stage primaryStage) {
     this.primaryStage = primaryStage;
 
@@ -81,7 +83,7 @@ public class LoginController {
   @FXML
   public void loginHandler() throws Exception {
 
-   if (RestAPIClientService.getInstance().logIn(email.getText(), password.getText())) {
+   if (RestAPIClientService.getInstance().logIn(email.getText(), password.getText(), getWasLogout())) {
       FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
       StackPane root = loader.load();
       MenuController controller = loader.<MenuController>getController();
@@ -91,5 +93,13 @@ public class LoginController {
       primaryStage.setWidth(300);
       primaryStage.getScene().setRoot(root);
     }
+  }
+
+  public void setWasLogout() {
+    this.wasLoggedOut = true;
+  }
+
+  public boolean getWasLogout() {
+    return wasLoggedOut;
   }
 }
