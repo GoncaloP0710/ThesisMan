@@ -27,6 +27,7 @@ import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
 import pt.ul.fc.css.example.demo.dtos.DefesaDTO;
 import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
+import pt.ul.fc.css.example.demo.dtos.EstadoDTO;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.TeseDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
@@ -148,7 +149,9 @@ public class WebController {
     public String postMethodName(@RequestParam String aluno, @RequestParam String tema) {
         try{
             AlunoDTO a = thesismanService.getAluno(aluno);
+            System.out.println("Aluno: " + a.getName());
             TemaDTO t = thesismanService.getTema(tema);
+            System.out.println("Tema: " + t.getTitulo());
             thesismanService.atribuicaoTemaAdmin(t.getId(), a.getId(), t.getId());
         }catch(NotPresentException e){
             logger.error("Erro ao atribuir tema: " + e.getMessage());
@@ -171,9 +174,9 @@ public class WebController {
             TemaDTO tema = thesismanService.getTema(t.getId());
             candidaturas.put(candidatura, tema);
             //Assumimos que o submissor do tema é o orientador da tese
-            // if(tema.getSubmissorId() == (Integer) model.getAttribute("id")){
-            //     model.addAttribute("candidaturasAceites", candidaturas);
-            // }
+            if(tema.getSubmissorId() == (Integer) model.getAttribute("id")){
+                model.addAttribute("candidaturasAceites", candidaturas);
+            }
             model.addAttribute("candidaturasAceites", candidaturas);
         }
         }catch(NotPresentException e){
@@ -242,9 +245,9 @@ public class WebController {
                 TemaDTO tema = thesismanService.getTema(t.getId());
                 candidaturas.put(candidatura, tema);
                 //Assumimos que o submissor do tema é o orientador da tese
-                // if(tema.getSubmissorId() == (Integer) model.getAttribute("id")){
-                //     model.addAttribute("candidaturasAceites", candidaturas);
-                // }
+                if(tema.getSubmissorId() == (Integer) model.getAttribute("id")){
+                    model.addAttribute("candidaturasAceites", candidaturas);
+                }
                 model.addAttribute("candidaturasWithDefesasPropostasDone", candidaturas);
             }
         return "marcarDefesaFinal";
@@ -289,6 +292,37 @@ public class WebController {
         model.addAttribute("estatisticas", thesismanService.getEstatisticas());
         return "estatisticas";
     }
+
+    @GetMapping({"/updateStatus"})
+    public String updateStatus(Model model){
+        try{
+            List<CandidaturaDTO> c = thesismanService.getCandidaturas();
+            List<String> estados = new ArrayList<String>();
+            estados.add("APROVADO");
+            estados.add("EMPROCESSAMENTO");
+            estados.add("REJEITADO");
+            model.addAttribute("candidaturas", c);
+            model.addAttribute("estados", estados);
+        }catch(NotPresentException e){
+            logger.error("Erro ao verificar candidaturas: " + e.getMessage());
+            return "dashboard";
+        }
+        return "updateStatus";
+    }
+
+    @PostMapping({"/updateStatusCall"})
+    public String updateStatusCall(@RequestParam String candidaturaId, @RequestParam String estado){ {
+        try{
+            thesismanService.updateCandidaturaStatus(Integer.parseInt(candidaturaId), estado);
+        }catch(NotPresentException e){
+            logger.error("Erro ao atualizar estado: " + e.getMessage());
+            return "updateStatusError";
+        }
+        return "";
+    }
+    
+
+}
 
 }
 

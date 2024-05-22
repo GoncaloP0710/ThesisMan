@@ -101,7 +101,7 @@ public class SubmeterDocTeseController {
     System.out.println("asdasdasjdnasjin");
     System.out.println("6199864189841987498418949841984179841987");
 
-    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturasProposta();
+    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
     table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
@@ -143,17 +143,14 @@ public class SubmeterDocTeseController {
     if (currentCandidatura == null || fileBytes == null) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
-      alert.setHeaderText("Por favor selecione uma candidatura e um ficheiro");
+      alert.setHeaderText("Erro ao submeter documento de tese");
+      alert.setContentText("Por favor selecione uma candidatura e um ficheiro");
       alert.showAndWait();
       return;
     }
 
     if (RestAPIClientService.getInstance()
         .submeterDocTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
-          Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Sucesso");
-      alert.setHeaderText("Documento submetido com sucesso");
-      alert.showAndWait();
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

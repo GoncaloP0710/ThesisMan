@@ -102,7 +102,7 @@ public class SubmeterDocFinalTeseController {
 
     table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
-    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturasFinal();
+    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
     for (CandidaturaDTO candidatura : candidaturas) {
       TableRow t = new TableRow();
@@ -150,10 +150,6 @@ public class SubmeterDocFinalTeseController {
 
     if (RestAPIClientService.getInstance()
         .submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Sucesso");
-      alert.setHeaderText("Documento final submetido com sucesso");
-      alert.showAndWait();
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

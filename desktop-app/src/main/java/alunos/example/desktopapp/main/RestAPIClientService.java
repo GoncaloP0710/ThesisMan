@@ -58,9 +58,7 @@ public class RestAPIClientService {
         reader.close();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("Antes de obter resposta");
         AlunoDTO alunoDTO = objectMapper.readValue(responseBody.toString(), AlunoDTO.class);
-        System.out.println("Depois de obter resposta");
         alunoId = alunoDTO.getId();
         System.out.println("alunoId: " + alunoId);
         return true;
@@ -154,80 +152,6 @@ public class RestAPIClientService {
     }
   }
 
-  public List<CandidaturaDTO> listarCandidaturasFinal() {
-    try {
-      URL url = new URL("http://localhost:8080/api/listarCandidaturasFinal?alunoId=" + alunoId);
-      HttpURLConnection con = (HttpURLConnection) url.openConnection();
-      con.setRequestMethod("GET");
-      con.setRequestProperty("Content-Type", "application/json");
-      int responseCode = con.getResponseCode();
-      if (responseCode == HttpURLConnection.HTTP_OK) {
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-          content.append(inputLine);
-        }
-        in.close();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<CandidaturaDTO> candidaturasDOT =
-                objectMapper.readValue(
-                        content.toString(), new TypeReference<List<CandidaturaDTO>>() {});
-        return candidaturasDOT;
-      } else {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Erro");
-        alert.setHeaderText("Erro ao listar candidaturas");
-        alert.show();
-        return null;
-      }
-    } catch (Exception e) {
-      Alert alert = new Alert(AlertType.ERROR);
-      alert.setTitle("Erro");
-      alert.setHeaderText("Erro ao estabelecer conexao com o servidor");
-      alert.show();
-      return null;
-    }
-  }
-
-  public List<CandidaturaDTO> listarCandidaturasProposta() {
-    try {
-      URL url = new URL("http://localhost:8080/api/listarCandidaturasProposta?alunoId=" + alunoId);
-      HttpURLConnection con = (HttpURLConnection) url.openConnection();
-      con.setRequestMethod("GET");
-      con.setRequestProperty("Content-Type", "application/json");
-      int responseCode = con.getResponseCode();
-      if (responseCode == HttpURLConnection.HTTP_OK) {
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-          content.append(inputLine);
-        }
-        in.close();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<CandidaturaDTO> candidaturasDOT =
-                objectMapper.readValue(
-                        content.toString(), new TypeReference<List<CandidaturaDTO>>() {});
-        return candidaturasDOT;
-      } else {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Erro");
-        alert.setHeaderText("Erro ao listar candidaturas");
-        alert.show();
-        return null;
-      }
-    } catch (Exception e) {
-      Alert alert = new Alert(AlertType.ERROR);
-      alert.setTitle("Erro");
-      alert.setHeaderText("Erro ao estabelecer conexao com o servidor");
-      alert.show();
-      return null;
-    }
-  }
-
   public boolean createCandidatura(Integer temaId, String estado) {
     try {
       URL url = new URL("http://localhost:8080/api/createCandidatura");
@@ -250,21 +174,11 @@ public class RestAPIClientService {
 
       int responseCode = con.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Sucesso");
-        alert.setHeaderText("Candidatura submetida com sucesso");
-        alert.show();
         return true;
-      } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST){
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Erro");
-        alert.setHeaderText("Erro ao submeter candidatura");
-        alert.show();
-        return false;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Erro");
-        alert.setHeaderText("Já existe uma candidatura submetida para este tema");
+        alert.setHeaderText("Erro ao submeter candidatura");
         alert.show();
         return false;
       }

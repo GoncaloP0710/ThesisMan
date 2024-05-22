@@ -69,7 +69,6 @@ public class RestThesismanController {
             }
 
             AlunoDTO userDTO = ThesismanServiceImp.loginAluno(email, password);
-            System.out.println("after userDTO");
 
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }catch(NotPresentException e){
@@ -99,29 +98,6 @@ public class RestThesismanController {
         }
     }
 
-    @GetMapping("/listarCandidaturasFinal")
-    public ResponseEntity<?> listarCandidaturasFinal(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
-        try{
-            System.out.println("before listarCandidaturasFinal");
-            List<CandidaturaDTO> candidaturas = ThesismanServiceImp.listarCandidaturasAlunosFinal(alunoId);
-            return new ResponseEntity<>(candidaturas, HttpStatus.OK);
-        }catch(NotPresentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/listarCandidaturasProposta")
-    public ResponseEntity<?> listarCandidaturasProposta(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
-        try{
-            System.out.println("before listarCandidaturasProposta!!!!!!!!!!!!!!!!!");
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
-            List<CandidaturaDTO> candidaturas = ThesismanServiceImp.listarCandidaturasAlunosProposta(alunoId);
-            return new ResponseEntity<>(candidaturas, HttpStatus.OK);
-        }catch(NotPresentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping("/createCandidatura")
     ResponseEntity<?> createCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException, IllegalCandidaturaException{
         ObjectMapper objectMapper = new ObjectMapper();
@@ -143,8 +119,6 @@ public class RestThesismanController {
             return new ResponseEntity<>(candidaturaDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (IllegalCandidaturaException a) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
