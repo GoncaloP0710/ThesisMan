@@ -39,7 +39,7 @@ public class MarcacaoDefesaTeseHandler {
         this.candidaturaHandler = candidaturaHandler;
     }
     //teseId, data, online, room, arguente
-    public void marcarDefesaDissertacaoPropostaTese(Integer docenteId, Integer teseId, Date data, Boolean online, String room, Integer arguenteId) throws NotPresentException {
+    public void marcarDefesaDissertacaoPropostaTese(Integer docenteId, Integer teseId, Date data, Boolean online, String room, Integer arguenteId) throws NotPresentException, IllegalArgumentException {
         if (teseId == null || docenteId == null || data == null || online == null || arguenteId == null) {
             throw new NotPresentException("Argumentos inválidos");
         }

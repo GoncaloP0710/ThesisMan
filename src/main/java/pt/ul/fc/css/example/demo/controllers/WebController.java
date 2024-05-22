@@ -200,7 +200,7 @@ public class WebController {
     }
 
     @PostMapping("/marcarDefesaPropostaCall")
-    public String marcarDefesaPropostaCall(Model model, @RequestParam Integer teseId, @RequestParam String data, @RequestParam(required = false) String online, @RequestParam(required = false) String room, @RequestParam Integer arguente){
+    public String marcarDefesaPropostaCall(Model model, @RequestParam Integer teseId, @RequestParam String data, @RequestParam(required = false) String online, @RequestParam(required = false) String room, @RequestParam Integer arguente) throws NotPresentException{
         Boolean onlineBool = false;
         if(online.equals("on")){onlineBool = true;}
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -214,9 +214,8 @@ public class WebController {
 
         try{
             thesismanService.marcarDefesaPropostaTese((Integer)model.getAttribute("id"), teseId, dateObj, onlineBool, room, arguente);
-        }catch(NotPresentException e){
-            logger.error("Erro ao marcar defesa: " + e.getMessage());
-            return "marcarDefesaProposta";
+        }catch(IllegalArgumentException e){
+            return "erroAoMarcarDefesaJaExisteUma";
         }
         return "marcarDefesaPropostaCall";
     }

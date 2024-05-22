@@ -238,7 +238,7 @@ public class ThesismanServiceImp implements ThesismanService{
     }
 
     //teseId,model.getAttribute("id"),data, online, room, arguente
-    public void marcarDefesaPropostaTese(Integer docenteId, Integer teseId, Date data, Boolean online, String room, Integer arguente) throws NotPresentException{
+    public void marcarDefesaPropostaTese(Integer docenteId, Integer teseId, Date data, Boolean online, String room, Integer arguente) throws NotPresentException, IllegalArgumentException{
         Optional<Tese> t = teseRepository.findById(teseId);
         System.out.println("TeseID: " + teseId);
         if(t.isEmpty()){
