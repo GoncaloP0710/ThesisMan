@@ -51,24 +51,14 @@ public class MenuController {
 
   @FXML
   public void logOut() throws Exception {
-    System.out.println("1");
     RestAPIClientService.getInstance().setAlunoIdNull();
-    System.out.println("2");
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/login.fxml"));
-    System.out.println("3");
     BorderPane login = loader.load();
-    System.out.println("4");
     LoginController controller = loader.<LoginController>getController();
-    System.out.println("5");
     controller.setUp(primaryStage);
-    System.out.println("6");
     primaryStage.setHeight(300);
-    System.out.println("7");
-    System.out.println("8");
     controller.setWasLogout();
-    System.out.println("9");
     primaryStage.getScene().setRoot(login);
-    System.out.println("10");
   }
 
   @FXML
@@ -84,17 +74,12 @@ public class MenuController {
 
   @FXML
   public void createCandidatura() throws Exception {
-    System.out.println("1");
     FXMLLoader loader = new FXMLLoader(Main.class.getResource("/create_candidatura.fxml"));
-    System.out.println("2");
     BorderPane createCandidatura = loader.load();
-    System.out.println("3");
     CreateCandidaturaController controller = loader.<CreateCandidaturaController>getController();
-    System.out.println("4");
     controller.setUp(primaryStage);
     primaryStage.setWidth(800);
     primaryStage.setX(primaryStage.getX() - 250);
-    System.out.println("5");
     primaryStage.getScene().setRoot(createCandidatura);
   }
 

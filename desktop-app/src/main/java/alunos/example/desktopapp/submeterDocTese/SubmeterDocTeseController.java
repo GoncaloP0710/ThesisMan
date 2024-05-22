@@ -26,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SubmeterDocTeseController {
   private double height;
@@ -72,6 +74,10 @@ public class SubmeterDocTeseController {
               // Read file to byte array and assign to fileBytes
               fileBytes = Files.readAllBytes(file.toPath());
             } catch (IOException ex) {
+              Alert alert = new Alert(AlertType.ERROR);
+              alert.setTitle("Erro");
+              alert.setHeaderText("Erro ao listar candidaturas");
+              alert.show();
               // Handle exception
               System.out.println("Error reading file: " + ex.getMessage());
             }
@@ -97,9 +103,6 @@ public class SubmeterDocTeseController {
     tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
     tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
-
-    System.out.println("asdasdasjdnasjin");
-    System.out.println("6199864189841987498418949841984179841987");
 
     List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturasProposta();
 

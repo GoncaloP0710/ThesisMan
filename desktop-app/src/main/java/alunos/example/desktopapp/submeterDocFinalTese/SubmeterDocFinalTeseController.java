@@ -26,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SubmeterDocFinalTeseController {
   private double height;
@@ -74,6 +76,10 @@ public class SubmeterDocFinalTeseController {
               // Read file to byte array and assign to fileBytes
               fileBytes = Files.readAllBytes(file.toPath());
             } catch (IOException ex) {
+              Alert alert = new Alert(AlertType.ERROR);
+              alert.setTitle("Erro");
+              alert.setHeaderText("Erro ler ficheiro");
+              alert.show();
               // Handle exception
               System.out.println("Error reading file: " + ex.getMessage());
             }

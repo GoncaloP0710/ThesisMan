@@ -58,7 +58,6 @@ public class CancelarCandidaturaController {
     TableColumn<TableRow, String> tc4 = new TableColumn<>("estado");
     TableColumn<TableRow, String> tc5 = new TableColumn<>("teseId");
     TableColumn<TableRow, String> tc6 = new TableColumn<>("alunoId");
-    TableColumn<TableRow, String> tc7 = new TableColumn<>("selected");
 
     tc1.setCellValueFactory(new PropertyValueFactory<>("col1"));
     tc2.setCellValueFactory(new PropertyValueFactory<>("col2"));
@@ -66,9 +65,8 @@ public class CancelarCandidaturaController {
     tc4.setCellValueFactory(new PropertyValueFactory<>("col4"));
     tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
-    tc7.setCellValueFactory(new PropertyValueFactory<>("col7"));
 
-    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6, tc7);
+    table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
     List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
 
@@ -82,7 +80,6 @@ public class CancelarCandidaturaController {
       t.setCol4(candidatura.getEstado());
       t.setCol5(String.valueOf(candidatura.getTeseId()));
       t.setCol6(String.valueOf(candidatura.getAlunoId()));
-      t.setCol7("");
 
       table.getItems().add(t);
     }
@@ -91,10 +88,6 @@ public class CancelarCandidaturaController {
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
             currentCandidatura = table.getSelectionModel().getSelectedItem();
-            for (TableRow row : table.getItems()) {
-              row.setCol7("");
-            }
-            table.getSelectionModel().getSelectedItem().setCol7("X");
           }
         });
   }

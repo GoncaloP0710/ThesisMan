@@ -33,7 +33,6 @@ public class RestAPIClientService {
 
   public boolean logIn(String email, String password, boolean wasLoggedOut) {
     try {
-      System.out.println("email: " + email + " password: " + password);
       URL url = new URL("http://localhost:8080/api/login");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("POST");
@@ -46,7 +45,6 @@ public class RestAPIClientService {
       outputStream.close();
 
       int responseCode = con.getResponseCode();
-      System.out.println("responseCode: " + responseCode);
       if (responseCode == HttpURLConnection.HTTP_OK) {
         InputStream inputStream = con.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -58,11 +56,8 @@ public class RestAPIClientService {
         reader.close();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("Antes de obter resposta");
         AlunoDTO alunoDTO = objectMapper.readValue(responseBody.toString(), AlunoDTO.class);
-        System.out.println("Depois de obter resposta");
         alunoId = alunoDTO.getId();
-        System.out.println("alunoId: " + alunoId);
         return true;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
@@ -83,7 +78,6 @@ public class RestAPIClientService {
 
   public List<TemaDTO> listarTemas() {
     try {
-      System.out.println(alunoId.toString());
       URL url = new URL("http://localhost:8080/api/listarTemas?alunoId=" + alunoId);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
@@ -99,7 +93,6 @@ public class RestAPIClientService {
         in.close();
         ObjectMapper objectMapper = new ObjectMapper();
         List<TemaDTO> temasDOT = objectMapper.readValue(content.toString(), new TypeReference<List<TemaDTO>>() {});
-        System.out.println(temasDOT);
         return temasDOT;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
@@ -311,7 +304,6 @@ public class RestAPIClientService {
 
   public Boolean submeterDocTese(Integer candidaturaId, byte[] document) {
     try {
-      System.out.println("alunoId: " + alunoId);
       URL url = new URL("http://localhost:8080/api/submeterDocTese");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("POST");
