@@ -6,13 +6,14 @@
 </head>
 
 <body>
-    <h1 id="tema_submetido">Aluno não tem candidaturas</h1>
-    <p>Aluno necesssita de ter pelo menos uma candidatura ativa para ser possível atribuir-lhe um tema</p>
+    <h1 id="tema_submetido">Permissão Recusada</h1>
+    <p>O docente não é Admin</p>
     <form th:action = "@{/dashboard}" method="GET" id="form1">
         <button>voltar atrás</button>
     </form>
     <h2 id="error" th:text="${error}"></h2>
     <form th:action = "@{/dashboard}" method="GET" id="form1">
         <button>voltar ao dashboard</button>
+    </form>
 </body>
 </html>
