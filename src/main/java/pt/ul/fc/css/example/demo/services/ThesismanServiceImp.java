@@ -52,13 +52,10 @@ public class ThesismanServiceImp implements ThesismanService{
         temaRepository.deleteAll();
         teseRepository.deleteAll();
         defesaRepository.deleteAll();
-
         utilizadorEmpresarialRepository.deleteAll();
         docenteRepository.deleteAll();
-
         alunoRepository.deleteAll();
         mestradoRepository.deleteAll();
-
         juriRepository.deleteAll();
 
         Mestrado mestrado1 = new Mestrado("Engenharia Informática");
@@ -84,13 +81,25 @@ public class ThesismanServiceImp implements ThesismanService{
 
         Aluno aluno1 = new Aluno(18.1, "Maria", "fc123@alunos.pt",mestrado1);
         Aluno aluno2 = new Aluno(12.5, "João","fc345@alunos.pt", mestrado2);
+        Aluno aluno3 = new Aluno(19.5, "Daniela","fc375@alunos.pt", mestrado1);
+        Aluno aluno4 = new Aluno(10.0, "Gonçalo","fc745@alunos.pt", mestrado2);
+        Aluno aluno5 = new Aluno(10.0, "Gonçalo","fc745@alunos.pt", mestrado2);
         alunoRepository.save(aluno1);
         alunoRepository.save(aluno2);
+        alunoRepository.save(aluno3);
+        alunoRepository.save(aluno4);
+        alunoRepository.save(aluno5);
 
         Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema1);
         Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2, tema2);
+        Candidatura candidatura3 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno3, null);
+        Candidatura candidatura4 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno4, null);
+        Candidatura candidatura5 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno5, null);
         candidaturaRepository.save(candidatura1);
         candidaturaRepository.save(candidatura2);
+        candidaturaRepository.save(candidatura3);
+        candidaturaRepository.save(candidatura4);
+        candidaturaRepository.save(candidatura5);
 
         Tese tese1 = new Dissertacao(candidatura1);
         teseRepository.save(tese1);
@@ -284,19 +293,28 @@ public class ThesismanServiceImp implements ThesismanService{
     }
 
 
+    public CandidaturaDTO updateCandidaturaStatus(Integer id, String estado) throws NotPresentException{
+        return candidaturaHandler.updateCandidaturaStatus(id, estado);
+    }
 
-//     public void submeterTemaUtilizadorEmpresarial(Integer temaId, String descricao, float remuneracaoMensal, String email) throws NotPresentException{
-//         submissaoTemaUtilizadorEmpresarialHandler.submeterTema(temaId, descricao, remuneracaoMensal, email);
-//     }
+    public List<CandidaturaDTO> getCandidaturas() throws NotPresentException {
+        List<Candidatura> c = candidaturaHandler.getCandidaturas();
+        List<CandidaturaDTO> result = new ArrayList<>();
+        for (Candidatura candidatura : c) {
+            Integer teseId = null;
+            Integer temaId = null;
+            if (candidatura.getTese() != null) {
+                teseId = candidatura.getTese().getId();
+            }
+            if(candidatura.getTema() != null){
+                temaId = candidatura.getTema().getId();
+            }
+            result.add(new CandidaturaDTO(candidatura.getId(), temaId, candidatura.getDataCandidatura(), candidatura.getEstado().name(), teseId, candidatura.getAluno().getId()));
+        }
+        return result;
+    }
 
-//     public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException{
-//         candidaturaHandler.addTeseToCandidatura(teseID, candidaturaID);
-//     }
 
-
-//     public void getEstatisticas(){
-//         estatisticasHandler.getEstatisticas();
-//     }
 
 // [][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][][][__][__]\__ [__][]
 // [__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__][__]

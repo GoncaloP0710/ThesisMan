@@ -217,4 +217,24 @@ public class CandidaturaHandler {
         }
         return candidaturasDTO;
     }
+
+    public CandidaturaDTO updateCandidaturaStatus(Integer candidaturaID, String estado) throws NotPresentException {
+        Optional<Candidatura> optCandidatura = candidaturaRepository.findById(candidaturaID);
+        if(optCandidatura.isEmpty()){throw new NotPresentException("Candidatura não encontrada");}
+        Candidatura candidatura = optCandidatura.get();
+        candidatura.setEstado(EstadoCandidatura.valueOf(estado));
+        Tese t = null;
+        if(candidatura.getEstado() == EstadoCandidatura.APROVADO){
+            Tema tema = candidatura.getTema();
+            if(tema.getSubmissor() instanceof Docente){
+                t = new Projeto(candidatura);
+            }else{
+                t = new Dissertacao(candidatura);
+            }
+        }
+        teseRepository.save(t);
+        candidaturaRepository.save(candidatura);
+        return new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+  }
+
 }

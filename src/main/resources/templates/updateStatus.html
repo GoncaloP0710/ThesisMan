@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Thesisman Application</title>
+</head>
+<body>
+    <h1>Atualizar Estado</h1>
+    <form action="#" th:action="@{/updateStatus}" method="post">
+        <label for="candidatura">Candidatura:</label>
+        <select id="candidatura" name="candidaturaId">
+            <option th:each="candidatura : ${candidaturas}" th:value="${candidatura.id}" th:text="${candidatura.id}"></option>
+        </select>
+        <label for="estado">Estado:</label>
+        <select id="estado" name="estado">
+            <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+        </select>
+
+        <button type="submit">Update Status</button>
+    </form>
+    <p>Ao atribuir o estado APROVADO está também a criar uma tese para esta candidatura</p>
+</body>
+</html>

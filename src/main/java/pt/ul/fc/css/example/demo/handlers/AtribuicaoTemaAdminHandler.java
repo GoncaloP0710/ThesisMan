@@ -94,8 +94,7 @@ public class AtribuicaoTemaAdminHandler {
       for (Candidatura c : a.getCandidatura()) {
         candidaturasIds.add(c.getId());
       }
-      // result.add(new AlunoDTO(a.getId(), a.getName(), a.getEmail(), a.getAverage(),
-      // a.getMestrado().getNome(), candidaturasIds));
+      result.add(new AlunoDTO(a.getId(), a.getName(), a.getEmail(), a.getAverage(),a.getMestrado().getId(), candidaturasIds));
     }
     return result;
   }
@@ -110,8 +109,6 @@ public class AtribuicaoTemaAdminHandler {
     for (Candidatura c : aluno.getCandidatura()) {
       candidaturasIds.add(c.getId());
     }
-    return null;
-    // return new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(),
-    // aluno.getMestrado().getNome(), candidaturasIds);
+    return new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getId(), candidaturasIds);
   }
 }
