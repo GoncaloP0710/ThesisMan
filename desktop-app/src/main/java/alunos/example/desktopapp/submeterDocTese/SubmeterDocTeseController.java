@@ -26,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SubmeterDocTeseController {
   private double height;
@@ -60,28 +62,32 @@ public class SubmeterDocTeseController {
   private void setUpChoseFileButton() {
 
     choseFileButton.setOnAction(
-        e -> {
-          // Create a FileChooser
-          FileChooser fileChooser = new FileChooser();
+            e -> {
+              // Create a FileChooser
+              FileChooser fileChooser = new FileChooser();
 
-          // Show open file dialog
-          File file = fileChooser.showOpenDialog(null);
+              // Show open file dialog
+              File file = fileChooser.showOpenDialog(null);
 
-          if (file != null) {
-            try {
-              // Read file to byte array and assign to fileBytes
-              fileBytes = Files.readAllBytes(file.toPath());
-            } catch (IOException ex) {
-              // Handle exception
-              System.out.println("Error reading file: " + ex.getMessage());
-            }
-          }
-        });
+              if (file != null) {
+                try {
+                  // Read file to byte array and assign to fileBytes
+                  fileBytes = Files.readAllBytes(file.toPath());
+                } catch (IOException ex) {
+                  Alert alert = new Alert(AlertType.ERROR);
+                  alert.setTitle("Erro");
+                  alert.setHeaderText("Erro ao listar candidaturas");
+                  alert.show();
+                  // Handle exception
+                  System.out.println("Error reading file: " + ex.getMessage());
+                }
+              }
+            });
   }
 
   private void setUpTable() {
     BorderPane.setMargin(
-        table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
+            table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     TableColumn<TableRow, String> tc1 = new TableColumn<>("id");
@@ -98,10 +104,7 @@ public class SubmeterDocTeseController {
     tc5.setCellValueFactory(new PropertyValueFactory<>("col5"));
     tc6.setCellValueFactory(new PropertyValueFactory<>("col6"));
 
-    System.out.println("asdasdasjdnasjin");
-    System.out.println("6199864189841987498418949841984179841987");
-
-    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
+    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturasProposta();
 
     table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
@@ -120,11 +123,11 @@ public class SubmeterDocTeseController {
     }
 
     table.setOnMouseClicked(
-        event -> {
-          if (event.getButton() == MouseButton.PRIMARY) {
-            currentCandidatura = table.getSelectionModel().getSelectedItem();
-          }
-        });
+            event -> {
+              if (event.getButton() == MouseButton.PRIMARY) {
+                currentCandidatura = table.getSelectionModel().getSelectedItem();
+              }
+            });
   }
 
   @FXML
@@ -143,14 +146,17 @@ public class SubmeterDocTeseController {
     if (currentCandidatura == null || fileBytes == null) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");
-      alert.setHeaderText("Erro ao submeter documento de tese");
-      alert.setContentText("Por favor selecione uma candidatura e um ficheiro");
+      alert.setHeaderText("Por favor selecione uma candidatura e um ficheiro");
       alert.showAndWait();
       return;
     }
 
     if (RestAPIClientService.getInstance()
-        .submeterDocTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
+            .submeterDocTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("Sucesso");
+      alert.setHeaderText("Documento submetido com sucesso");
+      alert.showAndWait();
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

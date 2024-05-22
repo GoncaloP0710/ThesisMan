@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import org.springframework.transaction.annotation.Transactional;
 import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.entities.Tese;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
@@ -33,6 +34,7 @@ public class SubmissaoDocFinalTeseAlunoHandler {
         this.candidaturaRepository = candidaturaRepository;
     }
 
+    @Transactional
     public TeseDTO submeterDocFinalTeseAluno(Integer alunoId, Integer candidaturaID, byte[] document) throws NotPresentException {
         Optional<Candidatura> optCandidatura = candidaturaRepository.findById(candidaturaID);
         if(optCandidatura.isEmpty()){

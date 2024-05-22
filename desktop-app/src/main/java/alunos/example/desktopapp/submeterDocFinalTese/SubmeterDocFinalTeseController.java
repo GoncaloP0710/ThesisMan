@@ -26,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SubmeterDocFinalTeseController {
   private double height;
@@ -62,28 +64,32 @@ public class SubmeterDocFinalTeseController {
   private void setUpChoseFileButton() {
 
     choseFileButton.setOnAction(
-        e -> {
-          // Create a FileChooser
-          FileChooser fileChooser = new FileChooser();
+            e -> {
+              // Create a FileChooser
+              FileChooser fileChooser = new FileChooser();
 
-          // Show open file dialog
-          File file = fileChooser.showOpenDialog(null);
+              // Show open file dialog
+              File file = fileChooser.showOpenDialog(null);
 
-          if (file != null) {
-            try {
-              // Read file to byte array and assign to fileBytes
-              fileBytes = Files.readAllBytes(file.toPath());
-            } catch (IOException ex) {
-              // Handle exception
-              System.out.println("Error reading file: " + ex.getMessage());
-            }
-          }
-        });
+              if (file != null) {
+                try {
+                  // Read file to byte array and assign to fileBytes
+                  fileBytes = Files.readAllBytes(file.toPath());
+                } catch (IOException ex) {
+                  Alert alert = new Alert(AlertType.ERROR);
+                  alert.setTitle("Erro");
+                  alert.setHeaderText("Erro ler ficheiro");
+                  alert.show();
+                  // Handle exception
+                  System.out.println("Error reading file: " + ex.getMessage());
+                }
+              }
+            });
   }
 
   private void setUpTable() {
     StackPane.setMargin(
-        table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
+            table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     TableColumn<TableRow, String> tc1 = new TableColumn<>("id");
@@ -102,7 +108,7 @@ public class SubmeterDocFinalTeseController {
 
     table.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
 
-    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturas();
+    List<CandidaturaDTO> candidaturas = RestAPIClientService.getInstance().listarCandidaturasFinal();
 
     for (CandidaturaDTO candidatura : candidaturas) {
       TableRow t = new TableRow();
@@ -119,11 +125,11 @@ public class SubmeterDocFinalTeseController {
     }
 
     table.setOnMouseClicked(
-        event -> {
-          if (event.getButton() == MouseButton.PRIMARY) {
-            currentCandidatura = table.getSelectionModel().getSelectedItem();
-          }
-        });
+            event -> {
+              if (event.getButton() == MouseButton.PRIMARY) {
+                currentCandidatura = table.getSelectionModel().getSelectedItem();
+              }
+            });
   }
 
   @FXML
@@ -149,7 +155,11 @@ public class SubmeterDocFinalTeseController {
     }
 
     if (RestAPIClientService.getInstance()
-        .submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
+            .submeterDocFinalTese(Integer.valueOf(currentCandidatura.getCol1()), fileBytes)) {
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("Sucesso");
+      alert.setHeaderText("Documento final submetido com sucesso");
+      alert.showAndWait();
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

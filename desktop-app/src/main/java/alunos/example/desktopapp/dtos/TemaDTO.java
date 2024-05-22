@@ -9,7 +9,7 @@ public class TemaDTO{
     private float remuneracaoMensal;
     private Integer submissorId;
     private List<Integer> mestradosCompativeisId;
-    
+
 
     public TemaDTO(Integer id, String titulo, String descricao, float remuneracaoMensal, Integer submissorId, List<Integer> mestradosCompativeisId) {
         this.id = id;
@@ -70,6 +70,6 @@ public class TemaDTO{
         this.mestradosCompativeisId = mestradosCompativeisId;
     }
 
-    
+
 
 }

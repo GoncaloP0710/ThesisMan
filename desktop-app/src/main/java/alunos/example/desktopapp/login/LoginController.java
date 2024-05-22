@@ -70,7 +70,7 @@ public class LoginController {
   public void loginHandler() throws Exception {
 
     if (RestAPIClientService.getInstance()
-        .logIn(email.getText(), password.getText(), getWasLogout())) {
+            .logIn(email.getText(), password.getText(), getWasLogout())) {
       FXMLLoader loader = new FXMLLoader(Main.class.getResource("/menu.fxml"));
       StackPane root = loader.load();
       MenuController controller = loader.<MenuController>getController();

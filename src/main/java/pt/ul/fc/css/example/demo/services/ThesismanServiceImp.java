@@ -52,10 +52,13 @@ public class ThesismanServiceImp implements ThesismanService{
         temaRepository.deleteAll();
         teseRepository.deleteAll();
         defesaRepository.deleteAll();
+
         utilizadorEmpresarialRepository.deleteAll();
         docenteRepository.deleteAll();
+
         alunoRepository.deleteAll();
         mestradoRepository.deleteAll();
+
         juriRepository.deleteAll();
 
         Mestrado mestrado1 = new Mestrado("Engenharia Informática");
@@ -79,25 +82,15 @@ public class ThesismanServiceImp implements ThesismanService{
 
         Aluno aluno1 = new Aluno(18.1, "Maria", "fc123@alunos.pt",mestrado1);
         Aluno aluno2 = new Aluno(12.5, "João","fc345@alunos.pt", mestrado2);
-        Aluno aluno3 = new Aluno(19.5, "Daniela","fc375@alunos.pt", mestrado1);
-        Aluno aluno4 = new Aluno(10.0, "Gonçalo","fc745@alunos.pt", mestrado2);
-        Aluno aluno5 = new Aluno(10.0, "Gonçalo","fc745@alunos.pt", mestrado2);
         alunoRepository.save(aluno1);
         alunoRepository.save(aluno2);
-        alunoRepository.save(aluno3);
-        alunoRepository.save(aluno4);
-        alunoRepository.save(aluno5);
 
         Candidatura candidatura1 = new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema1);
         Candidatura candidatura2 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2, tema2);
-        Candidatura candidatura3 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno3, null);
-        Candidatura candidatura4 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno4, null);
-        Candidatura candidatura5 = new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno5, null);
+        Candidatura candidatura3 = new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema2);
         candidaturaRepository.save(candidatura1);
         candidaturaRepository.save(candidatura2);
         candidaturaRepository.save(candidatura3);
-        candidaturaRepository.save(candidatura4);
-        candidaturaRepository.save(candidatura5);
 
         Tese tese1 = new Dissertacao(candidatura1);
         Tese tese2 = new Dissertacao(candidatura3);
@@ -135,6 +128,7 @@ public class ThesismanServiceImp implements ThesismanService{
         List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
         List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
     }
+
 
     public List<DocenteDTO> getDocentes(){
         List<Docente> docentes = docenteHandler.getDocentes();
@@ -209,16 +203,18 @@ public class ThesismanServiceImp implements ThesismanService{
 
     public List<CandidaturaDTO> getCandidaturasAceites() throws NotPresentException{
         List<Candidatura> c = candidaturaHandler.getCandidaturasAceites();
+        System.out.println("Size do c: " +  c.size());
         for (Candidatura candidatura : c) {
             System.out.println("Id da candidatura: " +  candidatura.getId());
         }
         List<CandidaturaDTO> result = new ArrayList<>();
         for (Candidatura candidatura : c) {
-            if(candidatura.getTese() != null && candidatura.getTese().getDocumentProposto() != null){
+            if(candidatura.getTese() != null && candidatura.getEstado()==EstadoCandidatura.APROVADO){
                 System.out.println("Id da candidatura: " +  candidatura.getId());
                 result.add(new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId()));
         }
     }
+        System.out.println("Size result candidaturas aceites: " + result.size());
         return result;
         
     }
@@ -278,7 +274,7 @@ public class ThesismanServiceImp implements ThesismanService{
             Tese tese = candidatura.getTese();
             if (tese != null) {
                 Defesa d = tese.getDefesaProposta();
-                if (d != null && d.getNota() != -1) {
+                if (d != null && d.getNota() == -1) {
                     CandidaturaDTO candidaturaDTO = new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
                     TeseDTO teseDTO = new TeseDTO(tese.getId(), tese.getCandidatura().getId(), tese.getDocumentProposto(), tese.getDocumentFinal(), tese.getDefesas().stream().map(Defesa::getId).collect(Collectors.toList()));
                     result.put(candidaturaDTO, teseDTO);

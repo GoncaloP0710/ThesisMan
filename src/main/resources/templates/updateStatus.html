@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Atualizar Estado</h1>
-    <form action="#" th:action="@{/updateStatus}" method="post">
+    <form action="#" th:action="@{/updateStatusCall}" method="post">
         <label for="candidatura">Candidatura:</label>
         <select id="candidatura" name="candidaturaId">
             <option th:each="candidatura : ${candidaturas}" th:value="${candidatura.id}" th:text="${candidatura.id}"></option>

@@ -48,7 +48,7 @@ public class CreateCandidaturaController {
 
   private void setUpTable() {
     BorderPane.setMargin(
-        table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
+            table, new Insets(height * 0.16, width * 0.08, height * 0.07, width * 0.08));
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     TableColumn<TableRow, String> tc1 = new TableColumn<>("id");
@@ -81,11 +81,11 @@ public class CreateCandidaturaController {
     }
 
     table.setOnMouseClicked(
-        event -> {
-          if (event.getButton() == MouseButton.PRIMARY) {
-            currentTema = table.getSelectionModel().getSelectedItem();
-          }
-        });
+            event -> {
+              if (event.getButton() == MouseButton.PRIMARY) {
+                currentTema = table.getSelectionModel().getSelectedItem();
+              }
+            });
   }
 
   @FXML
@@ -111,7 +111,7 @@ public class CreateCandidaturaController {
     }
 
     if (RestAPIClientService.getInstance()
-        .createCandidatura(Integer.valueOf(currentTema.getCol1()), "EMPROCESSAMENTO")) {
+            .createCandidatura(Integer.valueOf(currentTema.getCol1()), "EMPROCESSAMENTO")) {
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Erro");

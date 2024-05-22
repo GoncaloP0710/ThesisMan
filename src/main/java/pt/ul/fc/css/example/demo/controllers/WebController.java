@@ -37,12 +37,16 @@ import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
 import pt.ul.fc.css.example.demo.services.ThesismanServiceImp;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @SessionAttributes({"id", "name", "isAdmin", "temas propostos", "projetos orientados", "mestrados", "temasDisponiveis",
                     "alunos", "candidaturas", "docentes"})
 public class WebController {
+
+    private boolean firstTry = true;
 
     Logger logger = LoggerFactory.getLogger(WebController.class);
     @Autowired ThesismanServiceImp thesismanService;
@@ -55,8 +59,18 @@ public class WebController {
     String userEmail = "";
 
     @RequestMapping("/")
-    public String getLogin(Model model) {
-        thesismanService.populate();
+    public String getLogin(Model model, SessionStatus sessionStatus) {
+        if (firstTry) {
+            thesismanService.populate();
+            firstTry = false;
+        }
+
+        return "login";
+    }
+
+    @GetMapping({"/logout"})
+    public String logout (SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
         return "login";
     }
 
@@ -92,6 +106,7 @@ public class WebController {
         model.addAttribute("docentes", thesismanService.getDocentes());
         return "dashboard";
     }
+
 
     @GetMapping({"/dashboard"})
     public String dashboard(){
@@ -167,18 +182,16 @@ public class WebController {
     @GetMapping({"/marcarDefesaProposta"})
     public String marcarDefesaProposta(Model model){
         try{
-         List<CandidaturaDTO> c = thesismanService.getCandidaturasAceites();
-         Map<CandidaturaDTO, TemaDTO> candidaturas = new HashMap<CandidaturaDTO, TemaDTO>();
-         for(CandidaturaDTO candidatura : c){
-            TeseDTO t = thesismanService.getTese(candidatura.getTeseId());
-            TemaDTO tema = thesismanService.getTema(t.getId());
-            candidaturas.put(candidatura, tema);
-            //Assumimos que o submissor do tema é o orientador da tese
-            if(tema.getSubmissorId() == (Integer) model.getAttribute("id")){
-                model.addAttribute("candidaturasAceites", candidaturas);
+            List<CandidaturaDTO> c = thesismanService.getCandidaturasAceites();
+            Map<CandidaturaDTO, TemaDTO> candidaturasAceites = new HashMap<>();
+            for(CandidaturaDTO candidatura : c){
+                TeseDTO t = thesismanService.getTese(candidatura.getTeseId());
+                TemaDTO tema = thesismanService.getTema(t.getId());
+                if(tema.getSubmissorId().equals((Integer)model.getAttribute("id"))){
+                    candidaturasAceites.put(candidatura, tema);
+                }
             }
-            model.addAttribute("candidaturasAceites", candidaturas);
-        }
+            model.addAttribute("candidaturasAceites", candidaturasAceites);
         }catch(NotPresentException e){
             logger.error("Erro ao verificar candidaturas: " + e.getMessage());
             return "dashboard";
@@ -296,29 +309,43 @@ public class WebController {
     @GetMapping({"/updateStatus"})
     public String updateStatus(Model model){
         try{
+            System.out.println("updateStatus 1");
             List<CandidaturaDTO> c = thesismanService.getCandidaturas();
+            System.out.println("updateStatus 2");
             List<String> estados = new ArrayList<String>();
+            System.out.println("updateStatus 3");
             estados.add("APROVADO");
+            System.out.println("updateStatus 4");
             estados.add("EMPROCESSAMENTO");
+            System.out.println("updateStatus 5");
             estados.add("REJEITADO");
+            System.out.println("updateStatus 6");
             model.addAttribute("candidaturas", c);
+            System.out.println("updateStatus 7");
             model.addAttribute("estados", estados);
+            System.out.println("updateStatus 8");
         }catch(NotPresentException e){
+            System.out.println("updateStatus 9");
             logger.error("Erro ao verificar candidaturas: " + e.getMessage());
             return "dashboard";
         }
+        System.out.println("updateStatus 10");
         return "updateStatus";
     }
 
     @PostMapping({"/updateStatusCall"})
     public String updateStatusCall(@RequestParam String candidaturaId, @RequestParam String estado){ {
         try{
+            System.out.println("updateStatusCall 1");
             thesismanService.updateCandidaturaStatus(Integer.parseInt(candidaturaId), estado);
+            System.out.println("updateStatusCall 2");
         }catch(NotPresentException e){
+            System.out.println("updateStatusCall erro");
             logger.error("Erro ao atualizar estado: " + e.getMessage());
             return "updateStatusError";
         }
-        return "";
+        System.out.println("updateStatusCall 3");
+        return "updateStatusAtualizado";
     }
     
 

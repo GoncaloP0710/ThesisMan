@@ -78,6 +78,7 @@ public class CandidaturaHandler {
         return new CandidaturaDTO(new_candidatura.getId(), new_candidatura.getTema().getId(),new_candidatura.getDataCandidatura(), new_candidatura.getEstado().name(), -1, new_candidatura.getAluno().getId());
     }
 
+
     public void addTeseToCandidatura(Integer teseID, Integer candidaturaID) throws NotPresentException {
         Optional<Tese> optTese = teseRepository.findById(teseID);
         if(optTese.isEmpty()){
@@ -193,23 +194,132 @@ public class CandidaturaHandler {
         return candidaturasDTO;
     }
 
+
     public CandidaturaDTO updateCandidaturaStatus(Integer candidaturaID, String estado) throws NotPresentException {
+        System.out.println("1");
         Optional<Candidatura> optCandidatura = candidaturaRepository.findById(candidaturaID);
+        System.out.println("2");
         if(optCandidatura.isEmpty()){throw new NotPresentException("Candidatura não encontrada");}
+        System.out.println("3");
         Candidatura candidatura = optCandidatura.get();
+        System.out.println("4");
         candidatura.setEstado(EstadoCandidatura.valueOf(estado));
+        System.out.println("5");
         Tese t = null;
         if(candidatura.getEstado() == EstadoCandidatura.APROVADO){
+            System.out.println("6");
             Tema tema = candidatura.getTema();
-            if(tema.getSubmissor() instanceof Docente){
-                t = new Projeto(candidatura);
+            System.out.println("7");
+            if(!(tema.getSubmissor() instanceof Docente)){
+                if (candidatura.getTese() != null) {
+                    candidaturaRepository.save(candidatura);
+                    return new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+
+                } else {
+                    System.out.println("8");
+                    t = new Projeto(candidatura);
+                    teseRepository.save(t);
+                    System.out.println("10");
+                    candidatura.setTese(t);
+                    candidaturaRepository.save(candidatura);
+                    System.out.println("11");
+                    return new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+
+                }
+
             }else{
-                t = new Dissertacao(candidatura);
+                if (candidatura.getTese() != null) {
+                    candidaturaRepository.save(candidatura);
+                    return new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+
+                } else {
+                    System.out.println("9");
+                    t = new Dissertacao(candidatura);
+                    teseRepository.save(t);
+                    System.out.println("10");
+                    candidatura.setTese(t);
+                    candidaturaRepository.save(candidatura);
+                    System.out.println("11");
+                    return new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+
+                }
+
             }
         }
-        teseRepository.save(t);
+        System.out.println("10");
         candidaturaRepository.save(candidatura);
-        return new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+        System.out.println("11");
+        return new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), -1, candidatura.getAluno().getId());
   }
+
+    public List<CandidaturaDTO> listarCandidaturasAlunosProposta(Integer alunoID){
+        List<Defesa> defesas = defesaRepository.findAll();
+        for(Defesa d : defesas){
+        }
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+        List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
+        for(Candidatura c : candidaturas){
+            Optional<Tese> teseOptional = teseRepository.findById(c.getTese().getId());
+            if(teseOptional.isEmpty()){
+            }
+            Tese tese = teseOptional.get();
+            for(Defesa d : defesas){
+                if (d.getTeseId() == tese.getId()) {
+                    if (tese.getCandidatura().getAluno().getId().equals(alunoID)) {
+                        if(!d.isFinal() && d.getNota() == -1){
+                            candidaturasWithDefesaWithoutNota.add(c);
+                        }
+                    }
+                } else {
+                }
+            }
+        }
+        List<CandidaturaDTO> candidaturasDTO = new ArrayList<>();
+        for(Candidatura c : candidaturasWithDefesaWithoutNota){
+            if (c.getTema() != null && c.getTese() != null) {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), c.getTese().getId(), c.getAluno().getId()));
+            } else if (c.getTema() != null) {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), -1, c.getAluno().getId()));
+            } else {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), -1, c.getDataCandidatura(), c.getEstado().name(), -1, c.getAluno().getId()));
+            }
+        }
+        return candidaturasDTO;
+    }
+
+    public List<CandidaturaDTO> listarCandidaturasAlunosFinal(Integer alunoID){
+        List<Defesa> defesas = defesaRepository.findAll();
+        for(Defesa d : defesas){
+        }
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+        List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
+        for(Candidatura c : candidaturas){
+            Optional<Tese> teseOptional = teseRepository.findById(c.getTese().getId());
+            if(teseOptional.isEmpty()){
+            }
+            Tese tese = teseOptional.get();
+            for(Defesa d : defesas){
+                if (d.getTeseId() == tese.getId()) {
+                    if (tese.getCandidatura().getAluno().getId().equals(alunoID)) {
+                        if(d.isFinal() && d.getNota() == -1){
+                            candidaturasWithDefesaWithoutNota.add(c);
+                        }
+                    }
+                } else {
+                }
+            }
+        }
+        List<CandidaturaDTO> candidaturasDTO = new ArrayList<>();
+        for(Candidatura c : candidaturasWithDefesaWithoutNota){
+            if (c.getTema() != null && c.getTese() != null) {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), c.getTese().getId(), c.getAluno().getId()));
+            } else if (c.getTema() != null) {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), c.getTema().getId(), c.getDataCandidatura(), c.getEstado().name(), -1, c.getAluno().getId()));
+            } else {
+                candidaturasDTO.add(new CandidaturaDTO(c.getId(), -1, c.getDataCandidatura(), c.getEstado().name(), -1, c.getAluno().getId()));
+            }
+        }
+        return candidaturasDTO;
+    }
 
 }

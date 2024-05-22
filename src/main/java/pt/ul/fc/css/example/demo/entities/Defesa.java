@@ -173,6 +173,7 @@ public final class Defesa{
         this.juri = juri;
     }
 
+
     /**
      * Sets the grade of the defense.
      *

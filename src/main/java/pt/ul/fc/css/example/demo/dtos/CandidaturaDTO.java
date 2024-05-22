@@ -26,8 +26,8 @@ public class CandidaturaDTO {
         return id;
     }
 
-    public Integer getTema() {
-        return temaId;
+    public Integer getTemaId() {
+        return this.temaId;
     }
 
     public Date getDataCandidatura() {

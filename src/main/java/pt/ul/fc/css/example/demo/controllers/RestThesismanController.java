@@ -55,7 +55,7 @@ public class RestThesismanController {
     ResponseEntity<?> login(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
 
         ObjectMapper objectMapper = new ObjectMapper();
-        
+
         try{
             JsonNode jsonNode = objectMapper.readTree(json);
 
@@ -65,7 +65,6 @@ public class RestThesismanController {
 
             if(!wasLoggedOut){
                 ThesismanServiceImp.populate();
-                System.out.println("after populate");
             }
 
             AlunoDTO userDTO = ThesismanServiceImp.loginAluno(email, password);
@@ -79,7 +78,6 @@ public class RestThesismanController {
     @GetMapping("/listarTemas")
     public ResponseEntity<?> listarTemas(@RequestParam Integer alunoId) {
         try {
-            System.out.println("before query");
             List<TemaDTO> temas = ThesismanServiceImp.listarTemasAlunos(alunoId);
             return new ResponseEntity<>(temas, HttpStatus.OK);
         } catch(NotPresentException e) {
@@ -90,8 +88,27 @@ public class RestThesismanController {
     @GetMapping("/listarCandidaturas")
     public ResponseEntity<?> listarCandidaturas(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
         try{
-            System.out.println("before listarCandidaturasAlunos");
             List<CandidaturaDTO> candidaturas = ThesismanServiceImp.listarCandidaturasAlunos(alunoId);
+            return new ResponseEntity<>(candidaturas, HttpStatus.OK);
+        }catch(NotPresentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/listarCandidaturasFinal")
+    public ResponseEntity<?> listarCandidaturasFinal(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
+        try{
+            List<CandidaturaDTO> candidaturas = ThesismanServiceImp.listarCandidaturasAlunosFinal(alunoId);
+            return new ResponseEntity<>(candidaturas, HttpStatus.OK);
+        }catch(NotPresentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/listarCandidaturasProposta")
+    public ResponseEntity<?> listarCandidaturasProposta(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
+        try{
+            List<CandidaturaDTO> candidaturas = ThesismanServiceImp.listarCandidaturasAlunosProposta(alunoId);
             return new ResponseEntity<>(candidaturas, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -102,23 +119,19 @@ public class RestThesismanController {
     ResponseEntity<?> createCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException, IllegalCandidaturaException{
         ObjectMapper objectMapper = new ObjectMapper();
         try{
-            System.out.println("1");
             JsonNode jsonNode = objectMapper.readTree(json);
-            System.out.println("2");
             Date dataCandidatura = new Date();
-            System.out.println("3");
             String estadoStr = jsonNode.get("estado").asText();
-            System.out.println("4");
             EstadoCandidatura estado = EstadoCandidatura.valueOf(estadoStr);
             Integer alunoId = jsonNode.get("alunoId").intValue();
             Integer temaId = jsonNode.get("temaId").intValue();
-            
+
             CandidaturaDTO candidaturaDTO = ThesismanServiceImp.newCandidatura(dataCandidatura, estado, alunoId, temaId);
-            System.out.println("candidaturaDTO id: " + candidaturaDTO.getId().toString());
-            System.out.println("candidaturaDTO temaId: " + candidaturaDTO.getTema().toString());
             return new ResponseEntity<>(candidaturaDTO, HttpStatus.OK);
         }catch(NotPresentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (IllegalCandidaturaException a) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -141,9 +154,7 @@ public class RestThesismanController {
         try{
             JsonNode jsonNode = objectMapper.readTree(json);
             Integer candidaturaId = jsonNode.get("candidaturaId").intValue();
-            System.out.println("candidaturaId: " + candidaturaId);
             Integer alunoId = jsonNode.get("alunoId").intValue();
-            System.out.println("alunoId: " + alunoId);
             byte[] document = jsonNode.get("document").binaryValue();
             TeseDTO teseDTO = ThesismanServiceImp.submitPropostaTeseDocsAluno(candidaturaId, document, alunoId);
             return new ResponseEntity<>(teseDTO, HttpStatus.OK);

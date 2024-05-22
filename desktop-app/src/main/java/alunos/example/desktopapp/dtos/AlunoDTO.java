@@ -9,7 +9,7 @@ public class AlunoDTO{
     private Double average;
     private Integer mestrado;
     private List<Integer> candidaturaId;
-    
+
     public AlunoDTO(Integer id, String name, String contact, Double average, Integer mestradoId, List<Integer> candidaturaId) {
         this.id = id;
         this.name = name;
@@ -40,7 +40,7 @@ public class AlunoDTO{
     public Integer getMestrado() {
         return mestrado;
     }
-    
+
     public List<Integer> getCandidaturaId() {
         return candidaturaId;
     }

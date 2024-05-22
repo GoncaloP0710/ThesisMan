@@ -33,7 +33,6 @@ public class RestAPIClientService {
 
   public boolean logIn(String email, String password, boolean wasLoggedOut) {
     try {
-      System.out.println("email: " + email + " password: " + password);
       URL url = new URL("http://localhost:8080/api/login");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("POST");
@@ -46,7 +45,6 @@ public class RestAPIClientService {
       outputStream.close();
 
       int responseCode = con.getResponseCode();
-      System.out.println("responseCode: " + responseCode);
       if (responseCode == HttpURLConnection.HTTP_OK) {
         InputStream inputStream = con.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -60,7 +58,6 @@ public class RestAPIClientService {
         ObjectMapper objectMapper = new ObjectMapper();
         AlunoDTO alunoDTO = objectMapper.readValue(responseBody.toString(), AlunoDTO.class);
         alunoId = alunoDTO.getId();
-        System.out.println("alunoId: " + alunoId);
         return true;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
@@ -81,7 +78,6 @@ public class RestAPIClientService {
 
   public List<TemaDTO> listarTemas() {
     try {
-      System.out.println(alunoId.toString());
       URL url = new URL("http://localhost:8080/api/listarTemas?alunoId=" + alunoId);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
@@ -97,7 +93,6 @@ public class RestAPIClientService {
         in.close();
         ObjectMapper objectMapper = new ObjectMapper();
         List<TemaDTO> temasDOT = objectMapper.readValue(content.toString(), new TypeReference<List<TemaDTO>>() {});
-        System.out.println(temasDOT);
         return temasDOT;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
@@ -133,8 +128,82 @@ public class RestAPIClientService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<CandidaturaDTO> candidaturasDOT =
-            objectMapper.readValue(
-                content.toString(), new TypeReference<List<CandidaturaDTO>>() {});
+                objectMapper.readValue(
+                        content.toString(), new TypeReference<List<CandidaturaDTO>>() {});
+        return candidaturasDOT;
+      } else {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Erro ao listar candidaturas");
+        alert.show();
+        return null;
+      }
+    } catch (Exception e) {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Erro");
+      alert.setHeaderText("Erro ao estabelecer conexao com o servidor");
+      alert.show();
+      return null;
+    }
+  }
+
+  public List<CandidaturaDTO> listarCandidaturasFinal() {
+    try {
+      URL url = new URL("http://localhost:8080/api/listarCandidaturasFinal?alunoId=" + alunoId);
+      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      con.setRequestMethod("GET");
+      con.setRequestProperty("Content-Type", "application/json");
+      int responseCode = con.getResponseCode();
+      if (responseCode == HttpURLConnection.HTTP_OK) {
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+          content.append(inputLine);
+        }
+        in.close();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<CandidaturaDTO> candidaturasDOT =
+                objectMapper.readValue(
+                        content.toString(), new TypeReference<List<CandidaturaDTO>>() {});
+        return candidaturasDOT;
+      } else {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Erro ao listar candidaturas");
+        alert.show();
+        return null;
+      }
+    } catch (Exception e) {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Erro");
+      alert.setHeaderText("Erro ao estabelecer conexao com o servidor");
+      alert.show();
+      return null;
+    }
+  }
+
+  public List<CandidaturaDTO> listarCandidaturasProposta() {
+    try {
+      URL url = new URL("http://localhost:8080/api/listarCandidaturasProposta?alunoId=" + alunoId);
+      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      con.setRequestMethod("GET");
+      con.setRequestProperty("Content-Type", "application/json");
+      int responseCode = con.getResponseCode();
+      if (responseCode == HttpURLConnection.HTTP_OK) {
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+          content.append(inputLine);
+        }
+        in.close();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<CandidaturaDTO> candidaturasDOT =
+                objectMapper.readValue(
+                        content.toString(), new TypeReference<List<CandidaturaDTO>>() {});
         return candidaturasDOT;
       } else {
         Alert alert = new Alert(AlertType.ERROR);
@@ -161,24 +230,34 @@ public class RestAPIClientService {
       con.setDoOutput(true);
 
       String requestBody =
-          "{\"alunoId\": "
-              + alunoId
-              + ", \"temaId\": "
-              + temaId
-              + ", \"estado\": \""
-              + estado
-              + "\"}";
+              "{\"alunoId\": "
+                      + alunoId
+                      + ", \"temaId\": "
+                      + temaId
+                      + ", \"estado\": \""
+                      + estado
+                      + "\"}";
       OutputStream outputStream = con.getOutputStream();
       outputStream.write(requestBody.getBytes("UTF-8"));
       outputStream.close();
 
       int responseCode = con.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText("Candidatura submetida com sucesso");
+        alert.show();
         return true;
-      } else {
+      } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST){
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Erro");
         alert.setHeaderText("Erro ao submeter candidatura");
+        alert.show();
+        return false;
+      } else {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Já existe uma candidatura submetida para este tema");
         alert.show();
         return false;
       }
@@ -225,7 +304,6 @@ public class RestAPIClientService {
 
   public Boolean submeterDocTese(Integer candidaturaId, byte[] document) {
     try {
-      System.out.println("alunoId: " + alunoId);
       URL url = new URL("http://localhost:8080/api/submeterDocTese");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("POST");
@@ -234,13 +312,13 @@ public class RestAPIClientService {
 
       String documentBase64 = Base64.getEncoder().encodeToString(document);
       String requestBody =
-          "{\"candidaturaId\": "
-              + candidaturaId
-              + ", \"alunoId\": "
-              + alunoId
-              + ", \"document\": \""
-              + documentBase64
-              + "\"}";
+              "{\"candidaturaId\": "
+                      + candidaturaId
+                      + ", \"alunoId\": "
+                      + alunoId
+                      + ", \"document\": \""
+                      + documentBase64
+                      + "\"}";
       OutputStream outputStream = con.getOutputStream();
       outputStream.write(requestBody.getBytes("UTF-8"));
       outputStream.close();
@@ -274,13 +352,13 @@ public class RestAPIClientService {
 
       String documentBase64 = Base64.getEncoder().encodeToString(document);
       String requestBody =
-          "{\"candidaturaId\": "
-              + candidaturaId
-              + ", \"alunoId\": "
-              + alunoId
-              + ", \"document\": \""
-              + documentBase64
-              + "\"}";
+              "{\"candidaturaId\": "
+                      + candidaturaId
+                      + ", \"alunoId\": "
+                      + alunoId
+                      + ", \"document\": \""
+                      + documentBase64
+                      + "\"}";
       OutputStream outputStream = con.getOutputStream();
       outputStream.write(requestBody.getBytes("UTF-8"));
       outputStream.close();
