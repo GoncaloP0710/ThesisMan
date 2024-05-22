@@ -77,8 +77,6 @@ public class ThesismanServiceImp implements ThesismanService{
         docenteRepository.save(docente1);
         docenteRepository.save(docente2);
 
-
-
         Aluno aluno1 = new Aluno(18.1, "Maria", "fc123@alunos.pt",mestrado1);
         Aluno aluno2 = new Aluno(12.5, "João","fc345@alunos.pt", mestrado2);
         Aluno aluno3 = new Aluno(19.5, "Daniela","fc375@alunos.pt", mestrado1);
@@ -102,12 +100,16 @@ public class ThesismanServiceImp implements ThesismanService{
         candidaturaRepository.save(candidatura5);
 
         Tese tese1 = new Dissertacao(candidatura1);
+        Tese tese2 = new Dissertacao(candidatura3);
         teseRepository.save(tese1);
+        teseRepository.save(tese2);
 
         candidatura1.setTese(tese1);
         candidatura2.setTese(tese1);
+        candidatura3.setTese(tese2);
         candidaturaRepository.save(candidatura1);
         candidaturaRepository.save(candidatura2);
+        candidaturaRepository.save(candidatura3);
 
         tema1.addMestradosCompativeis(mestrado1);
         tema2.addMestradosCompativeis(mestrado1);
@@ -115,7 +117,23 @@ public class ThesismanServiceImp implements ThesismanService{
         temaRepository.save(tema2);
         mestradoRepository.save(mestrado1);
 
+        Defesa defesa1 = new Defesa(false, false);
+        Defesa defesa2 = new Defesa(true, false);
+        defesaRepository.save(defesa1);
+        defesaRepository.save(defesa2);
 
+        tese1.addDefesa(defesa1);
+        tese2.addDefesa(defesa2);
+
+        teseRepository.save(tese1);
+        teseRepository.save(tese2);
+        defesaRepository.save(defesa1);
+        defesaRepository.save(defesa2);
+        Integer defesaTeseIdInteger = defesa1.getTeseId();
+        Integer defesaTeseIdInteger2 = defesa2.getTeseId();
+
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+        List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
     }
 
     public List<DocenteDTO> getDocentes(){
@@ -354,6 +372,14 @@ public class ThesismanServiceImp implements ThesismanService{
 
     public List<CandidaturaDTO> listarCandidaturasAlunos(Integer alunoId) throws NotPresentException{
         return candidaturaHandler.listarCandidaturasAluno(alunoId);
+    }
+
+    public List<CandidaturaDTO> listarCandidaturasAlunosProposta(Integer alunoId) throws NotPresentException{
+        return candidaturaHandler.listarCandidaturasAlunosProposta(alunoId);
+    }
+
+    public List<CandidaturaDTO> listarCandidaturasAlunosFinal(Integer alunoId) throws NotPresentException{
+        return candidaturaHandler.listarCandidaturasAlunosFinal(alunoId);
     }
 
 }

@@ -7,6 +7,7 @@ import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
 import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
+import pt.ul.fc.css.example.demo.repositories.DefesaRepository;
 import pt.ul.fc.css.example.demo.exceptions.*;
 
 import java.util.ArrayList;
@@ -24,13 +25,16 @@ public class CandidaturaHandler {
     private AlunoRepository alunoRepository;
     private TemaRepository temaRepository;
     private TeseRepository teseRepository;
+    private DefesaRepository defesaRepository;
 
     public CandidaturaHandler(CandidaturaRepository candidaturaRepository, AlunoRepository alunoRepository,
-                                 TemaRepository temaRepository, TeseRepository teseRepository) {
+                                 TemaRepository temaRepository, TeseRepository teseRepository, DefesaRepository defesaRepository) {
         this.candidaturaRepository = candidaturaRepository;
         this.alunoRepository = alunoRepository;
         this.temaRepository = temaRepository;
         this.teseRepository = teseRepository;
+        this.defesaRepository = defesaRepository;
+
     }
 
     public CandidaturaDTO newCandidatura(Date dataCandidatura, EstadoCandidatura estado, Integer alunoId, Integer temaId) throws IllegalCandidaturaException, NotPresentException {
@@ -39,7 +43,6 @@ public class CandidaturaHandler {
             throw new NotPresentException("Aluno não encontrado");
         }
         List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoId(alunoId);
-        System.out.println("candidaturas size: " + candidaturas.size());
         if (candidaturas != null) {
             if(candidaturas.size() >= 5){
                 throw new IllegalCandidaturaException("O aluno já tem 5 candidaturas ativas");
@@ -58,33 +61,20 @@ public class CandidaturaHandler {
         }
 
         Aluno aluno = optAluno.get();
-        System.out.println("aluno id: " + aluno.getId());
         Optional<Tema> optTema = temaRepository.findById(temaId);
         if (!optTema.isPresent()) {
             throw new NotPresentException("Tema não encontrado");
         }
         Tema tema = optTema.get();
-        System.out.println("tema id: " + tema.getId());
         Candidatura new_candidatura;
         if(estado != null){
-            System.out.println("| 1 |");
             new_candidatura = new Candidatura(dataCandidatura, estado, aluno, tema);
-            System.out.println("| 2 |");
             candidaturaRepository.save(new_candidatura);
-            System.out.println("| 3 |");
-            System.out.println("new_candidatura id: " + new_candidatura.getId());
         }else{
-            System.out.println("| 4 |");
             throw new NotPresentException("Estado não presente (null)");
         }
         aluno.addCandidatura(new_candidatura);
-        System.out.println("aluno candidaturas size: " + aluno.getCandidatura().size());
         alunoRepository.save(aluno);
-
-        System.out.println("============================");
-        System.out.println("new_candidatura id: " + new_candidatura.getId());
-        System.out.println("============================");
-
         return new CandidaturaDTO(new_candidatura.getId(), new_candidatura.getTema().getId(),new_candidatura.getDataCandidatura(), new_candidatura.getEstado().name(), -1, new_candidatura.getAluno().getId());
     }
 
@@ -104,22 +94,14 @@ public class CandidaturaHandler {
     }
 
     public void cancelCandidatura(Integer candidaturaID) throws NotPresentException {
-        System.out.println("========== cancelCandidatura =========");
         Optional<Candidatura> cand = candidaturaRepository.findById(candidaturaID);
-
         if (cand.isEmpty()) {
             throw new NotPresentException("Candidatura não encontrada");
         }
-        System.out.println("cancelCandidaturaId: " + candidaturaID);
         candidaturaRepository.deleteById(candidaturaID);
-
-        System.out.println("candidatura deleted");
-        System.out.println("==========  =========");
     }
 
     public List<Candidatura> getCandidaturas(){
-        System.out.println("========== getCandidaturas =========");
-        System.out.println("==========  =========");
         return candidaturaRepository.findAll();
     }
 
@@ -179,9 +161,6 @@ public class CandidaturaHandler {
     }
 
     public List<CandidaturaDTO> listarCandidaturasAluno(Integer alunoID) throws NotPresentException {
-        System.out.println("============================");
-        System.out.println("alunoId: " + alunoID);
-        System.out.println("============================");
         if (alunoID == null) {
             throw new IllegalArgumentException("Id do aluno é obrigatório");
         }
@@ -189,19 +168,15 @@ public class CandidaturaHandler {
         if(optAluno.isEmpty()){
             throw new NotPresentException("Aluno não encontrado");
         }
-        System.out.println("before query");
         List<Candidatura> candidaturas = candidaturaRepository.findAll();
 
         for (Candidatura c : candidaturas) {
-            System.out.println(c.getId());
         }
 
         List<Candidatura> candidaturas2 = new ArrayList<>();
         for (Candidatura c : candidaturas) {
-            System.out.println(c.getId());
             if(c.getAluno().getId() == alunoID){
                 candidaturas2.add(c);
-                System.out.println("added candidatura: " + c.getId());
             }
         }
 
