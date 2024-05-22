@@ -34,6 +34,8 @@ import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
 import pt.ul.fc.css.example.demo.exceptions.NoProperStateException;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
+import pt.ul.fc.css.example.demo.exceptions.PermissionDeniedException;
+import pt.ul.fc.css.example.demo.exceptions.ThemeAttributedException;
 import pt.ul.fc.css.example.demo.services.ThesismanServiceImp;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -174,6 +176,12 @@ public class WebController {
         }catch(IllegalArgumentException e){
             logger.error("Erro ao atribuir tema: " + e.getMessage());
             return "alunoNoCandidaturas";
+        }catch(PermissionDeniedException e){
+            logger.error("Erro ao atribuir tema: " + e.getMessage());
+            return "permissionDenied";
+        }catch(ThemeAttributedException e){
+            logger.error("Erro ao atribuir tema: " + e.getMessage());
+            return "temaAtribuidoNo";
         }
         return "temaAtribuido";
     }

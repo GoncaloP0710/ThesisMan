@@ -312,7 +312,7 @@ public class ThesismanServiceImp implements ThesismanService {
   }
 
   public void atribuicaoTemaAdmin(Integer temaId, Integer alunoId, Integer docenteId)
-      throws NotPresentException {
+      throws NotPresentException, PermissionDeniedException, ThemeAttributedException {
     atribuicaoTemaAdminHandler.atribuirTemaAdmin(temaId, alunoId, docenteId);
   }
 

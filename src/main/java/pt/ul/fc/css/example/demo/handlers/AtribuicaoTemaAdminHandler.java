@@ -3,6 +3,9 @@ package pt.ul.fc.css.example.demo.handlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.naming.NoPermissionException;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
@@ -13,6 +16,8 @@ import pt.ul.fc.css.example.demo.entities.Docente;
 import pt.ul.fc.css.example.demo.entities.Projeto;
 import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
+import pt.ul.fc.css.example.demo.exceptions.PermissionDeniedException;
+import pt.ul.fc.css.example.demo.exceptions.ThemeAttributedException;
 import pt.ul.fc.css.example.demo.repositories.AlunoRepository;
 import pt.ul.fc.css.example.demo.repositories.CandidaturaRepository;
 import pt.ul.fc.css.example.demo.repositories.DocenteRepository;
@@ -42,14 +47,14 @@ public class AtribuicaoTemaAdminHandler {
   }
 
   public void atribuirTemaAdmin(Integer temaId, Integer alunoId, Integer docenteId)
-      throws NotPresentException {
+      throws NotPresentException, PermissionDeniedException, ThemeAttributedException {
     Optional<Docente> optDocente = docenteRepository.findById(docenteId);
     if (optDocente.isEmpty()) {
       throw new NotPresentException("Docente não encontrado");
     }
     Docente docente = optDocente.get();
     if (!docente.isAdmnistrador()) {
-      throw new IllegalArgumentException("Docente não tem permissões para atribuir temas");
+      throw new PermissionDeniedException("Docente não tem permissões para atribuir temas");
     }
     Optional<Aluno> optAluno = alunoRepository.findById(alunoId);
     if (optAluno.isEmpty()) {
@@ -62,7 +67,7 @@ public class AtribuicaoTemaAdminHandler {
     Optional<Candidatura> optCandidatura =
         candidaturas.stream().filter(candidatura -> candidatura.getTema() == null).findFirst();
     if (optCandidatura.isEmpty()) {
-      throw new NotPresentException("Aluno já tem um tema atribuído");
+      throw new ThemeAttributedException("Aluno já tem um tema atribuído");
     }
     Optional<Tema> optTema = temaRepository.findById(temaId);
     if (optTema.isEmpty()) {
