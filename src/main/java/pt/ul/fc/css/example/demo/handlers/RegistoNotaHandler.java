@@ -14,12 +14,12 @@ import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 
 @Component
 @Transactional()
-public class RegistoNotaFinalHandler {
+public class RegistoNotaHandler {
 
   private TeseRepository teseRepository;
   private DefesaRepository defesaRepository;
 
-  public RegistoNotaFinalHandler(
+  public RegistoNotaHandler(
       DefesaRepository defesaRepository,
       TeseRepository teseRepository,
       JuriRepository juriRepository) {

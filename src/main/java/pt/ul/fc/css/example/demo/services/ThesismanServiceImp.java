@@ -27,8 +27,7 @@ public class ThesismanServiceImp implements ThesismanService {
   @Autowired private MestradoHandler mestradoHandler;
   @Autowired private DocenteHandler docenteHandler;
   @Autowired private MarcacaoDefesaTeseHandler marcacaoDefesaTeseHandler;
-  @Autowired private RegistoNotaPropostaTeseHandler registoNotaPropostaTeseHandler;
-  @Autowired private RegistoNotaFinalHandler registoNotaFinalTeseHandler;
+  @Autowired private RegistoNotaHandler registoNotaFinalTeseHandler;
   @Autowired private SubmissaoDocPropostaTeseAlunoHandler submissaoDocPropostaTeseAlunoHandler;
   @Autowired private SubmissaoDocFinalTeseAlunoHandler submissaoDocFinalTeseAlunoHandler;
   @Autowired private SubmissaoTemaDocenteHandler submissaoTemaDocenteHandler;
@@ -317,15 +316,6 @@ public class ThesismanServiceImp implements ThesismanService {
     atribuicaoTemaAdminHandler.atribuirTemaAdmin(temaId, alunoId, docenteId);
   }
 
-  public void registarNotaPropostaTese(Integer teseID, Integer docenteId, Integer nota)
-      throws NotPresentException {
-    registoNotaPropostaTeseHandler.registarNotaPropostaTese(teseID, docenteId, nota);
-  }
-
-  public void registarNotaFinalTese(Integer teseID, Integer docenteId, Integer nota)
-      throws NotPresentException {
-    registoNotaFinalTeseHandler.registarNotaFinal(teseID, docenteId, nota);
-  }
 
   public Map<CandidaturaDTO, TeseDTO> getCandidaturaWithTeseWithDefesaPropostaWithoutNota() {
     Map<CandidaturaDTO, TeseDTO> result = new HashMap<>();
