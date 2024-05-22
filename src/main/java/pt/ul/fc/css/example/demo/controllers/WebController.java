@@ -30,8 +30,10 @@ import pt.ul.fc.css.example.demo.dtos.DocenteDTO;
 import pt.ul.fc.css.example.demo.dtos.EstadoDTO;
 import pt.ul.fc.css.example.demo.dtos.TemaDTO;
 import pt.ul.fc.css.example.demo.dtos.TeseDTO;
+import pt.ul.fc.css.example.demo.dtos.UtilizadorEmpresarialDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
+import pt.ul.fc.css.example.demo.entities.UtilizadorEmpresarial;
 import pt.ul.fc.css.example.demo.exceptions.NoProperStateException;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
 import pt.ul.fc.css.example.demo.exceptions.PermissionDeniedException;
@@ -84,28 +86,38 @@ public class WebController {
                docente = thesismanService.loginDocente(email, "");
                System.out.println("Docente: " + docente.getNome());
                System.out.println("Docenteid: " + docente.getId());
+               userEmail = email;
+               model.addAttribute("id", docente.getId());
+               model.addAttribute("name", docente.getNome());
+               model.addAttribute("isAdmin", docente.getIsAdministrador());
+               model.addAttribute("temas propostos", thesismanService.getTemas());
+               model.addAttribute("projetos orientados", docente.getProjetosId());
+               model.addAttribute("mestrados", thesismanService.getMestrados());
+               model.addAttribute("candidaturas", thesismanService.getCandidaturasWithTeses());
+               model.addAttribute("docentes", thesismanService.getDocentes());
             }catch(NotPresentException e){
                 logger.error("Erro no login: " + e.getMessage());
                 return "login";
             }
            
         }else{
+            UtilizadorEmpresarialDTO u = null;
             try{
-                thesismanService.loginUtilizadorEmpresarial(email, "");
+              u = thesismanService.loginUtilizadorEmpresarial(email, "");
+              userEmail = email;
+              model.addAttribute("id", u.getId());
+              model.addAttribute("name", u.getName());
+              model.addAttribute("isAdmin", false);
+              model.addAttribute("temas propostos", thesismanService.getTemas());
+              model.addAttribute("projetos orientados", u.getTemasPropostosId());
+              model.addAttribute("mestrados", thesismanService.getMestrados());
+              model.addAttribute("candidaturas", thesismanService.getCandidaturasWithTeses());
+              model.addAttribute("docentes", thesismanService.getDocentes());  
             }catch(NotPresentException e){
                 logger.error("Necessário Registar Utilizador Empresarial");
                 return "register";
             }
         }
-        userEmail = email;
-        model.addAttribute("id", docente.getId());
-        model.addAttribute("name", docente.getNome());
-        model.addAttribute("isAdmin", docente.getIsAdministrador());
-        model.addAttribute("temas propostos", thesismanService.getTemas());
-        model.addAttribute("projetos orientados", docente.getProjetosId());
-        model.addAttribute("mestrados", thesismanService.getMestrados());
-        model.addAttribute("candidaturas", thesismanService.getCandidaturasWithTeses());
-        model.addAttribute("docentes", thesismanService.getDocentes());
         return "dashboard";
     }
 
