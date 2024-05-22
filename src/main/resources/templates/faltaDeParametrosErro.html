@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt_PT">
+<head>
+    <link href="css/style.css" rel="stylesheet"/>
+    <title>Thesisman Application</title>
+</head>
+
+<body>
+    <h1 id="tema_submetido">Erro ao fazer operação, Faltam parametros</h1>
+    <form th:action = "@{/dashboard}" method="GET" id="form1">
+        <button>voltar atrás</button>
+    </form>
+    <h2 id="error" th:text="${error}"></h2>
+</body>
+</html>

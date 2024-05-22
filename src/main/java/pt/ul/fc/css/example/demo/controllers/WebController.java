@@ -201,6 +201,10 @@ public class WebController {
 
     @PostMapping("/marcarDefesaPropostaCall")
     public String marcarDefesaPropostaCall(Model model, @RequestParam Integer teseId, @RequestParam String data, @RequestParam(required = false) String online, @RequestParam(required = false) String room, @RequestParam Integer arguente) throws NotPresentException{
+        if(online == null || data == null || room == null || arguente == null){
+            return "faltaDeParametrosErro";
+        }
+
         Boolean onlineBool = false;
         if(online.equals("on")){onlineBool = true;}
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
