@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
@@ -19,6 +20,7 @@ import pt.ul.fc.css.example.demo.repositories.TemaRepository;
 import pt.ul.fc.css.example.demo.repositories.TeseRepository;
 
 @Component
+@Transactional
 public class AtribuicaoTemaAdminHandler {
   private TemaRepository temaRepository;
   private DocenteRepository docenteRepository;
@@ -94,7 +96,14 @@ public class AtribuicaoTemaAdminHandler {
       for (Candidatura c : a.getCandidatura()) {
         candidaturasIds.add(c.getId());
       }
-      result.add(new AlunoDTO(a.getId(), a.getName(), a.getEmail(), a.getAverage(),a.getMestrado().getId(), candidaturasIds));
+      result.add(
+          new AlunoDTO(
+              a.getId(),
+              a.getName(),
+              a.getEmail(),
+              a.getAverage(),
+              a.getMestrado().getId(),
+              candidaturasIds));
     }
     return result;
   }
@@ -109,6 +118,12 @@ public class AtribuicaoTemaAdminHandler {
     for (Candidatura c : aluno.getCandidatura()) {
       candidaturasIds.add(c.getId());
     }
-    return new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getId(), candidaturasIds);
+    return new AlunoDTO(
+        aluno.getId(),
+        aluno.getName(),
+        aluno.getEmail(),
+        aluno.getAverage(),
+        aluno.getMestrado().getId(),
+        candidaturasIds);
   }
 }
