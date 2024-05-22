@@ -113,10 +113,30 @@ public class WebController {
         return "dashboard";
     }
 
-    @PostMapping({"/register"})
+    @GetMapping({"/register"})
     public String register(){
         return "register";
     }
+
+    @PostMapping({"/registerCall"})
+    public String registerCall(@RequestParam("name") String name, 
+                                @RequestParam("company") String company, 
+                                @RequestParam("email") String email, 
+                                @RequestParam("password") String password) throws NotPresentException {
+        if (name == null || company == null || email == null || password == null || name.isEmpty() || company.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            return "faltaParams";
+        }
+        if (!email.matches("^[a-zA-Z0-9]*@utilempresarial[.]pt")) {
+            return "emailMalFormatado";
+        }
+        try {
+            thesismanService.registerUtilizadorEmpresarial(company, name, email);
+        } catch (NotPresentException e) {
+            return "utilizadorEmpresarialExistente";
+        }
+        return "login";
+    }
+
 
     @GetMapping({"/submeterTemas"})
     public String submeterTema() {

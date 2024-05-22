@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt_PT">
+<head>
+    <link href="css/style.css" rel="stylesheet"/>
+    <title>Thesisman Application</title>
+</head>
+
+<body>
+    <h1 id="tema_submetido">Email mal formatado</h1>
+    <p>O email tem de ser do tipo: ^[a-zA-Z0-9]*@utilempresarial[.]pt</p>
+    <form th:action = "@{/}" method="GET" id="form1">
+        <button>voltar atrás</button>
+    </form>
+    <h2 id="error" th:text="${error}"></h2>
+</body>
+</html>

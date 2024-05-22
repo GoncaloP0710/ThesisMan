@@ -8,5 +8,8 @@
 <body>
     <h1>Estatísticas</h1>
     <p th:text="${estatisticas}"></p>
+    <form th:action = "@{/dashboard}" method="GET" id="form1">
+        <button>voltar atrás</button>
+    </form>
 </body>
 </html>
