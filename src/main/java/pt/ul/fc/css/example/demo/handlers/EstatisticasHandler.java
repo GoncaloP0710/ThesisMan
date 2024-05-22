@@ -20,10 +20,19 @@ public class EstatisticasHandler {
 
   public String getEstatisticas() {
     List<Tese> teses = teseRepository.findAll();
-    List<Defesa> defesas = teses.stream().map(Tese::getDefesaFinal).filter(d -> d != null).toList();
-    Optional<Float> notasAcumuladas = defesas.stream().map(Defesa::getNota).reduce((m, n) -> m + n);
-    double numeroAprovados = defesas.stream().map(Defesa::getNota).toList().size();
-    if (notasAcumuladas.isEmpty())
+    List<Defesa> defesasFinais =
+        teses.stream().map(Tese::getDefesaFinal).filter(d -> d != null).toList();
+    List<Defesa> defesasPropostas =
+        teses.stream().map(Tese::getDefesaProposta).filter(d -> d != null).toList();
+    Optional<Float> notasAcumuladasFinais =
+        defesasFinais.stream().map(Defesa::getNota).reduce((m, n) -> m + n);
+    Optional<Float> notasAcumuladasPropostas =
+        defesasPropostas.stream().map(Defesa::getNota).reduce((m, n) -> m + n);
+    double numeroAprovados =
+        defesasFinais.stream().map(Defesa::getNota).filter(m -> m >= 9.5).toList().size();
+    if (notasAcumuladasFinais.isEmpty())
+      throw new IllegalArgumentException("Não foi possivel acumular as notas");
+    if (notasAcumuladasPropostas.isEmpty())
       throw new IllegalArgumentException("Não foi possivel acumular as notas");
     String s =
         "Estatísticas: "
@@ -32,8 +41,11 @@ public class EstatisticasHandler {
             + Math.round(numeroAprovados / teses.size() * 10e4) / 10e2
             + "%"
             + System.lineSeparator()
-            + "Média: "
-            + Math.round(notasAcumuladas.get() / defesas.size() * 10e2) / 10e2
+            + "Média das propostas de tese: "
+            + Math.round(notasAcumuladasPropostas.get() / defesasPropostas.size() * 10e2) / 10e2
+            + System.lineSeparator()
+            + "Média das defesas finais: "
+            + Math.round(notasAcumuladasFinais.get() / defesasFinais.size() * 10e2) / 10e2
             + System.lineSeparator();
     return s;
   }
