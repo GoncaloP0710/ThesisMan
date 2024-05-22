@@ -70,6 +70,10 @@ public final class Defesa{
         return id;
     }
 
+    public int getTeseId() {
+        return tese.getId();
+    }
+
     /**
      * Returns true if the defense is the final defense, false otherwise.
      *

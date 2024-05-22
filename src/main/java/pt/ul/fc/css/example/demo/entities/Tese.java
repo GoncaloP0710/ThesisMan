@@ -133,7 +133,18 @@ public abstract class Tese {
     }
 
     public void setDefesaProposta(Defesa defesa) {
+        if (defesa == null) {
+            System.out.println("Defesa is null!!!!!!!!!!!!");
+        }
         this.defesas.add(defesa);
+    }
+
+    public void addDefesa(Defesa defesa) {
+        if (defesa == null) {
+            System.out.println("Defesa is null!!!!!!!!!!!!");
+        }
+        this.defesas.add(defesa);
+        defesa.setTese(this);
     }
 
     @Override

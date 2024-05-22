@@ -106,7 +106,38 @@ public class ThesismanServiceImp implements ThesismanService{
         temaRepository.save(tema2);
         mestradoRepository.save(mestrado1);
 
+        Defesa defesa1 = new Defesa(false, false);
+        defesaRepository.save(defesa1);
+        tese1.addDefesa(defesa1);
+        System.out.println("Tese1 id: " + tese1.getId());
+        System.out.println("Tese1 defezas size: " + tese1.getDefesas().size());
+        teseRepository.save(tese1);
+        defesaRepository.save(defesa1);
+        Integer defesaTeseIdInteger = defesa1.getTeseId();
+        System.out.println("Defesa1 tese id: " + defesaTeseIdInteger);
 
+        System.out.println("=============================");
+
+        System.out.println("=============== listarCandidaturasAlunosProposta =============");
+        List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+        List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
+        for(Candidatura c : candidaturas){
+            System.out.println("candidatura id: " + c.getId());
+            System.out.println("candidatura aluno id: " + c.getAluno().getId());
+            System.out.println("aluno id: " + 3);
+            System.out.println("tese id: " + c.getTese().getId());
+            System.out.println("candidatura tese defesas size : " + c.getTese().getDefesas().size());
+            if(c.getTese().getDefesas().size() > 0 && c.getAluno().getId().equals(3)){
+                System.out.println("candidatura tem pelo menos uma defesa e a candidatura é do aluno"); 
+                for(Defesa d : c.getTese().getDefesas()){
+                    System.out.println("defesa id: " + d.getId());
+                    if(!d.isFinal() && d.getNota() == -1){
+                        System.out.println("defesa não é final e não tem nota");
+                        candidaturasWithDefesaWithoutNota.add(c);
+                    }
+                }
+            }
+        }
     }
 
     public List<DocenteDTO> getDocentes(){
@@ -336,6 +367,14 @@ public class ThesismanServiceImp implements ThesismanService{
 
     public List<CandidaturaDTO> listarCandidaturasAlunos(Integer alunoId) throws NotPresentException{
         return candidaturaHandler.listarCandidaturasAluno(alunoId);
+    }
+
+    public List<CandidaturaDTO> listarCandidaturasAlunosProposta(Integer alunoId) throws NotPresentException{
+        return candidaturaHandler.listarCandidaturasAlunosProposta(alunoId);
+    }
+
+    public List<CandidaturaDTO> listarCandidaturasAlunosFinal(Integer alunoId) throws NotPresentException{
+        return candidaturaHandler.listarCandidaturasAlunosFinal(alunoId);
     }
 
 }

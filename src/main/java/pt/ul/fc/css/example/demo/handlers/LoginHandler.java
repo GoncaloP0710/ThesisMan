@@ -41,7 +41,9 @@ public class LoginHandler {
             System.out.println("nome aluno: "+ aluno.getName());
             System.out.println("email aluno: "+ aluno.getEmail());
             List<Integer> candidaturaIds = getCandidaturasIds(aluno.getCandidatura());
+            System.out.println("Apos conseguir as candidaturas");
             AlunoDTO alunoDTO = new AlunoDTO(aluno.getId(), aluno.getName(), aluno.getEmail(), aluno.getAverage(), aluno.getMestrado().getId(), candidaturaIds);
+            System.out.println("Antes do return");
             return alunoDTO;
         } else {
             throw new NotPresentException("Aluno não encontrado");

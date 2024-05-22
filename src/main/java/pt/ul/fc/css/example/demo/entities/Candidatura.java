@@ -17,11 +17,11 @@ public class Candidatura {
     private Integer id;
 
     @NonNull
-    private Date dataCandidatura;
-
+    private Date dataCandidatura; 
+ 
     @NonNull
     @Enumerated(EnumType.STRING)
-    private EstadoCandidatura estado;
+    private EstadoCandidatura estado; 
 
     @OneToOne(mappedBy = "candidatura", cascade = CascadeType.REMOVE)
     private Tese tese;
