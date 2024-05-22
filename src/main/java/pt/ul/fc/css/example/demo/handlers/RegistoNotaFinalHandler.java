@@ -18,9 +18,11 @@ import pt.ul.fc.css.example.demo.repositories.JuriRepository;
 public class RegistoNotaFinalHandler {
 
     private TeseRepository teseRepository;
+    private DefesaRepository defesaRepository;
 
-    public RegistoNotaFinalHandler(DefesaRepository defesaRepository, TeseRepository teseRepository, JuriRepository juriRepository) {
-        this.teseRepository = teseRepository;                               
+    public RegistoNotaFinalHandler(DefesaRepository defesaRepository, TeseRepository teseRepository, JuriRepository juriRepository ) {
+        this.teseRepository = teseRepository;  
+        this.defesaRepository = defesaRepository;                             
                                         
     }
 
@@ -44,6 +46,15 @@ public class RegistoNotaFinalHandler {
         
         defesa.setNota(nota);
 
+    }
+
+    public void registarNota(Integer defesaId, Integer nota) throws NotPresentException {
+        Optional<Defesa> optDefesa = defesaRepository.findById(defesaId);
+        if(!optDefesa.isPresent()){throw new NotPresentException("Não foi encontrada uma defesa");}
+        Defesa defesa = optDefesa.get();
+        if(nota < 0 || nota > 20){throw new IllegalArgumentException("Nota inválida");}
+        defesa.setNota(nota);
+        defesaRepository.save(defesa);
     }
 
 }

@@ -224,27 +224,42 @@ public class WebController {
 
     @GetMapping({"/registarNotaDefesaProposta"})
     public String registarNotaDefesaProposta(Model model){
+        System.out.println("######################## registarNotaDefesaProposta ########################");
         Map<CandidaturaDTO, TeseDTO> candidaturas = thesismanService.getCandidaturaWithTeseWithDefesaPropostaWithoutNota();
         model.addAttribute("candidaturaWithDefesaPropostaWithoutNota", candidaturas);
         return "registarNotaDefesaProposta";
     }
 
     @PostMapping({"/registarNotaDefesaPropostaCall"})
-    public String registarNotaDefesaPropostaCall(Model model, @RequestParam Integer defesaId, @RequestParam Integer nota) throws NotPresentException{
-        thesismanService.registarNotaPropostaTese(defesaId,(Integer)model.getAttribute("id"), nota);
+    public String registarNotaDefesaPropostaCall(Model model, @RequestParam Integer rowId, @RequestParam Integer nota) throws NotPresentException{
+
+        System.out.println("############## registarNotaDefesaPropostaCall ##############");
+        System.out.println("rowId: " + rowId);
+        System.out.println("nota: " + nota);
+
+        Integer defesaId = thesismanService.gethDefesaPropostaWithoutNota().get(rowId-1);
+        thesismanService.registarNotaDefesa(defesaId, nota);
         return "registarNotaCall";
     }
 
     @GetMapping({"/registarNotaDefesaFinal"})
     public String registarNotaDefesaFinal(Model model){
+        System.out.println("######################## registarNotaDefesaFinal ########################");
         Map<CandidaturaDTO, TeseDTO> candidaturas = thesismanService.getCandidaturaWithTeseWithDefesaFinalWithoutNota();
         model.addAttribute("candidaturaWithDefesaFinalWithoutNota", candidaturas);
         return "registarNotaDefesaFinal";
     }
 
     @PostMapping({"/registarNotaDefesaFinalCall"})
-    public String registarNotaDefesaFinalCall(Model model, @RequestParam Integer defesaId, @RequestParam Integer nota) throws NotPresentException{
-        thesismanService.registarNotaFinalTese(defesaId, (Integer)model.getAttribute("id"), nota);
+    public String registarNotaDefesaFinalCall(Model model, @RequestParam Integer rowId, @RequestParam Integer nota) throws NotPresentException{
+
+        System.out.println("############## registarNotaDefesaPropostaCall ##############");
+        System.out.println("rowId: " + rowId);
+        System.out.println("nota: " + nota);
+        System.out.println("defesasId: " + thesismanService.gethDefesaFinalWithoutNota());
+
+        Integer defesaId = thesismanService.gethDefesaFinalWithoutNota().get(rowId-1);
+        thesismanService.registarNotaDefesa(defesaId, nota);
         return "registarNotaCall";
     }
 

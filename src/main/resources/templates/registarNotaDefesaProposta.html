@@ -6,33 +6,45 @@
 </head>
 <body>
     <h1>Registar Notas Defesas Propostas</h1>
-  <table>
-    <thead>
-        <tr>
-            <th>Candidatura ID</th>
-            <th>Tema ID</th>
-            <th>Data Candidatura</th>
-            <th>Estado</th>
-            <th>Tese ID</th>
-            <th>Aluno ID</th>
-            <th>Tese Document Proposto</th>
-            <th>Tese Document Final</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="entry : ${candidaturaWithDefesaPropostaWithoutNota}">
-            <td th:text="${entry.key.id}"></td>
-            <td th:text="${entry.key.temaId}"></td>
-            <td th:text="${entry.key.dataCandidatura}"></td>
-            <td th:text="${entry.key.estado}"></td>
-            <td th:text="${entry.key.teseId}"></td>
-            <td th:text="${entry.key.alunoId}"></td>
-            <td th:text="${entry.value.documentProposto}"></td>
-            <td th:text="${entry.value.documentFinal}"></td>
-        </tr>
-    </tbody>
-   </table>
-   <form th:action = "@{/dashboard}" method="GET" id="form1">
-    <button>voltar ao dashboard</button>
-</form>
+    <table>
+        <thead>
+            <tr>
+                <th>Candidatura ID</th>
+                <th>Tema ID</th>
+                <th>Data Candidatura</th>
+                <th>Estado</th>
+                <th>Tese ID</th>
+                <th>Aluno ID</th>
+                <th>Tese Document Proposto</th>
+                <th>Tese Document Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry, stat : ${candidaturaWithDefesaPropostaWithoutNota}">
+                <td th:text="${entry.key.id}"></td>
+                <td th:text="${entry.key.temaId}"></td>
+                <td th:text="${entry.key.dataCandidatura}"></td>
+                <td th:text="${entry.key.estado}"></td>
+                <td th:text="${entry.key.teseId}"></td>
+                <td th:text="${entry.key.alunoId}"></td>
+                <td th:text="${entry.value.documentProposto}"></td>
+                <td th:text="${entry.value.documentFinal}"></td>
+                <td>
+                    <form th:action="@{/registarNotaDefesaPropostaCall}" method="post">
+                        <input type="hidden" name="rowId" th:value="${stat.count}" />
+                        <label>Nota</label>
+                        <select th:name="nota">
+                            <option th:each="i : ${#numbers.sequence(0, 20)}" th:value="${i}" th:text="${i}"></option>
+                        </select>
+                        <input type="submit" value="Atribuir esta nota" />
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form th:action = "@{/dashboard}" method="GET" id="form1">
+        <button>voltar ao dashboard</button>
+    </form>
 </body>
+</html>

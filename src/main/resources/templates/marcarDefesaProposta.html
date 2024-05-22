@@ -16,7 +16,7 @@
     <form action="#" th:action="@{/marcarDefesaPropostaCall}" method="post">
         <label>Teses em curso</label>
         <select th:name="teseId">
-            <option th:each="entry : ${candidaturasAceites}" th:value="${entry.key.teseId}" th:text="${entry.value.titulo}"></option>
+            <option th:each="entry : ${candidaturasAceites}" th:value="${entry.key.teseId}" th:text="${entry.key.getTeseId()}"></option>
         </select>
         <label for="data">Data:</label>
         <input type="date" id="data" name="data">

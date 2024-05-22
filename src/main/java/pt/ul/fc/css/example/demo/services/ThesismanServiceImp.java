@@ -284,6 +284,25 @@ public class ThesismanServiceImp implements ThesismanService{
         return result;
     }
 
+    public List<Integer> gethDefesaPropostaWithoutNota(){
+        Map<CandidaturaDTO, TeseDTO> result = new HashMap<>();
+        List<Candidatura> candidaturas = candidaturaRepository.findAll();
+        List<Integer> resultIds = new ArrayList<>();
+        for (Candidatura candidatura : candidaturas) {
+            Tese tese = candidatura.getTese();
+            if (tese != null) {
+                Defesa d = tese.getDefesaProposta();
+                if (d != null && d.getNota() == -1) {
+                    CandidaturaDTO candidaturaDTO = new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+                    TeseDTO teseDTO = new TeseDTO(tese.getId(), tese.getCandidatura().getId(), tese.getDocumentProposto(), tese.getDocumentFinal(), tese.getDefesas().stream().map(Defesa::getId).collect(Collectors.toList()));
+                    result.put(candidaturaDTO, teseDTO);
+                    resultIds.add(d.getId());
+                }
+            }
+        }
+        return resultIds;
+    }
+
     public Map<CandidaturaDTO, TeseDTO> getCandidaturaWithTeseWithDefesaFinalWithoutNota(){
         Map<CandidaturaDTO, TeseDTO> result = new HashMap<>();
         List<Candidatura> candidaturas = candidaturaRepository.findAll();
@@ -291,7 +310,7 @@ public class ThesismanServiceImp implements ThesismanService{
             Tese tese = candidatura.getTese();
             if (tese != null) {
                 Defesa d = tese.getDefesaFinal();
-                if (d != null && d.getNota() != -1) {
+                if (d != null && d.getNota() == -1) {
                     CandidaturaDTO candidaturaDTO = new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
                     TeseDTO teseDTO = new TeseDTO(tese.getId(), tese.getCandidatura().getId(), tese.getDocumentProposto(), tese.getDocumentFinal(), tese.getDefesas().stream().map(Defesa::getId).collect(Collectors.toList()));
                     result.put(candidaturaDTO, teseDTO);
@@ -300,7 +319,27 @@ public class ThesismanServiceImp implements ThesismanService{
         }
 
         return result;
+    }
+
+    public List<Integer> gethDefesaFinalWithoutNota(){
+        Map<CandidaturaDTO, TeseDTO> result = new HashMap<>();
+        List<Candidatura> candidaturas = candidaturaRepository.findAll();
+        List<Integer> resultIds = new ArrayList<>();
+        for (Candidatura candidatura : candidaturas) {
+            Tese tese = candidatura.getTese();
+            if (tese != null) {
+                Defesa d = tese.getDefesaFinal();
+                if (d != null && d.getNota() == -1) {
+                    CandidaturaDTO candidaturaDTO = new CandidaturaDTO(candidatura.getId(), candidatura.getTema().getId(), candidatura.getDataCandidatura(), candidatura.getEstado().name(), candidatura.getTese().getId(), candidatura.getAluno().getId());
+                    TeseDTO teseDTO = new TeseDTO(tese.getId(), tese.getCandidatura().getId(), tese.getDocumentProposto(), tese.getDocumentFinal(), tese.getDefesas().stream().map(Defesa::getId).collect(Collectors.toList()));
+                    result.put(candidaturaDTO, teseDTO);
+                    resultIds.add(d.getId());
+                }
+            }
         }
+
+        return resultIds;
+    }
 
     public String getEstatisticas(){
         return estatisticasHandler.getEstatisticas();
@@ -376,6 +415,11 @@ public class ThesismanServiceImp implements ThesismanService{
 
     public List<CandidaturaDTO> listarCandidaturasAlunosFinal(Integer alunoId) throws NotPresentException{
         return candidaturaHandler.listarCandidaturasAlunosFinal(alunoId);
+    }
+
+
+    public void registarNotaDefesa(Integer defesaId, Integer nota) throws NotPresentException {
+        registoNotaFinalTeseHandler.registarNota(defesaId, nota);
     }
 
 }

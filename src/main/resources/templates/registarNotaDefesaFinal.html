@@ -20,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr th:each="entry : ${candidaturaWithDefesaFinalWithoutNota}">
+        <tr th:each="entry, stat : ${candidaturaWithDefesaFinalWithoutNota}">
             <td th:text="${entry.key.id}"></td>
             <td th:text="${entry.key.temaId}"></td>
             <td th:text="${entry.key.dataCandidatura}"></td>
@@ -29,6 +29,16 @@
             <td th:text="${entry.key.alunoId}"></td>
             <td th:text="${entry.value.documentProposto}"></td>
             <td th:text="${entry.value.documentFinal}"></td>
+            <td>
+                <form th:action="@{/registarNotaDefesaFinalCall}" method="post">
+                    <input type="hidden" name="rowId" th:value="${stat.count}" />
+                    <label>Nota</label>
+                    <select th:name="nota">
+                        <option th:each="i : ${#numbers.sequence(0, 20)}" th:value="${i}" th:text="${i}"></option>
+                    </select>
+                    <input type="submit" value="Atribuir esta nota" />
+                </form>
+            </td>
         </tr>
     </tbody>
    </table>
