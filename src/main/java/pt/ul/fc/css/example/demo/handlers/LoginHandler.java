@@ -64,6 +64,8 @@ public class LoginHandler {
 
       UtilizadorEmpresarialDTO utilizadorEmpresarialDTO =
           new UtilizadorEmpresarialDTO(
+              utilizadorEmpresarial.getId(),
+              utilizadorEmpresarial.getName(),
               utilizadorEmpresarial.getEmpresa(),
               utilizadorEmpresarial.getEmail(),
               getTemasIds(utilizadorEmpresarial.getTemasPropostos()));
@@ -81,6 +83,8 @@ public class LoginHandler {
       UtilizadorEmpresarial utilizadorEmpresarial = currentUtilizadorEmpresarial.get();
       UtilizadorEmpresarialDTO utilizadorEmpresarialDTO =
           new UtilizadorEmpresarialDTO(
+              utilizadorEmpresarial.getId(),
+              utilizadorEmpresarial.getName(),
               utilizadorEmpresarial.getEmpresa(),
               utilizadorEmpresarial.getEmail(),
               getTemasIds(utilizadorEmpresarial.getTemasPropostos()));
