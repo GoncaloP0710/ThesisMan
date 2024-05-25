@@ -1,6 +1,8 @@
 package pt.ul.fc.css.example.demo.handlers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,7 @@ import pt.ul.fc.css.example.demo.entities.Aluno;
 import pt.ul.fc.css.example.demo.entities.Candidatura;
 import pt.ul.fc.css.example.demo.entities.Dissertacao;
 import pt.ul.fc.css.example.demo.entities.Docente;
+import pt.ul.fc.css.example.demo.entities.EstadoCandidatura;
 import pt.ul.fc.css.example.demo.entities.Projeto;
 import pt.ul.fc.css.example.demo.entities.Tema;
 import pt.ul.fc.css.example.demo.exceptions.NotPresentException;
@@ -130,5 +133,31 @@ public class AtribuicaoTemaAdminHandler {
         aluno.getAverage(),
         aluno.getMestrado().getId(),
         candidaturasIds);
+  }
+
+  public void atribuirTemaAutoAdmin() throws NotPresentException {
+    List<Aluno> alunos = alunoRepository.findAll();
+    Collections.sort(alunos, (a1, a2) -> a1.getAverage().compareTo(a2.getAverage()));
+    List<Integer> candidaturasAprovadasIds = new ArrayList<>();
+
+    for (Aluno a : alunos) {
+      List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoId(a.getId());
+
+      for (Candidatura c : candidaturas) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(c.getDataCandidatura());
+        int yearOfCandidatura = cal.get(Calendar.YEAR);
+
+        Calendar currentCal = Calendar.getInstance();
+        int currentYear = currentCal.get(Calendar.YEAR);
+
+        if (yearOfCandidatura == currentYear && candidaturasAprovadasIds.contains(c.getId()) == false) {
+          c.setEstado(EstadoCandidatura.APROVADO);
+          candidaturaRepository.save(c);
+          candidaturasAprovadasIds.add(c.getId());
+        }
+      }
+    }
   }
 }
