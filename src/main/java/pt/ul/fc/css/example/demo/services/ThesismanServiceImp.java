@@ -84,11 +84,11 @@ public class ThesismanServiceImp implements ThesismanService {
     alunoRepository.save(aluno2);
 
     Candidatura candidatura1 =
-        new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema1);
+        new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno1, tema1);
     Candidatura candidatura2 =
         new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2, tema2);
     Candidatura candidatura3 =
-        new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema2);
+        new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno1, tema2);
     candidaturaRepository.save(candidatura1);
     candidaturaRepository.save(candidatura2);
     candidaturaRepository.save(candidatura3);
@@ -535,5 +535,9 @@ public class ThesismanServiceImp implements ThesismanService {
 
   public void registarNotaDefesa(Integer defesaId, Integer nota) throws NotPresentException {
     registoNotaFinalTeseHandler.registarNota(defesaId, nota);
+  }
+
+  public List<String> atribuirTemaAuto() throws NotPresentException {
+    return atribuicaoTemaAdminHandler.atribuirTemaAuto();
   }
 }

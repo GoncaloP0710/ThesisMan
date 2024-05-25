@@ -135,29 +135,54 @@ public class AtribuicaoTemaAdminHandler {
         candidaturasIds);
   }
 
-  public void atribuirTemaAutoAdmin() throws NotPresentException {
+  public List<String> atribuirTemaAuto() throws NotPresentException {
     List<Aluno> alunos = alunoRepository.findAll();
     Collections.sort(alunos, (a1, a2) -> a1.getAverage().compareTo(a2.getAverage()));
-    List<Integer> candidaturasAprovadasIds = new ArrayList<>();
-
+    List<Integer> temasAprovadasIds = new ArrayList<>();
+    List<String> output = new ArrayList<>();
     for (Aluno a : alunos) {
+      System.out.println("Aluno " + a.getName() + " com média " + a.getAverage());
       List<Candidatura> candidaturas = candidaturaRepository.findAllByAlunoId(a.getId());
-
       for (Candidatura c : candidaturas) {
-
+        System.out.println("Candidatura " + c.getId() + " com estado " + c.getEstado());
         Calendar cal = Calendar.getInstance();
         cal.setTime(c.getDataCandidatura());
         int yearOfCandidatura = cal.get(Calendar.YEAR);
 
-        Calendar currentCal = Calendar.getInstance();
-        int currentYear = currentCal.get(Calendar.YEAR);
+        if (c != null && c.getTema() != null && c.getEstado() == EstadoCandidatura.EMPROCESSAMENTO) {
 
-        if (yearOfCandidatura == currentYear && candidaturasAprovadasIds.contains(c.getId()) == false) {
-          c.setEstado(EstadoCandidatura.APROVADO);
-          candidaturaRepository.save(c);
-          candidaturasAprovadasIds.add(c.getId());
+          boolean livre = true;
+          for (Candidatura candidatura : candidaturaRepository.findAll()) {
+            if (candidatura != null){
+
+              Calendar cal2 = Calendar.getInstance();
+              cal2.setTime(candidatura.getDataCandidatura());
+              int yearOfCandidatura2 = cal2.get(Calendar.YEAR);
+
+              if (candidatura.getTema() != null && candidatura.getTema().getId() == c.getTema().getId() && yearOfCandidatura2 == yearOfCandidatura && candidatura.getEstado() == EstadoCandidatura.APROVADO){
+                System.out.println("Tema " + c.getTema().getTitulo() + " já atribuído");
+                livre = false;
+                break;
+              }
+            }
+          }
+
+          Calendar currentCal = Calendar.getInstance();
+          int currentYear = currentCal.get(Calendar.YEAR);
+
+          if (yearOfCandidatura == currentYear && temasAprovadasIds.contains(c.getTema().getId()) == false && livre == true) {
+            c.setEstado(EstadoCandidatura.APROVADO);
+            candidaturaRepository.save(c);
+            temasAprovadasIds.add(c.getTema().getId());
+
+            System.out.println("Tema " + c.getTema().getTitulo() + " atribuído ao aluno " + a.getName());
+            output.add("Tema " + c.getTema().getTitulo() + " atribuído ao aluno " + a.getName());
+          } else {
+            System.out.println("Tema " + c.getTema().getTitulo() + " não atribuído ao aluno " + a.getName() + " por ter sido atribuído a um aluno com melhor média ou por a candidatura não ser do ano corrente");
+          }
         }
       }
     }
+    return output;
   }
 }

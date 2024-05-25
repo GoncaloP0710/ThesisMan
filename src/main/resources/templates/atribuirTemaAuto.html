@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Temas foram atribuidos automaticamente</title>
+</head>
+<body>
+    <h2>Lista de temas atribuidos</h2>
+    <ul>
+        <li th:each="item : ${atribuicaoTemaAuto}" th:text="${item}"></li>
+    </ul>
+
+    <form th:action = "@{/dashboard}" method="GET" id="form1">
+        <button>voltar ao dashboard</button>
+    </form>
+</body>
+</html>
