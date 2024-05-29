@@ -177,6 +177,21 @@ public class AtribuicaoTemaAdminHandler {
 
             System.out.println("Tema " + c.getTema().getTitulo() + " atribuído ao aluno " + a.getName());
             output.add("Tema " + c.getTema().getTitulo() + " atribuído ao aluno " + a.getName());
+
+            // *Set Tese da candidatura
+            if (c.getTema().getSubmissor() instanceof Docente) {
+              Dissertacao tese = new Dissertacao(c);
+              teseRepository.save(tese);
+              c.setTese(tese);
+              candidaturaRepository.save(c);
+            } else {
+              Projeto tese = new Projeto(c);
+              teseRepository.save(tese);
+              c.setTese(tese);
+              candidaturaRepository.save(c);
+            }
+
+            break;
           } else {
             System.out.println("Tema " + c.getTema().getTitulo() + " não atribuído ao aluno " + a.getName() + " por ter sido atribuído a um aluno com melhor média ou por a candidatura não ser do ano corrente");
           }
