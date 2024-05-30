@@ -84,26 +84,26 @@ public class ThesismanServiceImp implements ThesismanService {
     alunoRepository.save(aluno2);
 
     Candidatura candidatura1 =
-        new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema1);
+        new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno1, tema1);
     Candidatura candidatura2 =
         new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno2, tema2);
     Candidatura candidatura3 =
-        new Candidatura(new Date(), EstadoCandidatura.APROVADO, aluno1, tema2);
+        new Candidatura(new Date(), EstadoCandidatura.EMPROCESSAMENTO, aluno1, tema2);
     candidaturaRepository.save(candidatura1);
     candidaturaRepository.save(candidatura2);
     candidaturaRepository.save(candidatura3);
 
-    Tese tese1 = new Dissertacao(candidatura1);
-    Tese tese2 = new Dissertacao(candidatura3);
-    teseRepository.save(tese1);
-    teseRepository.save(tese2);
+    // Tese tese1 = new Dissertacao(candidatura1);
+    // Tese tese2 = new Dissertacao(candidatura3);
+    // teseRepository.save(tese1);
+    // teseRepository.save(tese2);
 
-    candidatura1.setTese(tese1);
-    candidatura2.setTese(tese1);
-    candidatura3.setTese(tese2);
-    candidaturaRepository.save(candidatura1);
-    candidaturaRepository.save(candidatura2);
-    candidaturaRepository.save(candidatura3);
+    // candidatura1.setTese(tese1);
+    // candidatura2.setTese(tese1);
+    // candidatura3.setTese(tese2);
+    // candidaturaRepository.save(candidatura1);
+    // candidaturaRepository.save(candidatura2);
+    // candidaturaRepository.save(candidatura3);
 
     tema1.addMestradosCompativeis(mestrado1);
     tema2.addMestradosCompativeis(mestrado1);
@@ -111,24 +111,23 @@ public class ThesismanServiceImp implements ThesismanService {
     temaRepository.save(tema2);
     mestradoRepository.save(mestrado1);
 
-    Defesa defesa1 = new Defesa(false, false);
-    Defesa defesa2 = new Defesa(true, false);
-    defesaRepository.save(defesa1);
-    defesaRepository.save(defesa2);
+    // Defesa defesa1 = new Defesa(false, false);
+    // Defesa defesa2 = new Defesa(true, false);
+    // defesaRepository.save(defesa1);
+    // defesaRepository.save(defesa2);
 
-    tese1.addDefesa(defesa1);
-    tese2.addDefesa(defesa2);
+    // tese1.addDefesa(defesa1);
+    // tese2.addDefesa(defesa2);
 
-    teseRepository.save(tese1);
-    teseRepository.save(tese2);
-    defesaRepository.save(defesa1);
-    defesaRepository.save(defesa2);
-    Integer defesaTeseIdInteger = defesa1.getTeseId();
-    Integer defesaTeseIdInteger2 = defesa2.getTeseId();
+    // teseRepository.save(tese1);
+    // teseRepository.save(tese2);
+    // defesaRepository.save(defesa1);
+    // defesaRepository.save(defesa2);
+    // Integer defesaTeseIdInteger = defesa1.getTeseId();
+    // Integer defesaTeseIdInteger2 = defesa2.getTeseId();
 
-    List<Candidatura> candidaturas =
-        candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
-    List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
+    // List<Candidatura> candidaturas = candidaturaRepository.findAllByEstado(EstadoCandidatura.APROVADO);
+    // List<Candidatura> candidaturasWithDefesaWithoutNota = new ArrayList<Candidatura>();
   }
 
   public List<DocenteDTO> getDocentes() {
@@ -535,5 +534,9 @@ public class ThesismanServiceImp implements ThesismanService {
 
   public void registarNotaDefesa(Integer defesaId, Integer nota) throws NotPresentException {
     registoNotaFinalTeseHandler.registarNota(defesaId, nota);
+  }
+
+  public List<String> atribuirTemaAuto() throws NotPresentException {
+    return atribuicaoTemaAdminHandler.atribuirTemaAuto();
   }
 }

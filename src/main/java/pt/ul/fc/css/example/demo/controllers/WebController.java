@@ -217,6 +217,16 @@ public class WebController {
         }
         return "temaAtribuido";
     }
+
+    @GetMapping({"/atribuicaoTemaAuto"})
+    public String atribuicaoTemaAuto(Model model) throws NotPresentException{
+        List<String> atribuicaoTemaAuto = thesismanService.atribuirTemaAuto();
+        for (String item : atribuicaoTemaAuto) {
+            System.out.println(item);
+        }
+        model.addAttribute("atribuicaoTemaAuto", atribuicaoTemaAuto);
+        return "atribuirTemaAuto";
+    }
     
 
     @GetMapping({"/marcarDefesaProposta"})
