@@ -1,12 +1,18 @@
 package pt.ul.fc.css.example.demo.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 import pt.ul.fc.css.example.demo.dtos.AlunoDTO;
 import pt.ul.fc.css.example.demo.dtos.CandidaturaDTO;
@@ -36,7 +42,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController()
 @RequestMapping("api")
@@ -45,14 +51,22 @@ public class RestThesismanController {
     @Autowired
     private ThesismanServiceImp ThesismanServiceImp;
 
+    @Operation(summary = "Populates the database with mock data")
+    @ApiResponses(value = { 
+    @ApiResponse(responseCode = "200", description = "Populated the Database")})
     @PostMapping("/populate")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> populate(){
         ThesismanServiceImp.populate();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Logs in a user and returns the user's data")
+    @ApiResponses(value = { 
+    @ApiResponse(responseCode = "200", description = "Logged in successfully", content = @Content(schema = @Schema(implementation = AlunoDTO.class))),
+    @ApiResponse(responseCode = "400", description = "User not found"),})
     @PostMapping("/login")
-    ResponseEntity<?> login(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
+    public ResponseEntity<?> login(@RequestBody String json) throws JsonMappingException, JsonProcessingException{
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -75,6 +89,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "Lists all themes")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Listed all themes", content = @Content(schema = @Schema(implementation = TemaDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Themes could not be listed"),})
     @GetMapping("/listarTemas")
     public ResponseEntity<?> listarTemas(@RequestParam Integer alunoId) {
         try {
@@ -85,6 +103,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "Lists all application")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Listed all applications", content = @Content(schema = @Schema(implementation = CandidaturaDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Applications could not be listed"),})
     @GetMapping("/listarCandidaturas")
     public ResponseEntity<?> listarCandidaturas(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
         try{
@@ -95,6 +117,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "List all final applications")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Listed all final applications", content = @Content(schema = @Schema(implementation = CandidaturaDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Final applications could not be listed"),})
     @GetMapping("/listarCandidaturasFinal")
     public ResponseEntity<?> listarCandidaturasFinal(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
         try{
@@ -105,6 +131,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "List all proposal applications")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Listed all proposal applications", content = @Content(schema = @Schema(implementation = CandidaturaDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Proposal applications could not be listed"),})
     @GetMapping("/listarCandidaturasProposta")
     public ResponseEntity<?> listarCandidaturasProposta(@RequestParam Integer alunoId) throws JsonMappingException, JsonProcessingException{
         try{
@@ -115,6 +145,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "Creates a new application")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Created a new application", content = @Content(schema = @Schema(implementation = CandidaturaDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Could not create a new application"),})
     @PostMapping("/createCandidatura")
     ResponseEntity<?> createCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException, IllegalCandidaturaException{
         ObjectMapper objectMapper = new ObjectMapper();
@@ -135,6 +169,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "cancels an application")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Canceled an application"),
+        @ApiResponse(responseCode = "400", description = "Could not cancel an application"),})
     @PostMapping("/cancelarCandidatura")
     ResponseEntity<?> cancelarCandidatura(@RequestBody String json) throws JsonMappingException, JsonProcessingException, IllegalCandidaturaException{
         ObjectMapper objectMapper = new ObjectMapper();
@@ -148,6 +186,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "Submits a proposal thesis document by getting the thesis associated with an also given application")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Submitted a proposal thesis document", content = @Content(schema = @Schema(implementation = TeseDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Could not submit a proposal thesis document"),})
     @PostMapping("/submeterDocTese")
     ResponseEntity<?> submeterDocTese(@RequestBody String json) throws IllegalCandidaturaException, IOException{
         ObjectMapper objectMapper = new ObjectMapper();
@@ -163,6 +205,10 @@ public class RestThesismanController {
         }
     }
 
+    @Operation(summary = "Submits a final thesis document by getting the thesis associated with an also given application")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Submitted a final thesis document", content = @Content(schema = @Schema(implementation = TeseDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Could not submit a final thesis document"),})
     @PostMapping("/submeterDocFinalTese")
     ResponseEntity<?> submeterDocFinalTese(@RequestBody String json) throws IllegalCandidaturaException, IOException{
         ObjectMapper objectMapper = new ObjectMapper();
