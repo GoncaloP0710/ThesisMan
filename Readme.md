@@ -2,9 +2,9 @@
 
 ## Grupo
 
-Daniela Camarinha fc58199
-Gonçalo Pinto fc58178
-José Brás fc55449 
+- Daniela Camarinha fc58199
+- Gonçalo Pinto fc58178
+- José Brás fc55449 
 
 ## About
 
